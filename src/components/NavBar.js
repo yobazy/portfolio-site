@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { useState, useEffect } from React;
+import { useState, useEffect } from 'react';
 import logo from '../assets/img/logo.svg';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/nav-icon2.svg';
@@ -55,7 +55,6 @@ export const NavBar = () => {
             <div className="social-icon">
                 <a href="#"><img src={navIcon1} alt=""></img></a>
                 <a href="#"><img src={navIcon2} alt=""></img></a>
-                <a href="#"><img src={navIcon3} alt=""></img></a>
             </div>
             <button className="vvd" onClick={() => console.log('connect')}><span>Let's connect</span></button>
           </span>
