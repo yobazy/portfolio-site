@@ -231,9 +231,16 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 /************ Banner Css ************/
+.header-img {
+  object-fit: contain;
+  border-radius: 15px;
+
+}
+
 .banner {
   margin-top: 0;
   padding: 260px 0 100px 0;
+  position: relative;
   background-image: url('./assets/img/banner-bg.jpg');
   background-position: top center;
   background-size: cover;
@@ -243,11 +250,12 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   font-weight: 700;
   letter-spacing: 0.8px;
   padding: 8px 10px;
-  background: linear-gradient(90.21deg, rgba(170, 54, 124, 0.5) -5.91%, rgba(74, 47, 189, 0.5) 111.58%);
+  background: linear-gradient(90.21deg, rgba(107, 78, 23, 0.5) -5.91%, rgba(50, 35, 1, 0.567) 111.58%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   font-size: 20px;
   margin-bottom: 16px;
   display: inline-block;
+  border-radius: 5px;
 }
 .banner h1 {
   font-size: 65px;
@@ -285,32 +293,18 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .banner img {
   animation: updown 3s linear infinite;
 }
-@keyframes updown {
-    0% {
-        transform: translateY(-20px);
-    }
-    50% {
-        transform: translateY(20px);
-    }
-    100% {
-        transform: translateY(-20px);
-    }
-}
+
 .txt-rotate > .wrap {
   border-right: 0.08em solid #666;
 }
 
 /************ Skills Css ************/
 .skill {
-  padding: 0 0 50px 0;
-  position: relative;
+  background: #0f171f;
 }
 .skill-bx {
-  background: #151515;
-  border-radius: 64px;
   text-align: center;
   padding: 60px 50px;
-  margin-top: -60px;
 }
 .skill h2 {
 	font-size: 45px;
@@ -321,10 +315,10 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     font-size: 18px;
     letter-spacing: 0.8px;
     line-height: 1.5em;
-    margin: 14px 0 75px 0;
+    margin: 14px 0px 50px 0;
 }
 .skill-slider {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   position: relative;
 }
@@ -344,7 +338,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .project {
   padding: 80px 0;
   position: relative;
-  background-color: black;
+  background-color: #2c353a;
 }
 .project h2 {
 	font-size: 45px;
@@ -540,8 +534,8 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 /************ Footer Css ************/
 .footer {
-  padding: 0 0 50px 0;
-  background-image: url('./assets/img/footer-bg.png');
+  padding: 25px 0 50px 0;
+  background-image: url('./assets/img/banner-bg.jpg');
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;

@@ -11,14 +11,14 @@ export const Footer = () => {
             <Container>
                 <Row className='align-items-center'>
                     <Col sm={6}>
-                        <img src={logo} alt="Logo"/>
+                        <h2>Thanks!</h2>
                     </Col>
                     <Col sm={6} className='text-center text-sm-end'>
                         <div className='social-icon'>
                             <a href=''><img src={navIcon1}/></a>
                             <a href=''><img src={navIcon2}/></a>
                         </div>
-                        <p>Copyright 2022. All Right Reserved</p>
+                        <p>Copyright 2023. All Right Reserved</p>
                     </Col>
                 </Row>
             </Container>
