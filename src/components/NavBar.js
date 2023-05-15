@@ -13,37 +13,37 @@ import navIcon3 from '../assets/img/nav-icon3.svg';
 
 
 export const NavBar = () => {
-    const [activeLink, setActiveLink] = useState('home');
-    const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState('home');
+  const [scrolled, setScrolled] = useState(false);
 
-    useEffect( () => {
-        const onScroll = () => {
-            if(window.ScrollY > 50) {
-                setScrolled(true);
-            }   else    {
-                setScrolled(false);
-            }
-        }
-
-        window.addEventListener("scroll", onScroll);
-
-        return () => window.addEventListener("scroll", onScroll);
-    }, []) 
-
-    const onUpdateActiveLink = (value) => {
-        setActiveLink(value);
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.ScrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     }
+
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.addEventListener("scroll", onScroll);
+  }, [])
+
+  const onUpdateActiveLink = (value) => {
+    setActiveLink(value);
+  }
 
 
   return (
-    <Navbar expand="lg"className="navbar-backdrop">
+    <Navbar expand="lg" className="navbar-backdrop">
       <Container>
         <Navbar.Brand href="#home">
-            {/* <img src={logo} alt="Welcome"/> */}
-            <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Welcome</Nav.Link>
+          {/* <img src={logo} alt="Welcome"/> */}
+          <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Welcome</Nav.Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav">
-            <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -55,11 +55,12 @@ export const NavBar = () => {
           </Nav>
           <span className="navbar-text">
             <div className="social-icon">
-              <a href="https://www.linkedin.com/in/
-bazilkhan" target="_blank" rel="noopener noreferrer"><img src={navIcon1} alt=""></img></a>
+              <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer"><img src={navIcon1} alt=""></img></a>
               <a href="https://github.com/yobazy" target="_blank" rel="noopener noreferrer"><img src={navIcon2} alt="" className="nav-icon"></img></a>
             </div>
-            <button className="vvd" onClick={() => console.log('connect')}><span>Let's connect</span></button>
+            <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
+              <button className="vvd"><span>Let's connect</span></button>
+            </a>          
           </span>
         </Navbar.Collapse>
       </Container>
