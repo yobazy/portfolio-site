@@ -36,7 +36,7 @@ export const NavBar = () => {
 
 
   return (
-    <Navbar expand="lg">
+    <Navbar expand="lg"className="navbar-backdrop">
       <Container>
         <Navbar.Brand href="#home">
             {/* <img src={logo} alt="Welcome"/> */}
