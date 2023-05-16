@@ -55,7 +55,7 @@ export const Projects = () => {
 
     const projectCards = projects.length > 0 ? (
         projects.map((project, index) => (
-            <div className='carousel-item-padding' key={index}>
+            <div className='carousel-item-padding project-card' key={index}>
                 <ProjectCard {...project} />
             </div>))
     ) : (
