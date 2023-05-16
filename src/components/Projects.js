@@ -1,6 +1,10 @@
 import { Row, Col, Container } from "react-bootstrap";
 import { ProjectCard } from "./ProjectCard";
-import projImg from '../assets/img/color-sharp2.png';
+import projScheduler from '../assets/img/proj-scheduler.png';
+import projJungle from '../assets/img/proj-jungle.png';
+import projReasonable from '../assets/img/proj-reasonable.png';
+import projTiny from '../assets/img/proj-tinyapp.png';
+import projFestify from '../assets/img/proj-festify.png'
 import Carousel from "react-multi-carousel";
 
 export const Projects = () => {
@@ -15,20 +19,36 @@ export const Projects = () => {
         {
             title: 'Festify',
             description: 'A React app which curates personalized Spotify playlists featuring artists from music events.',
-            skills: 'javascript',
-            imgURL: projImg,
+            skills: 'React, Javascript, RubyOnRails, PostgreSQL',
+            imgURL: projFestify,
         },
         {
-            title: 'Festify',
-            description: 'A React app which curates personalized Spotify playlists featuring artists from music events.',
-            skills: 'javascript',
-            imgURL: projImg,
+            title: 'Scheduler',
+            description: 'An appointment booking application. Users can book with specific clients, add/remove bookings.',
+            skills: 'React, Javascript, CSS/SCSS, HTML',
+            url: "https://github.com/yobazy/scheduler",
+            imgURL: projScheduler,
         },
         {
-            title: 'Festify',
-            description: 'A React app which curates personalized Spotify playlists featuring artists from music events.',
-            skills: 'javascript',
-            imgURL: projImg,
+            title: 'Jungle',
+            description: 'A mini-ecommerce application catered around plants to learn the Ruby on Rails ecosystem.',
+            skills: 'React, Javascript, RubyOnRails, PostgreSQL',
+            url: "https://github.com/yobazy/scheduler",
+            imgURL: projJungle,
+        },
+        {
+            title: 'TinyApp',
+            description: 'A full stack web application built with Node and Express that allows users to shorten long URLs (à la bit.ly).',
+            skills: 'Node.js, Express, EJS, CSS/SCSS, HTML',
+            url: "https://github.com/yobazy/tinyapp",
+            imgURL: projTiny,
+        },
+        {
+            title: 'Reasonable Realities',
+            description: 'A (demo) website where users can buy and sell avatars for use with VR.',
+            skills: 'Javascript, Express, PostgreSQL, JQuery, AJAX, EJS, CSS/SCSS, HTML',
+            url: "https://github.com/yobazy/buy-sell-website",
+            imgURL: projReasonable,
         },
         // add more unique projects
     ]
