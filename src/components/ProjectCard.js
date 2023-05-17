@@ -16,7 +16,7 @@ export const ProjectCard = ({ title, description, skills, url, imgURL }) => {
                         Skills: {skills}
                     </div>
                     <div className=''>
-                        <Button variant="primary" href="#" target="_blank">View Project</Button>
+                        <Button variant="primary" href={url} target="_blank">View Project</Button>
                     </div>
                 </div>
             </Card.Body>

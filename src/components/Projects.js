@@ -20,6 +20,7 @@ export const Projects = () => {
             title: 'Festify',
             description: 'A React app which curates personalized Spotify playlists featuring artists from music events.',
             skills: 'React, Javascript, RubyOnRails, PostgreSQL',
+            url: 'https://github.com/yobazy/festify-2.0',
             imgURL: projFestify,
         },
         {
