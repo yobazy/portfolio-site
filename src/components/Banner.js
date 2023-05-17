@@ -53,9 +53,11 @@ export const Banner = () => {
                         <h2><span>Civil Engineer (EIT)</span></h2>
                         <div>
                         <p>Here you can find information on my skills, projects I've worked on and where to contact me.</p>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
-                        <button>Let's connect<ArrowRightCircle size={25}/></button>
+                            <button>Let's connect<ArrowRightCircle size={25}/></button>
                         </a>
+                        </div>
                         </div>
                     </Col>
                     <Col xs={12} md={6} xl={5}>
