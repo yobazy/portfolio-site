@@ -93,7 +93,7 @@ nav.navbar {
 
 nav.navbar-backdrop {
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 nav.navbar.scrolled {
