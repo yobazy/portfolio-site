@@ -404,3 +404,85 @@ h1::after {
   color: var(--primary);
 }
 
+/* Project Categories Navigation */
+.project-categories {
+  margin-bottom: 3rem;
+}
+
+.project-nav {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-nav-link {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5) !important;
+  padding: 0.5rem 0 !important;
+  position: relative;
+  transition: all 0.3s ease;
+  background: none !important;
+}
+
+.project-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-nav-link:hover {
+  color: var(--secondary) !important;
+}
+
+.project-nav-link.active {
+  color: var(--secondary) !important;
+}
+
+.project-nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* Add transition for carousel items */
+.project-slider .project-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger animation delay for cards */
+.project-slider .project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-slider .project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-slider .project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-slider .project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-slider .project-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .project-nav {
+    gap: 1rem;
+  }
+
+  .project-nav-link {
+    font-size: 1rem;
+  }
+}
+
