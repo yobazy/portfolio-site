@@ -42,21 +42,17 @@ export const NavBar = () => {
           <span class="navbar-toggler-icon"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Home</Nav.Link>
-            <Nav.Link href="#skills" className={activeLink == 'skills' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('skills')}>Skills</Nav.Link>
-            <Nav.Link href="#projects" className={activeLink == 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Projects</Nav.Link>
-            {/* <Nav.Link href="#blog" className={activeLink == 'blog' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('blog')}>Blog (coming soon)</Nav.Link> */}
-
+          <Nav className="ms-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#projects">Projects</Nav.Link>
+            <Nav.Link href="#media">Media</Nav.Link>
+            <Nav.Link href="/about">About</Nav.Link>
           </Nav>
           <span className="navbar-text">
             <div className="social-icon">
               <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer"><img src={navIcon1} alt=""></img></a>
               <a href="https://github.com/yobazy" target="_blank" rel="noopener noreferrer"><img src={navIcon2} alt="" className="nav-icon"></img></a>
-            </div>
-            <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
-              <button className="vvd"><span>Let's connect</span></button>
-            </a>          
+            </div>        
           </span>
         </Navbar.Collapse>
       </Container>

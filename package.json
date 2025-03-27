@@ -19,8 +19,11 @@
     "react-bootstrap-icons": "^1.10.2",
     "react-dom": "^18.2.0",
     "react-multi-carousel": "^2.8.2",
+    "react-player": "^2.16.0",
+    "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yet-another-react-lightbox": "^3.21.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,6 +55,8 @@
     "gh-pages": "^5.0.0"
   },
   "style": {
-    "googleFonts": ["Space Mono:400,700"]
+    "googleFonts": [
+      "Space Mono:400,700"
+    ]
   }
 }
