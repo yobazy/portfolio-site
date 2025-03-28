@@ -80,8 +80,9 @@ h1::after {
 
 .banner-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   padding: 2rem 0;
+  max-width: 650px;
 }
 
 .banner-greeting {
@@ -164,28 +165,147 @@ h1::after {
   height: 100%;
   background: linear-gradient(
     45deg,
-    rgba(61, 90, 128, 0.05) 0%,
-    rgba(61, 90, 128, 0.02) 100%
+    var(--primary-color) 0%,
+    rgba(26, 26, 26, 0.95) 100%
   );
-  clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index: 1;
 }
 
-/* Responsive styles */
+.banner-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: -10% 70%;
+  opacity: 0.15;
+  mix-blend-mode: luminosity;
+}
+
+/* Add decorative elements */
+.banner-decorative-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.code-bracket {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: clamp(15rem, 30vw, 40rem);
+  font-weight: 900;
+  opacity: 0.03;
+  color: var(--accent-color);
+}
+
+.bracket-left {
+  top: 50%;
+  left: -5%;
+  transform: translateY(-50%);
+}
+
+.bracket-right {
+  top: 50%;
+  right: -5%;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.floating-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-element {
+  position: absolute;
+  background: linear-gradient(135deg, var(--accent-color), transparent);
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: float 20s infinite;
+}
+
+.element-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  right: 15%;
+  animation-delay: -5s;
+}
+
+.element-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 20%;
+  left: 10%;
+  animation-delay: -10s;
+}
+
+.element-3 {
+  width: 150px;
+  height: 150px;
+  top: 30%;
+  left: 20%;
+  animation-delay: -15s;
+}
+
+.code-dots {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  opacity: 0.1;
+  background-image: radial-gradient(circle, var(--accent-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.dots-1 {
+  top: 20%;
+  right: 10%;
+}
+
+.dots-2 {
+  bottom: 15%;
+  left: 15%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-10px, 10px);
+  }
+  50% {
+    transform: translate(10px, -10px);
+  }
+  75% {
+    transform: translate(10px, 10px);
+  }
+}
+
+/* Update responsive styles */
 @media (max-width: 768px) {
-  .banner {
-    padding: 6rem 0;
+  .code-bracket {
+    font-size: clamp(10rem, 20vw, 20rem);
   }
-
-  .banner-cta {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
+  
+  .element-1 {
+    width: 200px;
+    height: 200px;
   }
-
-  .btn-primary, .btn-secondary {
-    display: block;
-    text-align: center;
-    padding: 1rem 1.5rem;
+  
+  .element-2 {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .element-3 {
+    width: 100px;
+    height: 100px;
   }
 }
 
@@ -868,6 +988,37 @@ h1::after {
   .blog-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+}
+
+/* Update banner content positioning */
+.banner-content {
+  position: relative;
+  z-index: 3;
+  padding: 2rem 0;
+  max-width: 650px;
+}
+
+/* Update the container for better positioning */
+.banner .container {
+  position: relative;
+  z-index: 3;
+}
+
+/* Adjust the column positioning */
+@media (min-width: 992px) {
+  .banner .row {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 991px) {
+  .banner-image {
+    object-position: 0% 35%;
+  }
+  
+  .banner-content {
+    max-width: 100%;
   }
 }
 

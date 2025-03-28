@@ -1,6 +1,7 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import headerImg from '../assets/img/header-img-banner.jpg'; // Make sure this path is correct
 
 export const Banner = () => {
   return (
@@ -58,7 +59,65 @@ export const Banner = () => {
           </Col>
         </Row>
       </Container>
-      <div className="banner-background"></div>
+      
+      <div className="banner-background">
+        <motion.img
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.5 }}
+          src={headerImg}
+          alt=""
+          className="banner-image"
+        />
+      </div>
+      
+      {/* Decorative Elements */}
+      <div className="banner-decorative-elements">
+        <div className="code-bracket bracket-left">{`{`}</div>
+        <div className="code-bracket bracket-right">{`}`}</div>
+        
+        <div className="floating-elements">
+          <motion.div
+            className="floating-element element-1"
+            animate={{
+              y: [0, 20, 0],
+              x: [0, 15, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div
+            className="floating-element element-2"
+            animate={{
+              y: [0, -20, 0],
+              x: [0, -15, 0],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div
+            className="floating-element element-3"
+            animate={{
+              y: [0, 15, 0],
+              x: [0, -10, 0],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        </div>
+        
+        <div className="code-dots dots-1"></div>
+        <div className="code-dots dots-2"></div>
+      </div>
     </section>
   );
 };
