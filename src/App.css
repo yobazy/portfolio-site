@@ -66,6 +66,69 @@ h1::after {
   margin: 0 auto;
 }
 
+/* Add these styles after the container styles and before the navbar styles */
+
+.banner {
+  min-height: 100vh;
+  padding: 8rem 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--primary-color);
+  overflow: hidden;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.banner h1 {
+  font-size: clamp(4rem, 20vw, 16rem);
+  line-height: 0.85;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.mega-text {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+}
+
+.banner::before {
+  content: 'PORTFOLIO';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(15rem, 40vw, 40rem);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.02);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Update responsive styles */
+@media (max-width: 768px) {
+  .banner {
+    padding: 6rem 0;
+  }
+
+  .banner h1 {
+    font-size: clamp(3rem, 15vw, 8rem);
+  }
+
+  .mega-text {
+    font-size: clamp(0.875rem, 3vw, 1.5rem);
+  }
+}
+
 /* Navbar */
 .navbar {
   position: fixed;
