@@ -2,10 +2,10 @@
 :root {
   --primary-color: #1a1a1a;
   --secondary-color: #2d2d2d;
-  --accent-color: #3d5a80;
+  --accent-color: #0066cc;
   --text-color: #e0e0e0;
   --text-secondary: #b0b0b0;
-  --hover-color: #4a6fa5;
+  --hover-color: #0077ee;
   --font-display: 'Helvetica Neue', sans-serif;
   --font-body: 'Space Mono', monospace;
 }

@@ -23,7 +23,7 @@ export const Banner = () => {
                 transition={{ duration: 0.5 }}
                 className="banner-greeting"
               >
-                Hello, I'm Bazil
+                Hey, I'm Bazil
               </motion.div>
               
               <motion.h1
@@ -33,10 +33,10 @@ export const Banner = () => {
               >
                 <TypeAnimation
                   sequence={[
-                    'Full Stack', 2000,
-                    'Frontend', 2000,
-                    'Backend', 2000,
-                    'Cloud', 2000,
+                    'Full Stack...', 3000,
+                    'Frontend', 3000,
+                    'Backend', 3000,
+                    'Cloud', 3000,
                   ]}
                   wrapper="span"
                   speed={40}
