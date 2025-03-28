@@ -36,22 +36,34 @@ export const NavBar = () => {
       <Container>
         <Navbar.Brand href="#home">
           {/* <img src={logo} alt="Welcome"/> */}
-          <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} style={{ color: 'white' }}onClick={() => onUpdateActiveLink('home')}>Welcome</Nav.Link>
+          <Nav.Link 
+            href="#home" 
+            className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'} 
+            style={{ color: 'white' }}
+            onClick={() => onUpdateActiveLink('home')}
+          >
+            Welcome
+          </Nav.Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav">
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#projects">Projects</Nav.Link>
             <Nav.Link href="#media">Media</Nav.Link>
+            <Nav.Link href="/blog">Blog</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
           </Nav>
           <span className="navbar-text">
             <div className="social-icon">
-              <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer"><img src={navIcon1} alt=""></img></a>
-              <a href="https://github.com/yobazy" target="_blank" rel="noopener noreferrer"><img src={navIcon2} alt="" className="nav-icon"></img></a>
+              <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
+                <img src={navIcon1} alt="LinkedIn" />
+              </a>
+              <a href="https://github.com/yobazy" target="_blank" rel="noopener noreferrer">
+                <img src={navIcon2} alt="GitHub" className="nav-icon" />
+              </a>
             </div>        
           </span>
         </Navbar.Collapse>

@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Development from './pages/Development';
+import Blog from './pages/Blog';
 import { About } from './components/About';
 import MediaSection from './components/MediaSection';
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/development" element={<Development />} />
         <Route path="/media" element={<MediaSection />} />
+        <Route path="/blog" element={<Blog />} />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer/>
