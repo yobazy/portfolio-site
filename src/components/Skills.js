@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop } from '@fortawesome/free-brands-svg-icons';
-import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart } from '@fortawesome/free-solid-svg-icons';
+import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop, faFigma, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart, faChartLine, faCube, faTerminal, faGears, faWandMagicSparkles, faCloud } from '@fortawesome/free-solid-svg-icons';
 
 export const Skills = () => {
     const skillCategories = [
@@ -13,6 +13,7 @@ export const Skills = () => {
                 { icon: faHtml5, name: "HTML" },
                 { icon: faCss3Alt, name: "CSS" },
                 { icon: faNodeJs, name: "Next.js" },
+                { icon: faFigma, name: "Figma" },
             ]
         },
         {
@@ -23,6 +24,8 @@ export const Skills = () => {
                 { icon: faConnectdevelop, name: "Express" },
                 { icon: faCode, name: "REST" },
                 { icon: faDatabase, name: "SQL" },
+                { icon: faCode, name: "C#" },
+                { icon: faDatabase, name: "Supabase" },
             ]
         },
         {
@@ -31,6 +34,9 @@ export const Skills = () => {
                 { icon: faMagnifyingGlassChart, name: "TensorFlow" },
                 { icon: faFlask, name: "Jupyter" },
                 { icon: faPython, name: "Python" },
+                { icon: faChartLine, name: "PowerBI" },
+                { icon: faCube, name: "PyTorch" },
+                { icon: faDatabase, name: "Pandas" },
             ]
         },
         {
@@ -39,6 +45,11 @@ export const Skills = () => {
                 { icon: faGitAlt, name: "Git" },
                 { icon: faRocket, name: "Vercel" },
                 { icon: faBook, name: "Notion" },
+                { icon: faTerminal, name: "Cursor" },
+                { icon: faGears, name: "Github Actions" },
+                { icon: faWandMagicSparkles, name: "Postman" },
+                { icon: faCube, name: "Docker" },
+                { icon: faCloud, name: "Azure" },
             ]
         }
     ];
