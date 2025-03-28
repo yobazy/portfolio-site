@@ -48,10 +48,10 @@ export const Banner = () => {
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <Link to="/projects" className="btn-primary">
-                  View My Work
+                  View Development Work
                 </Link>
-                <Link to="/about" className="btn-secondary">
-                  About Me
+                <Link to="/media" className="btn-secondary">
+                  Show Media Work
                 </Link>
               </motion.div>
             </motion.div>
