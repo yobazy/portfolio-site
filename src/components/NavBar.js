@@ -3,18 +3,18 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/nav-icon2.svg';
 
-
-
 export const NavBar = () => {
-  const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.ScrollY > 50) {
+      if (window.scrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -22,39 +22,72 @@ export const NavBar = () => {
     }
 
     window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    return () => window.addEventListener("scroll", onScroll);
-  }, [])
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location]);
 
   const onUpdateActiveLink = (value) => {
     setActiveLink(value);
   }
 
-
   return (
     <Navbar expand="lg" className="navbar-backdrop">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand as={Link} to="/">
           {/* <img src={logo} alt="Welcome"/> */}
-          <Nav.Link 
-            href="#home" 
-            className={activeLink === 'home' ? 'active navbar-link' : 'navbar-link'} 
-            style={{ color: 'white' }}
-            onClick={() => onUpdateActiveLink('home')}
-          >
+          <span className={activeLink === '/' ? 'active navbar-link' : 'navbar-link'} 
+                style={{ color: 'white' }}>
             Welcome
-          </Nav.Link>
+          </span>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav">
           <span className="navbar-toggler-icon"></span>
         </Navbar.Toggle>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#projects">Projects</Nav.Link>
-            <Nav.Link href="#media">Media</Nav.Link>
-            <Nav.Link href="/blog">Blog</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/" 
+              className={activeLink === '/' ? 'active' : ''}
+              onClick={() => onUpdateActiveLink('/')}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/projects" 
+              className={activeLink === '/projects' ? 'active' : ''}
+              onClick={() => onUpdateActiveLink('/projects')}
+            >
+              Projects
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/media" 
+              className={activeLink === '/media' ? 'active' : ''}
+              onClick={() => onUpdateActiveLink('/media')}
+            >
+              Media
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/blog" 
+              className={activeLink === '/blog' ? 'active' : ''}
+              onClick={() => onUpdateActiveLink('/blog')}
+            >
+              Blog
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
+              to="/about"
+              className={activeLink === '/about' ? 'active' : ''}
+              onClick={() => onUpdateActiveLink('/about')}
+            >
+              About
+            </Nav.Link>
           </Nav>
           <span className="navbar-text">
             <div className="social-icon">
