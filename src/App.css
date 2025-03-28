@@ -2,10 +2,20 @@
 :root {
   --primary-color: #1a1a1a;
   --secondary-color: #2d2d2d;
-  --accent-color: #0066cc;
+  /* Option 1: Rich cobalt blue */
+  --accent-color: #0050b3;
+  --hover-color: #0062dd;
+
+  /* OR Option 2: Deep electric blue */
+  /* --accent-color: #0055d4; */
+  /* --hover-color: #0066ff; */
+  
+  /* OR Option 3: Azure blue */
+  /* --accent-color: #0057b8; */
+  /* --hover-color: #0069db; */
+  
   --text-color: #e0e0e0;
   --text-secondary: #b0b0b0;
-  --hover-color: #0077ee;
   --font-display: 'Helvetica Neue', sans-serif;
   --font-body: 'Space Mono', monospace;
 }
@@ -1030,5 +1040,36 @@ h1 span {
   .banner-content {
     max-width: 100%;
   }
+}
+
+/* Projects Section Styles */
+.demo-projects {
+  margin-top: 8rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.demo-projects h2 {
+  font-size: clamp(2rem, 6vw, 4rem); /* Slightly smaller than main projects */
+}
+
+/* Add a subtle badge for demo projects */
+.project-card.demo {
+  position: relative;
+}
+
+.project-card.demo::before {
+  content: 'Demo';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 2px;
+  z-index: 2;
 }
 
