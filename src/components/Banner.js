@@ -2,6 +2,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import headerImg from '../assets/img/header-img-banner.jpg'; // Make sure this path is correct
+import { TypeAnimation } from 'react-type-animation';
+import { ArrowRightCircle } from 'lucide-react';
 
 export const Banner = () => {
   return (
@@ -29,7 +31,17 @@ export const Banner = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, delay: 0.2 }}
               >
-                Full Stack
+                <TypeAnimation
+                  sequence={[
+                    'Full Stack', 2000,
+                    'Frontend', 2000,
+                    'Backend', 2000,
+                    'Cloud', 2000,
+                  ]}
+                  wrapper="span"
+                  speed={40}
+                  repeat={Infinity}
+                />
                 <span className="accent-text">Developer</span>
               </motion.h1>
               
