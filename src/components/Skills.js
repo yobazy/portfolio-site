@@ -1,111 +1,80 @@
-import { Container, Row, Col } from 'react-bootstrap'
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faAutoprefixer, faCuttlefish, faConnectdevelop } from '@fortawesome/free-brands-svg-icons';
-import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart } from '@fortawesome/free-solid-svg-icons';
-
+import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop, faFigma, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart, faChartLine, faCube, faTerminal, faGears, faWandMagicSparkles, faCloud } from '@fortawesome/free-solid-svg-icons';
 
 export const Skills = () => {
-    const iconSize = "3x"
-    const responsive = {
-        superLargeDesktop: {
-            // the naming can be any, depends on you.
-            breakpoint: { max: 4000, min: 3000 },
-            items: 5
+    const skillCategories = [
+        {
+            title: "Frontend",
+            skills: [
+                { icon: faReact, name: "React" },
+                { icon: faJsSquare, name: "JS/TS" },
+                { icon: faHtml5, name: "HTML" },
+                { icon: faCss3Alt, name: "CSS" },
+                { icon: faNodeJs, name: "Next.js" },
+                { icon: faFigma, name: "Figma" },
+            ]
         },
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 5
+        {
+            title: "Backend",
+            skills: [
+                { icon: faPython, name: "Python" },
+                { icon: faServer, name: "Rails" },
+                { icon: faConnectdevelop, name: "Express" },
+                { icon: faCode, name: "REST" },
+                { icon: faDatabase, name: "SQL" },
+                { icon: faCode, name: "C#" },
+                { icon: faDatabase, name: "Supabase" },
+            ]
         },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 3
+        {
+            title: "ML/Data",
+            skills: [
+                { icon: faMagnifyingGlassChart, name: "TensorFlow" },
+                { icon: faFlask, name: "Jupyter" },
+                { icon: faPython, name: "Python" },
+                { icon: faChartLine, name: "PowerBI" },
+                { icon: faCube, name: "PyTorch" },
+                { icon: faDatabase, name: "Pandas" },
+            ]
         },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1
+        {
+            title: "Tools",
+            skills: [
+                { icon: faGitAlt, name: "Git" },
+                { icon: faRocket, name: "Vercel" },
+                { icon: faBook, name: "Notion" },
+                { icon: faTerminal, name: "Cursor" },
+                { icon: faGears, name: "Github Actions" },
+                { icon: faWandMagicSparkles, name: "Postman" },
+                { icon: faCube, name: "Docker" },
+                { icon: faCloud, name: "Azure" },
+            ]
         }
-    };
+    ];
 
     return (
         <section className='skill' id='skills'>
             <Container>
-                <Row>
-                    <Col>
-                        <div className='skill-bx'>
-                            <h2>
-                                Skills
-                            </h2>
-                            {/* <p>Lorem ipsum</p> */}
-                            <Carousel responsive={responsive} infinite={true} className='skill-slider'>
-
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faReact} size={iconSize} />
-                                    <h5>ReactJS</h5>
+                <div className='skill-bx'>
+                    <h2>Skills</h2>
+                    <div className="skill-grid">
+                        {skillCategories.map((category, index) => (
+                            <div key={index} className="skill-category">
+                                <h3>{category.title}</h3>
+                                <div className="skill-items">
+                                    {category.skills.map((skill, idx) => (
+                                        <div className="skill-item" key={idx}>
+                                            <FontAwesomeIcon icon={skill.icon} />
+                                            <span>{skill.name}</span>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faJsSquare} size={iconSize} />
-                                    <h5>JavaScript (+Typescript)</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faPython} size={iconSize} />
-                                    <h5>Python</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faDatabase} size={iconSize} />
-                                    <h5>PostgreSQL</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faGitAlt} size={iconSize} />
-                                    <h5>Git/Github</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faConnectdevelop} size={iconSize} />
-                                    <h5>Express</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faHtml5} size={iconSize} />
-                                    <h5>HTML</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faCss3Alt} size={iconSize} />
-                                    <h5>CSS</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faMagnifyingGlassChart} size={iconSize} />
-                                    <h5>TensorFlow</h5>
-                                </div>
-                                <div className="item">
-                                <FontAwesomeIcon icon={faFlask} size={iconSize} />
-                                    <h5>JupyterLab</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faBook} size={iconSize} />
-                                    <h5>Notion</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faServer} size={iconSize} />
-                                    <h5>RubyonRails</h5>
-                                </div>
-
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faCode} size={iconSize} />
-                                    <h5>REST API</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faNodeJs} size={iconSize} />
-                                    <h5>NextJS</h5>
-                                </div>
-                                <div className="item">
-                                    <FontAwesomeIcon icon={faRocket} size={iconSize} />
-                                    <h5>Vercel</h5>
-                                </div>
-
-                            </Carousel>
-                        </div>
-                    </Col>
-                </Row>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </Container>
         </section>
     )

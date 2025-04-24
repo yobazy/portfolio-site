@@ -1,65 +1,112 @@
-import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/nav-icon2.svg';
 
-
-
 export const NavBar = () => {
-  const [activeLink, setActiveLink] = useState('home');
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const [activeLink, setActiveLink] = useState(location.pathname);
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.ScrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     }
 
     window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    return () => window.addEventListener("scroll", onScroll);
-  }, [])
-
-  const onUpdateActiveLink = (value) => {
-    setActiveLink(value);
-  }
-
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location]);
 
   return (
-    <Navbar expand="lg" className="navbar-backdrop">
-      <Container>
-        <Navbar.Brand href="#home">
-          {/* <img src={logo} alt="Welcome"/> */}
-          <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} style={{ color: 'white' }}onClick={() => onUpdateActiveLink('home')}>Welcome</Nav.Link>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav">
-          <span class="navbar-toggler-icon"></span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="#home" className={activeLink == 'home' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('home')}>Home</Nav.Link>
-            <Nav.Link href="#skills" className={activeLink == 'skills' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('skills')}>Skills</Nav.Link>
-            <Nav.Link href="#projects" className={activeLink == 'projects' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('projects')}>Projects</Nav.Link>
-            {/* <Nav.Link href="#blog" className={activeLink == 'blog' ? 'active navbar-link' : 'navbar-link'} onClick={() => onUpdateActiveLink('blog')}>Blog (coming soon)</Nav.Link> */}
-
-          </Nav>
-          <span className="navbar-text">
-            <div className="social-icon">
-              <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer"><img src={navIcon1} alt=""></img></a>
-              <a href="https://github.com/yobazy" target="_blank" rel="noopener noreferrer"><img src={navIcon2} alt="" className="nav-icon"></img></a>
-            </div>
-            <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
-              <button className="vvd"><span>Let's connect</span></button>
-            </a>          
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <Link to="/" className="navbar-brand">
+          <span className={activeLink === '/' ? 'active navbar-link' : 'navbar-link'}>
+            Welcome
           </span>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </Link>
+
+        <button 
+          className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`}>
+          <div className="nav-links">
+            <Link 
+              to="/" 
+              className={activeLink === '/' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              to="/projects" 
+              className={activeLink === '/projects' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Projects
+            </Link>
+            {/* <Link 
+              to="/media" 
+              className={activeLink === '/media' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Media
+            </Link> */}
+            <a 
+            href="https://bkvisuals100.pixieset.com/" 
+            // className={activeLink === '/media' ? 'active' : ''}
+            target="_blank" 
+            rel="noopener noreferrer"
+            >
+                  MEDIA
+            </a>
+            <Link 
+              to="/blog" 
+              className={activeLink === '/blog' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link 
+              to="/about"
+              className={activeLink === '/about' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              About
+            </Link>
+          </div>
+
+          <div className="social-icons-container">
+            <a 
+              href="https://www.linkedin.com/in/bazilkhan" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon-link"
+            >
+              <img src={navIcon1} alt="LinkedIn" className="social-icon-img" />
+            </a>
+            <a 
+              href="https://github.com/yobazy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon-link"
+            >
+              <img src={navIcon2} alt="GitHub" className="social-icon-img" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };

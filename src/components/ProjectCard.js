@@ -1,25 +1,32 @@
-import { Card, Button } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 
-export const ProjectCard = ({ title, description, skills, url, imgURL }) => {
+const ProjectCard = ({ title, description, skills = '', url, imgURL, isDemo }) => {
+    const skillArray = skills ? skills.split(',').map(skill => skill.trim()) : [];
+
     return (
-        <Card className="mb-3 project-card" style={{ width: '100%', backgroundColor: '#0f171f' }}>
-            <Card.Img variant="top" src={imgURL} className="card-img" />
-            <Card.Body className="card-body">
-                <div className='project-info'>
-                    <Card.Title>{title}</Card.Title>
-                    <Card.Text>
-                        {description}
-                    </Card.Text>
+        <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className={`project-card ${isDemo ? 'demo' : ''}`}
+        >
+            <div className="project-image">
+                <img src={imgURL} alt={title} />
+                <div className="project-overlay">
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                    {skillArray.length > 0 && (
+                        <div className="skills-tag">
+                            {skillArray.map((skill, index) => (
+                                <span key={index} className="skill-tag">{skill}</span>
+                            ))}
+                        </div>
+                    )}
+                    <a href={url} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                        VIEW PROJECT
+                    </a>
                 </div>
-                <div className="project-skills-button">
-                    <div className="project-skills">
-                        Skills: {skills}
-                    </div>
-                    <div className=''>
-                        <Button variant="primary" href={url} target="_blank">View Project</Button>
-                    </div>
-                </div>
-            </Card.Body>
-        </Card>
+            </div>
+        </motion.div>
     )
 }
+
+export default ProjectCard;

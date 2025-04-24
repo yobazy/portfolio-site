@@ -1,71 +1,135 @@
-import { useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
-import { ArrowRightCircle } from 'react-bootstrap-icons';
-import headerImg from '../assets/img/header-img.jpg'
-
-
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import headerImg from '../assets/img/header-img-banner.jpg'; // Make sure this path is correct
+import { TypeAnimation } from 'react-type-animation';
+import { ArrowRightCircle } from 'lucide-react';
 
 export const Banner = () => {
-    const [loopNum, setLoopNum] = useState(0);
-    const [isDeleting, setIsDeleting]  = useState(false);
-    const toRotate = ['Full-stack Developer', 'Civil Engineer'];
-    const [text, setText] = useState('');
-    const [delta, setDelta] = useState(300 - Math.random()*100);
-    const period = 2000;
-
-    useEffect(() => {
-        let ticker = setInterval(() =>  {
-            tick();
-        }, delta)
-        return () => { clearInterval(ticker)};
-    }, [text])
-
-    const tick = () => {
-        let i = loopNum % toRotate.length;
-        let fullText = toRotate[i];
-        let updatedText = isDeleting ? fullText.substring(0, text.length - 1) : fullText.substring(0, text.length + 1)
-
-        setText(updatedText);
-
-        if(isDeleting)  {
-            setDelta(prevDelta => prevDelta/2)
-        }
-
-        if(!isDeleting && updatedText === fullText) {
-            isDeleting(true);
-            setDelta(period);
-        } else if(isDeleting && updatedText === '') {
-            setIsDeleting(false);
-            setLoopNum(loopNum + 1);
-            setDelta(500)
-        }
-    }
-    <div class="banner-image"></div>
-
-    return (
-        <section className='banner' id='home'>
-            <Container>
-                <Row className='align-items-center'>
-                    <Col xs={12} md={6} xl={7}>
-                        <span className='tagline'>Welcome to my Web Porfolio</span>
-                        <h1>{`Hi, I'm Bazil!`}</h1>
-                        <h2><span>Full-Stack Developer</span></h2>
-                        <h2><span>Civil Engineer (EIT)</span></h2>
-                        <div>
-                        <p>Here you can find information on my skills, projects I've worked on and where to contact me.</p>
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <a href="https://www.linkedin.com/in/bazilkhan" target="_blank" rel="noopener noreferrer">
-                            <button>Let's connect<ArrowRightCircle size={25}/></button>
-                        </a>
-                        </div>
-                        </div>
-                    </Col>
-                    <Col xs={12} md={6} xl={5}>
-                        <img src={headerImg} alt='header img' className='header-img'/>
-                    </Col>
-                </Row>
-            </Container>
-
-        </section>
-    )
-}
+  return (
+    <section className='banner'>
+      <Container>
+        <Row className="align-items-center">
+          <Col lg={8}>
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="banner-content"
+            >
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className="banner-greeting"
+              >
+                Hey, I'm Bazil
+              </motion.div>
+              
+              <motion.h1
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.2 }}
+              >
+                <TypeAnimation
+                  sequence={[
+                    'Full Stack', 3000,
+                    'Frontend', 3000,
+                    'Backend', 3000,
+                    'Cloud', 3000,
+                  ]}
+                  wrapper="span"
+                  speed={40}
+                  repeat={Infinity}
+                />
+                <span className="accent-text">Developer</span>
+              </motion.h1>
+              
+              <motion.p 
+                className="banner-description"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1, delay: 0.4 }}
+              >
+                Crafting robust web applications and turning complex problems into elegant solutions
+              </motion.p>
+              
+              <motion.div
+                className="banner-cta"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              >
+                <Link to="/projects" className="btn-primary">
+                  View Development Work
+                </Link>
+                <a href="https://bkvisuals100.pixieset.com/" className="btn-secondary" target="_blank" rel="noopener noreferrer">
+                  Show Media Work
+                </a>
+              </motion.div>
+            </motion.div>
+          </Col>
+        </Row>
+      </Container>
+      
+      <div className="banner-background">
+        <motion.img
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.5 }}
+          src={headerImg}
+          alt=""
+          className="banner-image"
+        />
+      </div>
+      
+      {/* Decorative Elements */}
+      <div className="banner-decorative-elements">
+        <div className="code-bracket bracket-left">{`{`}</div>
+        <div className="code-bracket bracket-right">{`}`}</div>
+        
+        <div className="floating-elements">
+          <motion.div
+            className="floating-element element-1"
+            animate={{
+              y: [0, 20, 0],
+              x: [0, 15, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div
+            className="floating-element element-2"
+            animate={{
+              y: [0, -20, 0],
+              x: [0, -15, 0],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          <motion.div
+            className="floating-element element-3"
+            animate={{
+              y: [0, 15, 0],
+              x: [0, -10, 0],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+        </div>
+        
+        <div className="code-dots dots-1"></div>
+        <div className="code-dots dots-2"></div>
+      </div>
+    </section>
+  );
+};
