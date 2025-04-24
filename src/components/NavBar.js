@@ -56,13 +56,21 @@ export const NavBar = () => {
             >
               Projects
             </Link>
-            <Link 
+            {/* <Link 
               to="/media" 
               className={activeLink === '/media' ? 'active' : ''}
               onClick={() => setIsMenuOpen(false)}
             >
               Media
-            </Link>
+            </Link> */}
+            <a 
+            href="https://bkvisuals100.pixieset.com/" 
+            // className={activeLink === '/media' ? 'active' : ''}
+            target="_blank" 
+            rel="noopener noreferrer"
+            >
+                  MEDIA
+            </a>
             <Link 
               to="/blog" 
               className={activeLink === '/blog' ? 'active' : ''}

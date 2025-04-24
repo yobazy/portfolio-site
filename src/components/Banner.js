@@ -63,9 +63,9 @@ export const Banner = () => {
                 <Link to="/projects" className="btn-primary">
                   View Development Work
                 </Link>
-                <Link to="/media" className="btn-secondary">
+                <a href="https://bkvisuals100.pixieset.com/" className="btn-secondary" target="_blank" rel="noopener noreferrer">
                   Show Media Work
-                </Link>
+                </a>
               </motion.div>
             </motion.div>
           </Col>
