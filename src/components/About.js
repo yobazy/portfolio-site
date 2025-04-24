@@ -1,4 +1,5 @@
-import { Row, Col, Container, Tab, Nav } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
+import { motion } from "framer-motion";
 import colorSharp2 from '../assets/img/color-sharp2.png';
 
 export const About = () => {
@@ -7,15 +8,33 @@ export const About = () => {
     
     return(
         <section className='about' id='about'>
-        <Container>
-            <Row>
-                <Col>
-                    <h2>About</h2>
-                    <p>{desc}</p>
-                    <p>{desc2}</p>
-
-                </Col>
-            </Row>
+            <Container>
+                <Row className="align-items-center">
+                    <Col lg={6}>
+                        <motion.div
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="about-content"
+                        >
+                            <h2>About Me</h2>
+                            <div className="about-text">
+                                <p>{desc}</p>
+                                <p>{desc2}</p>
+                            </div>
+                        </motion.div>
+                    </Col>
+                    <Col lg={6}>
+                        <motion.div
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="about-image"
+                        >
+                            <img src={colorSharp2} alt="About" />
+                        </motion.div>
+                    </Col>
+                </Row>
             </Container>
         </section>
     )

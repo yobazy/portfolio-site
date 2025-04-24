@@ -487,7 +487,7 @@ h1 span {
 }
 
 .project::before {
-  content: 'WORK';
+  content: '';
   position: fixed;
   top: 50%;
   left: 50%;
@@ -1412,5 +1412,101 @@ h1 span {
   .skill-slider .item {
     padding: 1.5rem;
   }
+}
+
+/* About Section Styles */
+.about {
+    background: var(--primary-color);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: 'ABOUT';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(15rem, 40vw, 30rem);
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.about-content {
+    position: relative;
+    z-index: 1;
+    padding-right: 2rem;
+}
+
+.about-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, var(--text-color) 30%, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.about-image {
+    position: relative;
+    z-index: 1;
+    padding: 2rem;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: perspective(1000px) rotateY(-5deg);
+    transition: transform 0.5s ease;
+}
+
+.about-image:hover img {
+    transform: perspective(1000px) rotateY(0deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .about {
+        padding: 80px 0;
+    }
+    
+    .about-content {
+        padding-right: 0;
+        margin-bottom: 3rem;
+    }
+    
+    .about-image {
+        padding: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .about {
+        padding: 60px 0;
+    }
+    
+    .about-content h2 {
+        font-size: 2.5rem;
+    }
+    
+    .about-text p {
+        font-size: 1rem;
+    }
 }
 
