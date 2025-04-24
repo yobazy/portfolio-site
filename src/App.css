@@ -1051,6 +1051,7 @@ h1 span {
   width: 24px;
   height: 24px;
   transition: transform 0.3s ease;
+  filter: brightness(0) invert(0.9);
 }
 
 .social-icon-img:hover {
