@@ -33,7 +33,7 @@ export const Banner = () => {
               >
                 <TypeAnimation
                   sequence={[
-                    'Full Stack...', 3000,
+                    'Full Stack', 3000,
                     'Frontend', 3000,
                     'Backend', 3000,
                     'Cloud', 3000,
