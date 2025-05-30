@@ -1,6 +1,6 @@
 import { Row, Col, Container } from "react-bootstrap";
 import { motion } from "framer-motion";
-import colorSharp2 from '../assets/img/color-sharp2.png';
+import aboutImage from '../assets/img/about.JPG';
 
 export const About = () => {
     const desc = "Hi there! I'm Bazil, a Full-Stack Developer with a unique background in Civil Engineering. I'm passionate about innovation and technology and engineering methodologies. As a graduate of Lighthouse Labs Web Development Bootcamp and the University of Alberta, I've honed a wide range of software, tools, and technical skills." 
@@ -31,7 +31,7 @@ export const About = () => {
                             transition={{ duration: 0.8 }}
                             className="about-image"
                         >
-                            <img src={colorSharp2} alt="About" />
+                            <img src={aboutImage} alt="About" />
                         </motion.div>
                     </Col>
                 </Row>
