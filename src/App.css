@@ -143,21 +143,25 @@ h1 span {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .btn-primary, .btn-secondary {
   font-family: var(--font-display);
   font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.75rem 2rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.5rem;
   background: transparent;
   border: 1px solid;
   text-decoration: none;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+  min-width: 200px;
+  line-height: 1.4;
 }
 
 .btn-primary {
@@ -1625,6 +1629,26 @@ h1 span {
     .about-text p {
         font-size: 1rem;
     }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .banner-cta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 1rem;
+    font-size: 0.8rem;
+    min-width: unset;
+  }
+
+  .banner-content {
+    padding: 1rem;
+  }
 }
 
 
