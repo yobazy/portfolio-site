@@ -25,11 +25,6 @@ export const NavBar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-brand">
-          <span className={activeLink === '/' ? 'active navbar-link' : 'navbar-link'}>
-            Welcome
-          </span>
-        </Link>
 
         <button 
           className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
