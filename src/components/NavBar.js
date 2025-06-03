@@ -35,7 +35,7 @@ export const NavBar = () => {
           <span></span>
         </button>
 
-        <div className={`navbar-content border ${isMenuOpen ? 'active' : ''}`}>
+        <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`}>
           <div className="nav-links">
             <Link 
               to="/" 
