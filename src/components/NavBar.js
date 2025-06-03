@@ -24,7 +24,7 @@ export const NavBar = () => {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
+      <div className="navbar-container ">
         <button 
           className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -35,7 +35,7 @@ export const NavBar = () => {
           <span></span>
         </button>
 
-        <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`}>
+        <div className={`navbar-content border ${isMenuOpen ? 'active' : ''}`}>
           <div className="nav-links">
             <Link 
               to="/" 
