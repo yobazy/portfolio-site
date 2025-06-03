@@ -2,8 +2,15 @@ import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop, faFigma, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
 import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart, faChartLine, faCube, faTerminal, faGears, faWandMagicSparkles, faCloud } from '@fortawesome/free-solid-svg-icons';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 export const Skills = () => {
+    const responsive = {
+        desktop: { breakpoint: { max: 3000, min: 769 }, items: 2, slidesToSlide: 1 },
+        mobile: { breakpoint: { max: 768, min: 0 }, items: 1, slidesToSlide: 1 }
+    };
+
     const skillCategories = [
         {
             title: "Frontend",
@@ -54,25 +61,52 @@ export const Skills = () => {
         }
     ];
 
+    const SkillCategory = ({ title, skills }) => (
+        <div className="skill-category">
+            <h3>{title}</h3>
+            <div className="skill-items">
+                {skills.map((skill, idx) => (
+                    <div className="skill-item" key={idx}>
+                        <FontAwesomeIcon icon={skill.icon} />
+                        <span>{skill.name}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
     return (
         <section className='skill' id='skills'>
             <Container>
                 <div className='skill-bx'>
                     <h2>Skills</h2>
-                    <div className="skill-grid">
-                        {skillCategories.map((category, index) => (
-                            <div key={index} className="skill-category">
-                                <h3>{category.title}</h3>
-                                <div className="skill-items">
-                                    {category.skills.map((skill, idx) => (
-                                        <div className="skill-item" key={idx}>
-                                            <FontAwesomeIcon icon={skill.icon} />
-                                            <span>{skill.name}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                    <div className="skills-container">
+                        {/* Desktop View */}
+                        <div className="desktop-skills">
+                            <div className="skill-grid">
+                                {skillCategories.map((category, index) => (
+                                    <SkillCategory key={index} {...category} />
+                                ))}
                             </div>
-                        ))}
+                        </div>
+                        
+                        {/* Mobile View with Carousel */}
+                        <div className="mobile-skills">
+                            <Carousel
+                                responsive={responsive}
+                                infinite={true}
+                                autoPlay={false}
+                                className="skill-carousel"
+                                showDots={true}
+                                removeArrowOnDeviceType={["mobile"]}
+                            >
+                                {skillCategories.map((category, index) => (
+                                    <div key={index} className="carousel-skill-item">
+                                        <SkillCategory {...category} />
+                                    </div>
+                                ))}
+                            </Carousel>
+                        </div>
                     </div>
                 </div>
             </Container>
