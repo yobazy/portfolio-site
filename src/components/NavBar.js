@@ -24,7 +24,7 @@ export const NavBar = () => {
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
+      <div className="navbar-container ">
         <button 
           className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}

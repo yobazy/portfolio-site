@@ -355,6 +355,10 @@ h1 span {
   backdrop-filter: blur(10px);
 }
 
+.border-white {
+  border: 1px solid white;
+}
+
 .navbar-container {
   max-width: 2000px;
   height: 100%;
@@ -364,6 +368,7 @@ h1 span {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 2rem;
+  position: relative;
 }
 
 /* Mobile Menu Button */
@@ -374,6 +379,10 @@ h1 span {
   padding: 0.5rem;
   cursor: pointer;
   z-index: 1001;
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .navbar-toggle span {
