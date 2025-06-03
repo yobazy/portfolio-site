@@ -25,15 +25,10 @@ export const NavBar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
-        <Link to="/" className="navbar-brand">
-          <span className={activeLink === '/' ? 'active navbar-link' : 'navbar-link'}>
-            Welcome
-          </span>
-        </Link>
-
         <button 
           className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle navigation menu"
         >
           <span></span>
           <span></span>
@@ -56,20 +51,12 @@ export const NavBar = () => {
             >
               Projects
             </Link>
-            {/* <Link 
-              to="/media" 
-              className={activeLink === '/media' ? 'active' : ''}
-              onClick={() => setIsMenuOpen(false)}
+            <a 
+              href="https://bkvisuals100.pixieset.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
             >
               Media
-            </Link> */}
-            <a 
-            href="https://bkvisuals100.pixieset.com/" 
-            // className={activeLink === '/media' ? 'active' : ''}
-            target="_blank" 
-            rel="noopener noreferrer"
-            >
-                  MEDIA
             </a>
             <Link 
               to="/blog" 
@@ -87,7 +74,7 @@ export const NavBar = () => {
             </Link>
           </div>
 
-          <div className="social-icons-container">
+          <div className="social-icons-container mobile-only">
             <a 
               href="https://www.linkedin.com/in/bazilkhan" 
               target="_blank" 
@@ -105,6 +92,25 @@ export const NavBar = () => {
               <img src={navIcon2} alt="GitHub" className="social-icon-img" />
             </a>
           </div>
+        </div>
+
+        <div className="social-icons-container desktop-only">
+          <a 
+            href="https://www.linkedin.com/in/bazilkhan" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="social-icon-link"
+          >
+            <img src={navIcon1} alt="LinkedIn" className="social-icon-img" />
+          </a>
+          <a 
+            href="https://github.com/yobazy" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="social-icon-link"
+          >
+            <img src={navIcon2} alt="GitHub" className="social-icon-img" />
+          </a>
         </div>
       </div>
     </nav>
