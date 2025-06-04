@@ -4,6 +4,7 @@ import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, 
 import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart, faChartLine, faCube, faTerminal, faGears, faWandMagicSparkles, faCloud } from '@fortawesome/free-solid-svg-icons';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import AnimatedBackground from './AnimatedBackground';
 
 export const Skills = () => {
     const responsive = {
@@ -77,6 +78,7 @@ export const Skills = () => {
 
     return (
         <section className='skill' id='skills'>
+            <AnimatedBackground />
             <Container>
                 <div className='skill-bx'>
                     <h2>Skills</h2>
