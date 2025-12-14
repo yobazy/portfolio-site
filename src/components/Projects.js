@@ -74,6 +74,13 @@ export const Projects = () => {
 
     const featuredProjects = [
         {
+            title: "MyFi - Personal Finance Tracker",
+            description: "A comprehensive desktop application that automatically categorizes transactions from multiple Canadian banks and generates detailed financial insights through interactive visualizations.",
+            imgURL: projFestify,
+            skills: "Electron, Node.js, SQLite, Django",
+            url: "https://github.com/yobazy/MyFinance"
+        },
+        {
             title: "Festify",
             description: "A React app which curates personalized Spotify playlists featuring artists from music events.",
             imgURL: projFestify,
