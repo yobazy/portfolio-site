@@ -32,7 +32,7 @@ export const Banner = () => {
                 transition={{ duration: 1, delay: 0.2 }}
               >
                 I build<br/>
-                backend systems<br/>
+                systems<br/>
                 <span className="accent-text">end-to-end.</span>
               </motion.h1>
 
