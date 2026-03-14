@@ -4,8 +4,7 @@ const ProjectCard = ({ title, description, skills = '', url, imgURL, isDemo }) =
     const skillArray = skills ? skills.split(',').map(skill => skill.trim()) : [];
 
     return (
-        <motion.div 
-            whileHover={{ scale: 1.02 }}
+        <motion.div
             className={`project-card ${isDemo ? 'demo' : ''}`}
         >
             <div className="project-image">
