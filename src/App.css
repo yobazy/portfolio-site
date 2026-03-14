@@ -623,7 +623,7 @@ nav.navbar {
 .social-icon-img {
   width: 20px;
   height: 20px;
-  filter: brightness(0) invert(0.55);
+  filter: brightness(0) invert(0.8);
   transition: filter var(--duration-fast) ease;
 }
 
