@@ -1650,6 +1650,65 @@ h1 span {
     transform: perspective(1000px) rotateY(0deg);
 }
 
+.about-experience {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-experience h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary, #fff);
+}
+
+.experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.experience-item {
+    padding: 1.2rem 1.5rem;
+    border-left: 3px solid var(--accent-color, #b06ab3);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0 6px 6px 0;
+}
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.experience-role {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary, #fff);
+}
+
+.experience-period {
+    font-size: 0.85rem;
+    color: var(--text-secondary, rgba(255,255,255,0.6));
+    white-space: nowrap;
+}
+
+.experience-company {
+    font-size: 0.9rem;
+    color: var(--accent-color, #b06ab3);
+    margin-bottom: 0.4rem;
+}
+
+.experience-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary, rgba(255,255,255,0.7));
+    line-height: 1.5;
+}
+
 /* Responsive adjustments */
 @media (max-width: 991px) {
     .about {
