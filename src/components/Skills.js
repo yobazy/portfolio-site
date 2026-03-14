@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop, faFigma, faMicrosoft } from '@fortawesome/free-brands-svg-icons';
+import { faPython, faGitAlt, faJsSquare, faHtml5, faCss3Alt, faReact, faNodeJs, faConnectdevelop, faFigma } from '@fortawesome/free-brands-svg-icons';
 import { faServer, faCode, faDatabase, faFlask, faRocket, faBook, faMagnifyingGlassChart, faChartLine, faCube, faTerminal, faGears, faWandMagicSparkles, faCloud } from '@fortawesome/free-solid-svg-icons';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
