@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Development from './pages/Development';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import { About } from './components/About';
 import MediaSection from './components/MediaSection';
 import { Projects } from './components/Projects';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/development" element={<Development />} />
         <Route path="/media" element={<MediaSection />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/about" element={<About />} />
       </Routes>
       <Footer/>
