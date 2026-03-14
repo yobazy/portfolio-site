@@ -756,11 +756,39 @@ nav.navbar {
   line-height: 1.6;
 }
 
-/* Demo section divider */
-.demo-projects {
-  margin-top: 6rem;
-  padding-top: 4rem;
+/* Demo projects collapsible */
+.demo-projects-toggle {
+  margin-top: 5rem;
+  padding-top: 3rem;
   border-top: 1px solid var(--glass-border);
+}
+
+.demo-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--duration-fast) ease;
+}
+
+.demo-toggle-btn:hover {
+  color: var(--text-primary);
+}
+
+.demo-toggle-arrow {
+  font-style: normal;
+}
+
+.demo-projects-grid {
+  margin-top: 2rem;
 }
 
 /* Project Cards */

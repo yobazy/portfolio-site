@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import projScheduler from '../assets/img/proj-scheduler.png';
 import projJungle from '../assets/img/proj-jungle.png';
@@ -7,6 +8,7 @@ import projReasonable from '../assets/img/proj-reasonable.png';
 import projTiny from '../assets/img/proj-tinyapp.png';
 import projFestify from '../assets/img/proj-festify.png'
 export const Projects = () => {
+    const [demoOpen, setDemoOpen] = useState(false);
 
     const featuredProjects = [
         {
@@ -71,22 +73,35 @@ export const Projects = () => {
                             </Row>
                         </motion.div>
 
-                        <motion.div 
-                            className="project-bx demo-projects"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <h2>Demo Projects</h2>
-                            <p>Learning projects developed during my software engineering bootcamp, demonstrating various technical concepts and skills.</p>
-                            <Row>
-                                {demoProjects.map((project, index) => (
-                                    <Col key={index} sm={6} md={4}>
-                                        <ProjectCard {...project} isDemo={true} />
-                                    </Col>
-                                ))}
-                            </Row>
-                        </motion.div>
+                        <div className="demo-projects-toggle">
+                            <button
+                                className="demo-toggle-btn"
+                                onClick={() => setDemoOpen(o => !o)}
+                                aria-expanded={demoOpen}
+                            >
+                                <span>Bootcamp projects</span>
+                                <span className="demo-toggle-arrow">{demoOpen ? '↑' : '↓'}</span>
+                            </button>
+                            <AnimatePresence>
+                                {demoOpen && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.35 }}
+                                        style={{ overflow: 'hidden' }}
+                                    >
+                                        <Row className="demo-projects-grid">
+                                            {demoProjects.map((project, index) => (
+                                                <Col key={index} sm={6} md={4}>
+                                                    <ProjectCard {...project} isDemo={true} />
+                                                </Col>
+                                            ))}
+                                        </Row>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </Col>
                 </Row>
             </Container>
