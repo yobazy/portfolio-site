@@ -42,6 +42,16 @@ const Project = () => {
             <span className="case-study-org">In progress</span>
             <h1>{project.title}</h1>
             <p className="playground-lede">{project.description}</p>
+            {project.url && (
+              <a
+                className="showcase-section-link"
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ghosts.fyi
+              </a>
+            )}
           </header>
 
           <div className="case-study-body">

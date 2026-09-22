@@ -1,11 +1,8 @@
-import { useReducedMotion } from 'framer-motion';
 import ShowcaseGrid from '../components/ShowcaseGrid';
 import ShowcaseTile from '../components/ShowcaseTile';
-import HeroField from '../components/HeroField';
 import { projectsByCategory } from '../data/projects';
 
 const Work = () => {
-  const reduce = useReducedMotion();
   const professional = projectsByCategory('professional');
   const client = projectsByCategory('client');
   const visuals = projectsByCategory('visuals');
@@ -28,9 +25,9 @@ const Work = () => {
               title={project.title}
               subtitle="In progress"
               line={project.line}
-              field={<HeroField reduce={Boolean(reduce)} />}
+              img={project.img}
               size="large"
-              href={project.hasCaseStudy ? `/projects/${project.slug}` : undefined}
+              href={project.url}
             />
           ))}
         </ShowcaseGrid>

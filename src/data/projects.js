@@ -5,6 +5,7 @@ import imgReasonable from '../assets/img/proj-reasonable.png';
 import imgLink from '../assets/img/link-feed.png';
 import imgMyfi from '../assets/img/myfi-dashboard.png';
 import imgBarberbot from '../assets/img/barberbot.jpg';
+import imgPlayground from '../assets/img/playground-visuals.jpg';
 
 export const playgroundLooks = [
   {
@@ -50,6 +51,8 @@ export const projects = [
     featuredSize: 'large',
     hasCaseStudy: true,
     line: 'Live looks for a dark room.',
+    url: 'https://ghosts.fyi',
+    img: imgPlayground,
     description:
       'A camera playground: body as portal, traveling fields, saved looks. Built for a room, prototyped at a desk. Still in progress.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
