@@ -1,86 +1,107 @@
-import { Row, Col, Container } from "react-bootstrap";
-import { motion } from "framer-motion";
-import aboutImage from '../assets/img/about.JPG';
+import { motion, useReducedMotion } from 'framer-motion';
+import portrait from '../assets/img/about.JPG';
 
 export const About = () => {
-    const desc = "I'm Bazil, a Senior Software Developer at Metrolinx. I build cloud architecture and CN integrations for Ontario's railway operations — Azure Container Apps, React, Node.js, the whole stack. I got into software after a civil engineering degree (Bachelor's and Master's) at the University of Alberta. Systems thinking from that carried over."
-    const desc2 = "Most of my recent work is backend-heavy: Azure infrastructure, API design, C#, and Node.js. Before Metrolinx I spent two years at ONxpress building middleware for a $1.6B rail project, and before that was at a real estate startup in Berkeley porting their app to Next.js. I also shoot photography and video, which is what the other half of this site is about."
+  const reduce = useReducedMotion();
 
-    const experience = [
-        {
-            role: "Senior Software Developer",
-            company: "Metrolinx",
-            period: "Sept 2025 – Present",
-            desc: "Enterprise cloud architecture and CN–Metrolinx integrations. Azure Container Apps, React, Node.js, MongoDB."
-        },
-        {
-            role: "Senior DevOps Engineer & Backend Developer",
-            company: "ONxpress Transportation Partners",
-            period: "July 2023 – June 2025",
-            desc: "Azure middleware infrastructure for a $1.6B rail project. C#/.NET, CI/CD pipelines, promoted from Developer."
-        },
-        {
-            role: "Full Stack Developer",
-            company: "UrbanEyes Real Estate Technologies",
-            period: "Nov 2022 – July 2023",
-            desc: "Ported the app to Next.js, built map features, deployed to Vercel."
-        }
-    ];
+  const desc =
+    "I'm Bazil, a Senior Software Developer at Metrolinx. I build cloud architecture and CN integrations for Ontario's railway operations. Azure Container Apps, React, Node.js, the whole stack. I got into software after a civil engineering degree (Bachelor's and Master's) at the University of Alberta. Systems thinking from that carried over.";
+  const desc2 =
+    "Most of my recent work is backend-heavy: Azure infrastructure, API design, C#, and Node.js. Before Metrolinx I spent two years at ONxpress building middleware for a $1.6B rail project, and before that was at a real estate startup in Berkeley porting their app to Next.js. I also shoot photography and video, and I care about how the work looks, not just how it runs.";
 
-    return(
-        <section className='about' id='about'>
-            <Container>
-                <Row className="align-items-center">
-                    <Col lg={6}>
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="about-content"
-                        >
-                            <h2>About Me</h2>
-                            <div className="about-text">
-                                <p>{desc}</p>
-                                <p>{desc2}</p>
-                            </div>
-                        </motion.div>
-                    </Col>
-                    <Col lg={6}>
-                        <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="about-image"
-                        >
-                            <img src={aboutImage} alt="About" />
-                        </motion.div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="about-experience"
-                        >
-                            <h3>Experience</h3>
-                            <div className="experience-list">
-                                {experience.map((item, index) => (
-                                    <div className="experience-item" key={index}>
-                                        <div className="experience-header">
-                                            <span className="experience-role">{item.role}</span>
-                                            <span className="experience-period">{item.period}</span>
-                                        </div>
-                                        <div className="experience-company">{item.company}</div>
-                                        <div className="experience-desc">{item.desc}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-                    </Col>
-                </Row>
-            </Container>
-        </section>
-    )
-}
+  const experience = [
+    {
+      role: 'Senior Software Developer',
+      company: 'Metrolinx',
+      period: 'Sept 2025 - Present',
+      desc: 'Enterprise cloud architecture and CN-Metrolinx integrations. Azure Container Apps, React, Node.js, MongoDB.',
+    },
+    {
+      role: 'Senior DevOps Engineer & Backend Developer',
+      company: 'ONxpress Transportation Partners',
+      period: 'July 2023 - June 2025',
+      desc: 'Azure middleware infrastructure for a $1.6B rail project. C#/.NET, CI/CD pipelines, promoted from Developer.',
+    },
+    {
+      role: 'Full Stack Developer',
+      company: 'UrbanEyes Real Estate Technologies',
+      period: 'Nov 2022 - July 2023',
+      desc: 'Ported the app to Next.js, built map features, deployed to Vercel.',
+    },
+  ];
+
+  const stack = [
+    'React',
+    'Node.js',
+    'C#',
+    'Azure',
+    'MongoDB',
+    'SQL',
+    'Next.js',
+    'Python',
+    'Docker',
+  ];
+
+  return (
+    <section className="about about-page">
+      <div className="about-page-inner">
+        <div className="about-intro">
+          <motion.figure
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="about-portrait"
+          >
+            <img
+              src={portrait}
+              alt="Bazil Khan sitting on a sandstone boulder in a canyon alcove"
+            />
+          </motion.figure>
+
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+            className="about-content"
+          >
+            <h1>About</h1>
+            <div className="about-text">
+              <p>{desc}</p>
+              <p>{desc2}</p>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="about-experience"
+        >
+          <h3>Experience</h3>
+          <div className="experience-list">
+            {experience.map((item) => (
+              <div className="experience-item" key={`${item.company}-${item.role}`}>
+                <div className="experience-header">
+                  <span className="experience-role">{item.role}</span>
+                  <span className="experience-period">{item.period}</span>
+                </div>
+                <div className="experience-company">{item.company}</div>
+                <div className="experience-desc">{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <div className="about-stack">
+          <h3>Stack</h3>
+          <ul>
+            {stack.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+};
