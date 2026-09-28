@@ -32,21 +32,21 @@ const ShowcaseTile = ({
   const inner = isVisual ? (
     <>
       <div className="showcase-tile-media">
-        {field || <img src={img} alt={title} />}
+        {field || <img src={img} alt="" />}
       </div>
       <div className="showcase-tile-caption">
-        {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
         <span className="showcase-tile-title">{title}</span>
         {line && <span className="showcase-tile-line">{line}</span>}
+        {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
       </div>
     </>
   ) : (
     <div className="showcase-tile-type">
-      {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
       <div className="showcase-tile-copy">
         <span className="showcase-tile-title">{title}</span>
         {line && <span className="showcase-tile-line">{line}</span>}
       </div>
+      {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
     </div>
   );
 

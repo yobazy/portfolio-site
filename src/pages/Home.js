@@ -1,99 +1,139 @@
+import { useCallback, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
 import IdentityStrip from '../components/IdentityStrip';
-import HeroField from '../components/HeroField';
-import ShowcaseGrid from '../components/ShowcaseGrid';
+import SectionHead, { sectionHeadingId } from '../components/SectionHead';
 import ShowcaseTile from '../components/ShowcaseTile';
-import { featuredProjects } from '../data/projects';
+import ProjectSheet from '../components/ProjectSheet';
+import { getProjectBySlug } from '../data/projects';
 import { featuredMedia } from '../data/mediaItems';
+import { posts } from '../data/posts';
+
+const LEAD = ['nebula-desktop', 'playground-visuals', 'mixvault'];
+const AT_WORK = ['360-ops', 'cn-integration', 'urbaneyes'];
+
+const pick = (slugs) => slugs.map(getProjectBySlug).filter(Boolean);
 
 function Home() {
-  const reduce = useReducedMotion();
-  const playground = featuredProjects.find((project) => project.kind === 'playground');
-  const featuredDev = featuredProjects.filter((project) => project.kind !== 'playground');
+  const lead = pick(LEAD);
+  const atWork = pick(AT_WORK);
+  const photos = featuredMedia.slice(0, 3);
+  const latest = posts.slice(0, 3);
+  const [active, setActive] = useState(null);
+  const [photo, setPhoto] = useState(-1);
+  const opener = useRef(null);
+
+  const open = (project) => {
+    opener.current = document.activeElement;
+    setActive(project);
+  };
+
+  const close = useCallback(() => {
+    setActive(null);
+    requestAnimationFrame(() => opener.current?.focus?.());
+  }, []);
 
   return (
     <div className="home-page">
       <IdentityStrip />
 
-      {playground && (
-        <section className="showcase-section">
-          <div className="showcase-section-head">
-            <h2>Visuals</h2>
-            <Link to={`/projects/${playground.slug}`} className="showcase-section-link">
-              Playground
-            </Link>
-          </div>
-          <ShowcaseGrid variant="home-visuals">
-            <ShowcaseTile
-              title={playground.title}
-              subtitle="In progress"
-              line={playground.line}
-              field={<HeroField reduce={Boolean(reduce)} />}
-              size="large"
-              href={`/projects/${playground.slug}`}
-            />
-          </ShowcaseGrid>
-        </section>
-      )}
+      <section className="home-section" aria-labelledby={sectionHeadingId('/projects')}>
+        <SectionHead to="/projects" linkLabel="All development" />
 
-      <section className="showcase-section">
-        <div className="showcase-section-head">
-          <h2>Development</h2>
-          <Link to="/projects" className="showcase-section-link">
-            All development
-          </Link>
-        </div>
-        <ShowcaseGrid variant="home-work">
-          {featuredDev.map((project) => (
+        <div className="home-lead">
+          {lead.map((project, i) => (
             <ShowcaseTile
               key={project.slug}
               title={project.title}
-              subtitle={project.org || project.status}
+              subtitle={project.tag}
               line={project.line}
-              size={project.featuredSize}
-              href={project.hasCaseStudy ? `/projects/${project.slug}` : '/projects'}
+              img={project.img}
+              fit={project.imgFit}
+              size={i === 0 ? 'large' : 'default'}
+              onClick={() => open(project)}
             />
           ))}
-        </ShowcaseGrid>
+        </div>
+
+        <div className="home-work">
+          <span className="home-work-label">At work</span>
+          <ul className="home-work-list">
+            {atWork.map((project) => (
+              <li key={project.slug}>
+                <button
+                  type="button"
+                  className="home-work-row"
+                  onClick={() => open(project)}
+                >
+                  <span className="home-work-title">{project.title}</span>
+                  <span className="home-work-line">{project.line}</span>
+                  <span className="home-work-org">{project.org}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
-      <section className="showcase-section">
-        <div className="showcase-section-head">
-          <h2>Photography</h2>
-          <Link to="/media" className="showcase-section-link">
-            All media
-          </Link>
-        </div>
-        <ShowcaseGrid variant="home-media">
-          {featuredMedia.map((item) => (
+      <section className="home-section" aria-labelledby={sectionHeadingId('/media')}>
+        <SectionHead to="/media" linkLabel="All media" />
+        <div className="home-photos">
+          {photos.map((item, i) => (
             <ShowcaseTile
               key={item.id}
               title={item.title}
               subtitle={item.location}
               img={item.src}
-              orientation={item.orientation}
-              href="/media"
+              onClick={() => setPhoto(i)}
             />
           ))}
-        </ShowcaseGrid>
+        </div>
+        <Lightbox
+          open={photo >= 0}
+          index={photo}
+          close={() => setPhoto(-1)}
+          slides={photos.map((item) => ({ src: item.src, alt: item.title }))}
+        />
       </section>
 
-      <motion.section
-        className="bio-teaser"
-        initial={reduce ? false : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <p>
-          Senior Software Developer at Metrolinx. I design and build systems for Ontario
-          rail, and I make photographs.
-        </p>
-        <Link to="/about" className="showcase-section-link">
-          About
-        </Link>
-      </motion.section>
+      <section className="home-section" aria-labelledby={sectionHeadingId('/blog')}>
+        <SectionHead to="/blog" linkLabel="All notes" />
+        <div className="home-work">
+          <span className="home-work-label">Latest</span>
+          <ul className="home-work-list">
+            {latest.map((post) => (
+              <li key={post.slug}>
+                <Link to={`/blog/${post.slug}`} className="home-work-row home-post">
+                  <span className="home-work-title">{post.title}</span>
+                  <span className="home-work-line">{post.excerpt}</span>
+                  <span className="home-post-meta">
+                    {post.date} · {post.readTime}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="home-section home-about" aria-labelledby={sectionHeadingId('/about')}>
+        <SectionHead to="/about" linkLabel="Read more" />
+        <div className="home-about-body">
+          <p className="home-about-statement">
+            The system doesn't care which layer the problem is on.
+          </p>
+          <p className="home-about-text">
+            I did a Bachelor's and Master's in civil engineering at the University of
+            Alberta, then moved into software. Now I'm a senior developer at Metrolinx,
+            working on Azure infrastructure and CN integrations. Before that, two years
+            of middleware for ONxpress on a $1.6B rail project, and a port to Next.js
+            for a startup in Berkeley. I also shoot photos and video.
+          </p>
+        </div>
+      </section>
+
+      {active && <ProjectSheet project={active} onClose={close} />}
     </div>
   );
 }

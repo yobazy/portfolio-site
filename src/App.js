@@ -3,7 +3,6 @@ import './App.css';
 import { useEffect } from 'react';
 import { NavBar } from './components/NavBar';
 import { Footer } from './components/Footer';
-import SiteMark from './components/SiteMark';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Work from './pages/Work';
@@ -28,7 +27,6 @@ function App() {
     <div className="App">
       <ScrollToTop />
       <NavBar />
-      <SiteMark />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Work />} />
