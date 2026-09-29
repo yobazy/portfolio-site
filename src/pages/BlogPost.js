@@ -9,7 +9,7 @@ const postContent = {
       <>
         <p>
           Most people who use Claude figure that longer prompts are better. More context, more
-          examples, more explanation — more for the AI to work with.
+          examples, more explanation. More for the AI to work with.
         </p>
         <p>I used to think this too. I was wrong about it pretty consistently.</p>
         <p>
@@ -53,7 +53,7 @@ const postContent = {
         <h2>Asking Claude to figure out the problem instead of telling it what the problem is</h2>
         <p>
           "What should I do about my database schema?" is expensive. "My users table has 40M rows
-          and queries are hitting 800ms — should I add a partial index on status or partition by
+          and queries are hitting 800ms. Should I add a partial index on status or partition by
           date?" is cheap. Do enough thinking to get to the actual decision point first, then ask
           about that specific thing.
         </p>

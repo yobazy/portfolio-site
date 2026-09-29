@@ -12,8 +12,8 @@ export const Footer = () => {
                 <Row className='align-items-center'>
                     <Col sm={6}>
                         <div className='footer-content'>
-                            <h3>Let's Connect</h3>
-                            <p>Feel free to reach out for collaborations or just a friendly chat.</p>
+                            <h3>Let's connect</h3>
+                            <p>Collaborations, roles, or a note about the work.</p>
                         </div>
                     </Col>
                     <Col sm={6} className='text-center text-sm-end'>

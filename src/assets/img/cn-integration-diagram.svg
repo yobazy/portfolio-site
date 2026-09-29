@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#888884"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E8A400"/>
+    </marker>
+    <style>
+      .sans { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; }
+      .mono { font-family: 'SF Mono', Menlo, Consolas, monospace; letter-spacing: 0.08em; }
+      .box { fill: #141414; stroke: #2e2e2c; stroke-width: 2; }
+      .org { fill: #111111; stroke: #3a3a38; stroke-width: 2; }
+      .title { fill: #F0F0ED; font-size: 30px; font-weight: 600; }
+      .label { fill: #F0F0ED; font-size: 24px; font-weight: 500; }
+      .sub { fill: #888884; font-size: 19px; }
+      .tag { fill: #E8A400; font-size: 16px; }
+      .muted { fill: #888884; font-size: 16px; }
+      .flow { stroke: #888884; stroke-width: 2.5; fill: none; }
+      .flow-amber { stroke: #E8A400; stroke-width: 2.5; fill: none; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1000" fill="#0e0e0e"/>
+
+  <text x="80" y="92" class="mono tag">CN ↔ METROLINX · LIVE RAIL DATA</text>
+
+  <!-- Organizations -->
+  <rect x="80" y="200" width="300" height="560" rx="14" class="org"/>
+  <text x="112" y="258" class="sans title">CN</text>
+  <text x="112" y="292" class="sans sub">Freight rail network</text>
+  <rect x="112" y="340" width="236" height="120" rx="10" class="box"/>
+  <text x="134" y="392" class="sans label">Live rail events</text>
+  <text x="134" y="424" class="sans sub">published out</text>
+  <rect x="112" y="560" width="236" height="120" rx="10" class="box"/>
+  <text x="134" y="612" class="sans label">Updates in</text>
+  <text x="134" y="644" class="sans sub">from Metrolinx</text>
+
+  <rect x="1220" y="200" width="300" height="560" rx="14" class="org"/>
+  <text x="1252" y="258" class="sans title">Metrolinx</text>
+  <text x="1252" y="292" class="sans sub">GO Transit network</text>
+  <rect x="1252" y="340" width="236" height="120" rx="10" class="box"/>
+  <text x="1274" y="392" class="sans label">Updates in</text>
+  <text x="1274" y="424" class="sans sub">from CN</text>
+  <rect x="1252" y="560" width="236" height="120" rx="10" class="box"/>
+  <text x="1274" y="612" class="sans label">Live rail events</text>
+  <text x="1274" y="644" class="sans sub">published out</text>
+
+  <!-- Integration platform -->
+  <rect x="450" y="160" width="700" height="640" rx="16" fill="none" stroke="#E8A400" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="480" y="202" class="mono tag">AZURE CONTAINER APPS · 5 MICROSERVICES</text>
+
+  <!-- CN -> Metrolinx lane -->
+  <rect x="490" y="340" width="170" height="120" rx="10" class="box"/>
+  <text x="512" y="392" class="sans label">Ingest</text>
+  <text x="512" y="424" class="sans sub">CN side</text>
+  <rect x="940" y="340" width="170" height="120" rx="10" class="box"/>
+  <text x="962" y="392" class="sans label">Deliver</text>
+  <text x="962" y="424" class="sans sub">Metrolinx side</text>
+
+  <!-- Metrolinx -> CN lane -->
+  <rect x="940" y="560" width="170" height="120" rx="10" class="box"/>
+  <text x="962" y="612" class="sans label">Ingest</text>
+  <text x="962" y="644" class="sans sub">Metrolinx side</text>
+  <rect x="490" y="560" width="170" height="120" rx="10" class="box"/>
+  <text x="512" y="612" class="sans label">Deliver</text>
+  <text x="512" y="644" class="sans sub">CN side</text>
+
+  <!-- Broker -->
+  <rect x="705" y="300" width="190" height="420" rx="12" fill="#17130a" stroke="#E8A400" stroke-width="2"/>
+  <text x="800" y="360" text-anchor="middle" class="sans label">RabbitMQ</text>
+  <text x="800" y="394" text-anchor="middle" class="sans sub">event-driven</text>
+  <g fill="#E8A400" fill-opacity="0.8">
+    <rect x="735" y="430" width="130" height="10" rx="3"/>
+    <rect x="735" y="450" width="130" height="10" rx="3"/>
+    <rect x="735" y="470" width="130" height="10" rx="3"/>
+    <rect x="735" y="490" width="130" height="10" rx="3"/>
+  </g>
+  <text x="800" y="548" text-anchor="middle" class="sans label">20 queues</text>
+  <text x="800" y="592" text-anchor="middle" class="sans label">10 consumers</text>
+  <text x="800" y="650" text-anchor="middle" class="sans sub">routing per org</text>
+
+  <!-- Flows: CN -> Metrolinx (top) -->
+  <path d="M348 400 H486" class="flow" marker-end="url(#arrow)"/>
+  <path d="M660 400 H701" class="flow-amber" marker-end="url(#arrow-amber)"/>
+  <path d="M895 400 H936" class="flow-amber" marker-end="url(#arrow-amber)"/>
+  <path d="M1110 400 H1248" class="flow" marker-end="url(#arrow)"/>
+
+  <!-- Flows: Metrolinx -> CN (bottom) -->
+  <path d="M1252 620 H1114" class="flow" marker-end="url(#arrow)"/>
+  <path d="M940 620 H899" class="flow-amber" marker-end="url(#arrow-amber)"/>
+  <path d="M705 620 H664" class="flow-amber" marker-end="url(#arrow-amber)"/>
+  <path d="M490 620 H352" class="flow" marker-end="url(#arrow)"/>
+
+  <!-- Isolation line -->
+  <path d="M470 510 H700 M900 510 H1130" stroke="#3a3a38" stroke-width="2" stroke-dasharray="4 8"/>
+  <text x="480" y="540" class="mono muted">ORG ISOLATION</text>
+
+  <!-- Footer facts -->
+  <g class="mono muted">
+    <text x="80" y="890">UPDATES EVERY 10–30 S</text>
+    <text x="500" y="890">NO SHARED DATABASE</text>
+    <text x="880" y="890">KUBERNETES AT THE EDGES</text>
+  </g>
+</svg>
