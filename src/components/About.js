@@ -5,7 +5,7 @@ export const About = () => {
   const reduce = useReducedMotion();
 
   const desc =
-    "I'm Bazil, a Senior Software Developer at Metrolinx. I build cloud architecture and CN integrations for Ontario's railway operations. Azure Container Apps, React, Node.js, the whole stack. I got into software after a civil engineering degree (Bachelor's and Master's) at the University of Alberta. Systems thinking from that carried over.";
+    "I'm Bazil, a senior software developer. Most recently I was at Metrolinx, building cloud architecture and CN integrations for Ontario's railway operations. Azure Container Apps, React, Node.js, the whole stack. I got into software after a civil engineering degree (Bachelor's and Master's) at the University of Alberta. Systems thinking from that carried over.";
   const desc2 =
     "Most of my recent work is backend-heavy: Azure infrastructure, API design, C#, and Node.js. Before Metrolinx I spent two years at ONxpress building middleware for a $1.6B rail project, and before that was at a real estate startup in Berkeley porting their app to Next.js. I also shoot photography and video, and I care about how the work looks, not just how it runs.";
 
@@ -13,7 +13,7 @@ export const About = () => {
     {
       role: 'Senior Software Developer',
       company: 'Metrolinx',
-      period: 'Sept 2025 - Present',
+      period: 'Sept 2025 - May 2026',
       desc: 'Enterprise cloud architecture and CN-Metrolinx integrations. Azure Container Apps, React, Node.js, MongoDB.',
     },
     {

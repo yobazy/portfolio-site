@@ -125,8 +125,8 @@ function Home() {
           </p>
           <p className="home-about-text">
             I did a Bachelor's and Master's in civil engineering at the University of
-            Alberta, then moved into software. Now I'm a senior developer at Metrolinx,
-            working on Azure infrastructure and CN integrations. Before that, two years
+            Alberta, then moved into software. Most recently I was a senior developer at
+            Metrolinx, working on Azure infrastructure and CN integrations. Before that, two years
             of middleware for ONxpress on a $1.6B rail project, and a port to Next.js
             for a startup in Berkeley. I also shoot photos and video.
           </p>
