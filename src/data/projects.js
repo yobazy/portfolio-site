@@ -11,6 +11,8 @@ import imgNebulaDesktop from '../assets/img/nebula-desktop.jpg';
 import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
 import imgInterviewPrep from '../assets/img/interview-prep.jpg';
+import imgExpecta from '../assets/img/expecta.jpg';
+import imgFestify from '../assets/img/festify.jpg';
 
 export const projects = [
   {
@@ -239,6 +241,85 @@ export const projects = [
     },
   },
   {
+    slug: 'obsidian-rag',
+    title: 'Obsidian RAG',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    tag: 'Python · pgvector',
+    line: 'Ask your notes, get your own answers.',
+    description:
+      'A local RAG pipeline over an Obsidian vault. Notes are chunked and embedded with Voyage AI into pgvector, and Claude answers from what you actually wrote, citing the notes it used.',
+    skills: ['Python', 'PostgreSQL', 'pgvector', 'Claude'],
+    url: 'https://github.com/yobazy/obsidian-RAG-gpt',
+    caseStudy: {
+      problem:
+        'Years of notes are only useful if you can find them. Keyword search misses anything phrased differently, and a general chatbot answers from the internet, not from what you wrote down.',
+      built:
+        'Python scripts around Postgres with pgvector in Docker. Ingestion chunks each note into overlapping 400-word windows, strips Obsidian markup, and skips unchanged files by hash, and a watcher re-ingests a note the moment it is saved. Retrieval drops chunks under a similarity threshold, then pulls in notes linked by [[wikilinks]] before Claude answers in a CLI chat that remembers the conversation.',
+      outcome:
+        'Every answer lists its source notes with similarity scores, and an eval harness scores retrieval and answers against hand-written questions, so changes to chunking or thresholds are measured instead of guessed.',
+    },
+  },
+  {
+    slug: 'expecta',
+    title: 'Expecta',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'Hackathon',
+    tag: 'React · TypeScript',
+    line: 'Is this safe right now? Scan and see.',
+    description:
+      'Mobile-first product checker for people trying to conceive, pregnant, or nursing. Scan a barcode or paste an ingredient list, and it checks against guidance for your stage and links the source. Built at Cursor\'s Toronto hackathon, July 2026.',
+    skills: ['React', 'TypeScript', 'Vite', 'ZXing'],
+    img: imgExpecta,
+    url: 'https://github.com/yobazy/expecta-cursor-hackathon',
+    caseStudy: {
+      problem:
+        'Whether a product is fine depends on the stage: a retinol serum that is out during pregnancy can be a different answer while nursing. Most checkers give one verdict for everyone and no source.',
+      built:
+        'A React 19 and TypeScript app with five stages, from planning through each trimester to nursing. The camera scans barcodes with ZXing, food lookups go to Open Food Facts, and pasted ingredient lists run against a small sourced rule set. Each result is safe, caution, avoid, or unknown, with the reason and a link to the guidance behind it.',
+      outcome:
+        'A working prototype built in a day, with no backend: history and favorites stay in the browser. The production architecture, API, data model, and safety constraints are written up in the repo.',
+    },
+  },
+  {
+    slug: 'ableton-helper',
+    title: 'Ableton Helper',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'In progress',
+    tag: 'Python · MCP',
+    line: 'Loops in, a full arrangement out.',
+    description:
+      'An AI arrangement assistant for Ableton Live 12. Put your loops in Session View, ask for tech house, and Claude lays out a genre-shaped arrangement in one batch through an MCP server and a Live Remote Script.',
+    skills: ['Python', 'MCP', 'Claude', 'Ableton Live'],
+    caseStudy: {
+      problem:
+        'Making loops is the fun part. Turning them into a 224-bar track, section by section, is slow. Existing Ableton MCP servers send one request per change, so a single skeleton turns into about a hundred tool calls.',
+      built:
+        'A Python MCP server that compiles YAML genre templates into bar ranges, guesses which track is the kick, bass, or chords from track and clip names, and turns the plan into a list of operations. A Remote Script inside Live runs the whole list in one main-thread tick over TCP. The Live API code is tested against a fake, so it runs without Live open.',
+      outcome:
+        'In progress. A house skeleton that took 108 tool calls takes one, and the whole build is a single undo in Live. A benchmark command measures the difference on your own machine.',
+    },
+  },
+  {
+    slug: 'festify',
+    title: 'Festify',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    tag: 'Next.js · Supabase',
+    line: 'A playlist for every day of the festival.',
+    description:
+      'Festival companion that builds Spotify playlists from the artists playing each day. A ground-up rebuild of my bootcamp project in Next.js, Supabase, and Tailwind.',
+    skills: ['Next.js', 'TypeScript', 'Supabase', 'Spotify API'],
+    img: imgFestify,
+    url: 'https://github.com/yobazy/festify-2.0',
+  },
+  {
     slug: 'link',
     title: 'Link',
     category: 'personal',
@@ -287,7 +368,7 @@ export const projects = [
     description: 'Mini ecommerce app for plants, built to learn Ruby on Rails.',
     skills: ['React', 'JavaScript', 'Ruby on Rails', 'PostgreSQL'],
     img: imgJungle,
-    url: 'https://github.com/yobazy/jungle',
+    url: 'https://github.com/yobazy/jungle-rails',
   },
   {
     slug: 'tinyapp',
