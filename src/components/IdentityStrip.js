@@ -273,9 +273,9 @@ const IdentityStrip = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Link to="/projects/playground-visuals" className="hero-visual-caption">
+        <Link to="/projects/ghosts-playground" className="hero-visual-caption">
           <span className="hero-visual-kicker">visuals</span>
-          <span className="hero-visual-title">portal waves</span>
+          <span className="hero-visual-title">ghosts-playground</span>
         </Link>
       </motion.div>
     </section>

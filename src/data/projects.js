@@ -6,44 +6,11 @@ import imgLink from '../assets/img/link-screens.jpg';
 import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
 import imgMyfi from '../assets/img/myfi-dashboard.png';
 import imgBarberbot from '../assets/img/barberbot.jpg';
-import imgPlayground from '../assets/img/playground-visuals.jpg';
+import imgPlayground from '../assets/img/ghosts-playground.jpg';
 import imgNebulaDesktop from '../assets/img/nebula-desktop.jpg';
 import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
 import imgInterviewPrep from '../assets/img/interview-prep.jpg';
-
-export const playgroundLooks = [
-  {
-    id: '001',
-    slug: 'portal-weather',
-    title: 'portal weather',
-    note: 'Cold water, fog, silt. The first look that landed.',
-  },
-  {
-    id: '002',
-    slug: 'portal-waves',
-    title: 'portal waves',
-    note: 'Traveling waves inside the body. The field on the homepage.',
-  },
-  {
-    id: '003',
-    slug: 'pixelwarm',
-    title: 'pixelwarm',
-    note: 'Warm mosaic inside the portal.',
-  },
-  {
-    id: '004',
-    slug: 'chromeenergy',
-    title: 'chromeenergy',
-    note: 'Liquid metal, body as instrument.',
-  },
-  {
-    id: '005',
-    slug: 'ghosted',
-    title: 'ghosted',
-    note: 'Strobe afterimages. Delayed selves.',
-  },
-];
 
 export const projects = [
   {
@@ -161,8 +128,10 @@ export const projects = [
     },
   },
   {
-    slug: 'playground-visuals',
-    title: 'Playground Visuals',
+    slug: 'ghosts-playground',
+    // Old links to /projects/playground-visuals still resolve.
+    aliases: ['playground-visuals'],
+    title: 'ghosts-playground',
     org: 'Personal',
     category: 'visuals',
     kind: 'playground',
@@ -171,20 +140,20 @@ export const projects = [
     featured: true,
     featuredSize: 'large',
     hasCaseStudy: true,
-    tag: 'WebGL · GLSL',
-    line: 'Live looks for a dark room.',
+    tag: 'Visuals · WebGL',
+    line: 'Live visuals for a dark room.',
     url: 'https://ghosts.fyi',
     img: imgPlayground,
     description:
-      'A camera playground: body as portal, traveling fields, saved looks. Built for a room, prototyped at a desk. Still in progress.',
+      'A camera playground: body as portal, traveling fields. Built for a room, prototyped at a desk, and live at ghosts.fyi. Open it with a webcam and step into frame.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
     caseStudy: {
       problem:
         'Most “visuals” toys are desktop widgets or face filters. I wanted something that reads at rave scale: you walk in, your silhouette is the mask, and the field is already happening.',
       built:
-        'Live is the party camera. Studio is the clip workbench. Looks are frozen mixes — portal weather, portal waves, and the ones after. The homepage field is a quiet port of portal waves.',
+        'Live is the party camera. Studio is the clip workbench. The field behind the homepage is a quiet port of one of its modes.',
       outcome:
-        'In progress. The piece is the mixer and the saved looks, not a shipped product page. This page is the studio index while it is still moving.',
+        'In progress, and public. The piece is the live mixer, not a product page, so the best way to see it is to try it.',
     },
   },
 
@@ -349,7 +318,7 @@ export const projects = [
 export const featuredProjects = projects.filter((project) => project.featured);
 
 export const getProjectBySlug = (slug) =>
-  projects.find((project) => project.slug === slug);
+  projects.find((project) => project.slug === slug || project.aliases?.includes(slug));
 
 export const projectsInCategories = (...categories) =>
   projects.filter((project) => categories.includes(project.category));

@@ -1,10 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { playgroundLooks } from '../data/projects';
 
 const linkLabel = (url) => {
   if (!url) return null;
-  if (url.includes('ghosts.fyi')) return 'ghosts.fyi';
-  if (url.includes('github.com')) return 'GitHub';
+  if (url.includes('ghosts.fyi')) return 'Try it live at ghosts.fyi';
+  if (url.includes('github.com')) return 'View on GitHub';
   return 'Open';
 };
 
@@ -84,6 +83,18 @@ const ProjectSheet = ({ project, onClose }) => {
           <h2 id="project-sheet-title">{project.title}</h2>
           {project.description && <p className="project-sheet-lede">{project.description}</p>}
 
+          {project.url && (
+            <a
+              className={`${project.kind === 'playground' ? 'btn-primary' : 'btn-secondary'} project-sheet-link`}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {label}
+              <span aria-hidden="true">↗</span>
+            </a>
+          )}
+
           {project.caseStudy && project.kind === 'playground' && (
             <div className="case-study-body">
               <section>
@@ -116,23 +127,6 @@ const ProjectSheet = ({ project, onClose }) => {
             </div>
           )}
 
-          {project.kind === 'playground' && (
-            <section className="playground-looks">
-              <h3>Looks</h3>
-              <ul>
-                {playgroundLooks.map((look) => (
-                  <li key={look.id}>
-                    <span className="playground-look-id">{look.id}</span>
-                    <div>
-                      <h4>{look.title}</h4>
-                      {look.note && <p>{look.note}</p>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
           {project.skills?.length > 0 && (
             <ul className="case-study-stack">
               {project.skills.map((skill) => (
@@ -141,16 +135,6 @@ const ProjectSheet = ({ project, onClose }) => {
             </ul>
           )}
 
-          {project.url && (
-            <a
-              className="showcase-section-link project-sheet-link"
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {label}
-            </a>
-          )}
         </div>
       </aside>
     </div>

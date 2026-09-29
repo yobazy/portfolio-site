@@ -10,7 +10,7 @@ import { getProjectBySlug } from '../data/projects';
 import { featuredMedia } from '../data/mediaItems';
 import { posts } from '../data/posts';
 
-const LEAD = ['nebula-desktop', 'playground-visuals', 'mixvault'];
+const LEAD = ['nebula-desktop', 'ghosts-playground', 'mixvault'];
 const AT_WORK = ['360-ops', 'cn-integration', 'urbaneyes'];
 
 const pick = (slugs) => slugs.map(getProjectBySlug).filter(Boolean);

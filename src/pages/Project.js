@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from '../components/HeroField';
-import { getProjectBySlug, playgroundLooks } from '../data/projects';
+import { getProjectBySlug } from '../data/projects';
 
 const Project = () => {
   const { slug } = useParams();
@@ -44,12 +44,13 @@ const Project = () => {
             <p className="playground-lede">{project.description}</p>
             {project.url && (
               <a
-                className="showcase-section-link"
+                className="btn-primary playground-cta"
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                ghosts.fyi
+                Try it live at ghosts.fyi
+                <span aria-hidden="true">↗</span>
               </a>
             )}
           </header>
@@ -64,21 +65,6 @@ const Project = () => {
               <p>{project.caseStudy.built}</p>
             </section>
           </div>
-
-          <section className="playground-looks">
-            <h2>Looks</h2>
-            <ul>
-              {playgroundLooks.map((look) => (
-                <li key={look.id}>
-                  <span className="playground-look-id">{look.id}</span>
-                  <div>
-                    <h3>{look.title}</h3>
-                    {look.note && <p>{look.note}</p>}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
 
           {project.skills?.length > 0 && (
             <ul className="case-study-stack">
