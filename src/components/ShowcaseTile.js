@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const ShowcaseTile = ({
   title,
@@ -13,8 +13,9 @@ const ShowcaseTile = ({
   orientation,
   fit,
   as = 'auto',
+  // Extra framer-motion props for the wrapper, e.g. layout animation on a filtered grid.
+  animation,
 }) => {
-  const reduce = useReducedMotion();
   const kicker = subtitle && subtitle !== title ? subtitle : null;
   const isVisual = Boolean(img) || Boolean(field);
   const className = [
@@ -50,10 +51,9 @@ const ShowcaseTile = ({
     </div>
   );
 
-  const motionProps = reduce ? {} : {};
 
   const wrap = (node) => (
-    <motion.div className={className} {...motionProps}>
+    <motion.div className={className} {...animation}>
       {node}
     </motion.div>
   );

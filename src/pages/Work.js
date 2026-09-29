@@ -1,10 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { LayoutGroup, MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import ShowcaseGrid from '../components/ShowcaseGrid';
 import ShowcaseTile from '../components/ShowcaseTile';
 import ProjectSheet from '../components/ProjectSheet';
 import WorkFilters from '../components/WorkFilters';
 import { projects } from '../data/projects';
+import { ARRIVE, DURATION, EASE_PREMIUM } from '../lib/motion';
 import {
   applyFilters,
   buildFacets,
@@ -17,6 +19,19 @@ import {
 } from '../data/projectFilters';
 
 warnSlugCollisions(projects);
+
+const GLIDE = { duration: DURATION.base, ease: EASE_PREMIUM };
+const FIRST_PAINT = new Map();
+
+// Keys of the tiles and headings currently inside the viewport.
+const inView = () => {
+  const keys = new Set();
+  document.querySelectorAll('[data-work-key]').forEach((node) => {
+    const { top, bottom } = node.getBoundingClientRect();
+    if (bottom > 0 && top < window.innerHeight) keys.add(node.dataset.workKey);
+  });
+  return keys;
+};
 
 const Work = () => {
   const [params, setParams] = useSearchParams();
@@ -33,6 +48,76 @@ const Work = () => {
   const systems = shown.filter((project) => typeOf(project) === 'professional');
   const earlier = shown.filter((project) => typeOf(project) === 'earlier');
   const [active, setActive] = useState(null);
+
+  const reduce = useReducedMotion();
+
+  // Keys carry the grid a tile sits in, so moving between grids (a lead
+  // dropping into the small grid) reads as arriving rather than stretching.
+  const onScreen = [
+    ...lead.map((project) => `lead:${project.slug}`),
+    ...personal.map((project) => `personal:${project.slug}`),
+    ...systems.map((project) => `professional:${project.slug}`),
+    ...earlier.map((project) => `earlier:${project.slug}`),
+    ...(independent.length ? ['section:personal'] : []),
+    ...(systems.length ? ['section:professional'] : []),
+    ...(earlier.length ? ['section:earlier'] : []),
+    ...(shown.length ? [] : ['empty']),
+  ];
+  const onScreenKey = onScreen.join('|');
+
+  // When the results change, things that were in view glide to their new
+  // place; anything new, or arriving from off screen, fades up where it lands
+  // instead of flying in from far away. Nothing animates on the first paint.
+  // The DOM still holds the previous layout during this render.
+  // Plans are built from the last committed screen and cached per change, so
+  // a render the router throws away can't leak into the next one.
+  const committed = useRef(null);
+  const draft = useRef({});
+  const base = committed.current;
+  let generation = base ? base.generation : FIRST_PAINT;
+  if (base && base.key !== onScreenKey && !reduce) {
+    const d = draft.current;
+    if (d.from !== base.key || d.to !== onScreenKey || d.y !== window.scrollY) {
+      const visible = inView();
+      const next = new Map(base.generation);
+      base.keys.forEach((key) => {
+        if (!visible.has(key)) next.set(key, (next.get(key) || 0) + 1);
+      });
+      draft.current = { from: base.key, to: onScreenKey, y: window.scrollY, generation: next };
+    }
+    generation = draft.current.generation;
+  }
+  useLayoutEffect(() => {
+    committed.current = { key: onScreenKey, keys: onScreenKey.split('|'), generation };
+  }, [onScreenKey, generation]);
+
+  // A new generation remounts the element, so it fades in rather than glides.
+  const mountKey = (key) => `${key}~${generation.get(key) || 0}`;
+  const settle = (key) => {
+    const arriving =
+      base &&
+      !reduce &&
+      (!base.keys.includes(key) || generation.get(key) !== base.generation.get(key));
+    return {
+      'data-work-key': key,
+      layout: 'position',
+      layoutId: `work-${mountKey(key)}`,
+      // Re-renders for anything else (opening a project) must not re-measure.
+      layoutDependency: onScreenKey,
+      initial: arriving ? ARRIVE : false,
+      animate: { opacity: 1, y: 0 },
+      transition: GLIDE,
+    };
+  };
+  const heading = (key, text) => (
+    <motion.h2
+      key={mountKey(`section:${key}`)}
+      id={`work-${key}`}
+      {...settle(`section:${key}`)}
+    >
+      {text}
+    </motion.h2>
+  );
 
   // The first visible section sits tight under the filter bar.
   const firstSection = [
@@ -59,6 +144,14 @@ const Work = () => {
       replace: Object.keys(patch).every((key) => key === 'q'),
     });
   };
+  // Clear all in the empty state unmounts itself; land on the search box instead.
+  const focusSearch = useRef(false);
+  useLayoutEffect(() => {
+    if (!focusSearch.current) return;
+    focusSearch.current = false;
+    document.querySelector('.work-search')?.focus();
+  }, [onScreenKey]);
+
   const reset = () => {
     flushSearch.current();
     setParams(writeFilters(currentParams(), emptyFilters));
@@ -76,103 +169,122 @@ const Work = () => {
   };
 
   return (
-    <div className="gallery-page work-page">
-      <header className="gallery-header">
-        <h1>Development</h1>
-        <p>What I'm building on my own, the systems I've shipped at work, and where it started.</p>
-        <WorkFilters
-          filters={filters}
-          facets={facets}
-          shown={shown.length}
-          active={filtered}
-          onChange={update}
-          onReset={reset}
-          flushSearch={flushSearch}
-        />
-      </header>
+    <MotionConfig reducedMotion="user">
+      <LayoutGroup>
+        <div className="gallery-page work-page">
+          <header className="gallery-header">
+            <h1>Development</h1>
+            <p>What I'm building on my own, the systems I've shipped at work, and where it started.</p>
+            <WorkFilters
+              filters={filters}
+              facets={facets}
+              shown={shown.length}
+              active={filtered}
+              onChange={update}
+              onReset={reset}
+              flushSearch={flushSearch}
+            />
+          </header>
 
-      {!shown.length && (
-        <div className="gallery-list-block is-first work-empty">
-          <p>Nothing matches those filters.</p>
-          <button type="button" className="work-filters-reset" onClick={reset}>
-            Clear all
-          </button>
+          {!shown.length && (
+            <motion.div
+              key={mountKey('empty')}
+              className="gallery-list-block is-first work-empty"
+              {...settle('empty')}
+            >
+              <p>Nothing matches those filters.</p>
+              <button
+                type="button"
+                className="work-filters-reset"
+                onClick={() => {
+                  focusSearch.current = true;
+                  reset();
+                }}
+              >
+                Clear all
+              </button>
+            </motion.div>
+          )}
+
+          {independent.length > 0 && (
+            <section className={blockClass('personal')} aria-labelledby="work-personal">
+              {heading('personal', 'Personal')}
+              {lead.length > 0 && (
+                <ShowcaseGrid variant="gallery-lead">
+                  {lead.map((project) => (
+                    <ShowcaseTile
+                      key={mountKey(`lead:${project.slug}`)}
+                      title={project.title}
+                      subtitle={project.tag}
+                      line={project.line}
+                      img={project.img}
+                      fit={project.imgFit}
+                      size="large"
+                      onClick={() => open(project)}
+                      animation={settle(`lead:${project.slug}`)}
+                    />
+                  ))}
+                </ShowcaseGrid>
+              )}
+              {personal.length > 0 && (
+                <ShowcaseGrid variant="gallery-personal">
+                  {personal.map((project) => (
+                    <ShowcaseTile
+                      key={mountKey(`personal:${project.slug}`)}
+                      title={project.title}
+                      subtitle={project.tag}
+                      line={project.line}
+                      img={project.img}
+                      fit={project.imgFit}
+                      onClick={() => open(project)}
+                      animation={settle(`personal:${project.slug}`)}
+                    />
+                  ))}
+                </ShowcaseGrid>
+              )}
+            </section>
+          )}
+
+          {systems.length > 0 && (
+            <section className={blockClass('professional')} aria-labelledby="work-professional">
+              {heading('professional', 'Professional')}
+              <ShowcaseGrid variant="gallery">
+                {systems.map((project) => (
+                  <ShowcaseTile
+                    key={mountKey(`professional:${project.slug}`)}
+                    title={project.title}
+                    subtitle={project.org}
+                    line={project.line}
+                    onClick={() => open(project)}
+                    animation={settle(`professional:${project.slug}`)}
+                  />
+                ))}
+              </ShowcaseGrid>
+            </section>
+          )}
+
+          {earlier.length > 0 && (
+            <section className={blockClass('earlier', 'is-quiet')} aria-labelledby="work-earlier">
+              {heading('earlier', 'Earlier')}
+              <ShowcaseGrid variant="gallery-earlier">
+                {earlier.map((project) => (
+                  <ShowcaseTile
+                    key={mountKey(`earlier:${project.slug}`)}
+                    title={project.title}
+                    line={project.line}
+                    img={project.img}
+                    onClick={() => open(project)}
+                    animation={settle(`earlier:${project.slug}`)}
+                  />
+                ))}
+              </ShowcaseGrid>
+            </section>
+          )}
+
+          {active && <ProjectSheet project={active} onClose={close} />}
         </div>
-      )}
-
-      {independent.length > 0 && (
-        <section className={blockClass('personal')} aria-labelledby="work-personal">
-          <h2 id="work-personal">Personal</h2>
-          {lead.length > 0 && (
-            <ShowcaseGrid variant="gallery-lead">
-              {lead.map((project) => (
-                <ShowcaseTile
-                  key={project.slug}
-                  title={project.title}
-                  subtitle={project.tag}
-                  line={project.line}
-                  img={project.img}
-                  fit={project.imgFit}
-                  size="large"
-                  onClick={() => open(project)}
-                />
-              ))}
-            </ShowcaseGrid>
-          )}
-          {personal.length > 0 && (
-            <ShowcaseGrid variant="gallery-personal">
-              {personal.map((project) => (
-                <ShowcaseTile
-                  key={project.slug}
-                  title={project.title}
-                  subtitle={project.tag}
-                  line={project.line}
-                  img={project.img}
-                  fit={project.imgFit}
-                  onClick={() => open(project)}
-                />
-              ))}
-            </ShowcaseGrid>
-          )}
-        </section>
-      )}
-
-      {systems.length > 0 && (
-        <section className={blockClass('professional')} aria-labelledby="work-professional">
-          <h2 id="work-professional">Professional</h2>
-          <ShowcaseGrid variant="gallery">
-            {systems.map((project) => (
-              <ShowcaseTile
-                key={project.slug}
-                title={project.title}
-                subtitle={project.org}
-                line={project.line}
-                onClick={() => open(project)}
-              />
-            ))}
-          </ShowcaseGrid>
-        </section>
-      )}
-
-      {earlier.length > 0 && (
-        <section className={blockClass('earlier', 'is-quiet')} aria-labelledby="work-earlier">
-          <h2 id="work-earlier">Earlier</h2>
-          <ShowcaseGrid variant="gallery-earlier">
-            {earlier.map((project) => (
-              <ShowcaseTile
-                key={project.slug}
-                title={project.title}
-                line={project.line}
-                img={project.img}
-                onClick={() => open(project)}
-              />
-            ))}
-          </ShowcaseGrid>
-        </section>
-      )}
-
-      {active && <ProjectSheet project={active} onClose={close} />}
-    </div>
+      </LayoutGroup>
+    </MotionConfig>
   );
 };
 
