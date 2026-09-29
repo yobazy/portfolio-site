@@ -82,7 +82,7 @@
   --control-height:    36px;
   --radius-pill:       999px;
 
-  /* Animation */
+  /* Animation (mirrored for framer-motion in src/lib/motion.js) */
   --ease-premium:      cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-soft:     cubic-bezier(0.33, 1, 0.68, 1);
   --ease-in-soft:      cubic-bezier(0.4, 0, 1, 1);
@@ -2193,6 +2193,22 @@ nav.navbar {
   line-height: 1.2;
 }
 
+.post-body a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.post-body a:hover {
+  color: var(--accent);
+}
+
+.post-body strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 .post-body hr {
   border: none;
   border-top: 1px solid var(--glass-border);
@@ -3249,7 +3265,6 @@ nav.navbar {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
 }
 
 .work-filters-row {
@@ -3264,6 +3279,7 @@ nav.navbar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
+  isolation: isolate;
   padding: 3px;
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-pill);
@@ -3279,16 +3295,26 @@ nav.navbar {
   border-radius: var(--radius-pill);
   padding: 0.4rem 0.9rem;
   cursor: pointer;
-  transition: color var(--duration-fast) ease, background var(--duration-fast) ease;
+  position: relative;
+  /* Timed with the sliding pill, so the label never goes dark before it arrives. */
+  transition: color var(--duration-base) var(--ease-premium);
 }
 
-.work-type:hover:not(:disabled) {
+.work-type:hover:not(:disabled):not([aria-pressed='true']) {
   color: var(--text-primary);
 }
 
 .work-type[aria-pressed='true'] {
-  background: var(--text-primary);
   color: var(--bg-base);
+}
+
+/* The pressed fill, one element that slides between tabs. */
+.work-type-pill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--text-primary);
 }
 
 .work-type:disabled {
@@ -3519,11 +3545,39 @@ nav.navbar {
   color: var(--text-primary);
 }
 
+/* Grows from zero height when a filter is set, so the results slide down
+   instead of jumping. The clip's padding keeps chip focus rings visible. */
+.work-filters-reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows var(--duration-base) var(--ease-premium),
+    opacity var(--duration-base) var(--ease-premium);
+}
+
+.work-filters-reveal.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.work-filters-clip {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 4px 4px;
+  margin: 0 -4px -4px;
+}
+
+.work-filters-chips {
+  display: contents;
+}
+
 .work-filters-status {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4rem;
+  padding-top: 0.9rem;
 }
 
 .gallery-header .work-filters-count {
@@ -4117,5 +4171,10 @@ nav.navbar {
   .project-sheet,
   .project-sheet-scrim {
     animation: none;
+  }
+
+  .work-filters-reveal,
+  .work-type {
+    transition: none;
   }
 }

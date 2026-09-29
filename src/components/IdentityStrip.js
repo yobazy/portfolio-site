@@ -254,7 +254,7 @@ const IdentityStrip = () => {
       >
         <h1 ref={headingRef} className="hero-visual-heading">Hey, it's Baz.</h1>
         <p className="hero-visual-sub">
-          Software engineer. I build systems for Ontario rail, and I make photographs.
+          Software + visuals.
         </p>
 
         <nav className="hero-index" aria-label="Sections">

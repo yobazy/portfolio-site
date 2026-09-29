@@ -1,4 +1,19 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { DURATION, EASE_PREMIUM } from '../lib/motion';
+
+// The pressed tab's fill slides between tabs rather than jumping. It only
+// re-measures when the pressed tab changes, not when the page re-renders.
+const Pill = ({ on, pressed }) =>
+  on ? (
+    <motion.span
+      className="work-type-pill"
+      layoutId="work-type-pill"
+      layoutDependency={pressed}
+      transition={{ duration: DURATION.base, ease: EASE_PREMIUM }}
+      aria-hidden="true"
+    />
+  ) : null;
 
 // Past this many options, ones with nothing left to show fold away.
 const LONG_LIST = 12;
@@ -282,15 +297,40 @@ const WorkFilters = ({ filters, facets, shown, onChange, onReset, active, flushS
     q && { key: 'q', text: `“${q}”`, remove: () => onChange({ q: '' }) },
   ].filter(Boolean);
 
+  // While the row closes it keeps showing what was cleared, rather than
+  // emptying first and then collapsing. Those leftovers can't be reached.
+  const count = `${shown} of ${facets.all} projects`;
+  const last = useRef({ chips, count });
+  useLayoutEffect(() => {
+    if (active) last.current = { chips, count };
+  });
+  const shownChips = active ? chips : last.current.chips;
+
   const chipKeys = chips.map((chip) => chip.key).join('|');
-  useEffect(() => {
+  // Before paint, so focus never falls to the page while the chips go inert.
+  useLayoutEffect(() => {
     if (chipFocus.current === null) return;
     const index = chipFocus.current;
     chipFocus.current = null;
-    const buttons = root.current?.querySelectorAll('.work-chip') || [];
+    const buttons = (active && root.current?.querySelectorAll('.work-chip')) || [];
     const next = buttons[Math.min(index, buttons.length - 1)] || root.current?.querySelector('.work-search');
     next?.focus();
-  }, [chipKeys]);
+  }, [chipKeys, active]);
+
+  // On narrow screens the tabs scroll sideways; keep the pressed one in view.
+  // Sideways only, and clear of the fade at the strip's right edge.
+  const pressType = (event, type) => {
+    const tab = event.currentTarget;
+    const strip = tab.parentElement;
+    if (strip.scrollWidth > strip.clientWidth) {
+      const fade = 32;
+      const t = tab.getBoundingClientRect();
+      const s = strip.getBoundingClientRect();
+      if (t.left < s.left) strip.scrollLeft -= s.left - t.left;
+      else if (t.right > s.right - fade) strip.scrollLeft += t.right - (s.right - fade);
+    }
+    onChange({ type });
+  };
 
   return (
     <div className="work-filters" ref={root}>
@@ -300,8 +340,9 @@ const WorkFilters = ({ filters, facets, shown, onChange, onReset, active, flushS
             type="button"
             className="work-type"
             aria-pressed={!filters.type}
-            onClick={() => onChange({ type: null })}
+            onClick={(event) => pressType(event, null)}
           >
+            <Pill on={!filters.type} pressed={filters.type} />
             All <span className="work-type-count">{facets.total}</span>
           </button>
           {facets.types.map((type) => (
@@ -311,8 +352,9 @@ const WorkFilters = ({ filters, facets, shown, onChange, onReset, active, flushS
               className="work-type"
               aria-pressed={filters.type === type.key}
               disabled={!type.count && filters.type !== type.key}
-              onClick={() => onChange({ type: filters.type === type.key ? null : type.key })}
+              onClick={(event) => pressType(event, filters.type === type.key ? null : type.key)}
             >
+              <Pill on={filters.type === type.key} pressed={filters.type} />
               {type.label} <span className="work-type-count">{type.count}</span>
             </button>
           ))}
@@ -339,38 +381,48 @@ const WorkFilters = ({ filters, facets, shown, onChange, onReset, active, flushS
         </div>
       </div>
 
-      {/* Always mounted so screen readers hear the first change. */}
-      <div className={`work-filters-status${active ? '' : ' visually-hidden'}`}>
-        <p className="work-filters-count" aria-live="polite">
-          {shown} of {facets.all} projects
-        </p>
-        {chips.map((chip, index) => (
-          <button
-            key={chip.key}
-            type="button"
-            className="work-chip"
-            onClick={() => {
-              chip.remove();
-              refocusChip(index);
-            }}
-            aria-label={`Remove ${chip.text}`}
-          >
-            {chip.text}
-            <span aria-hidden="true">×</span>
-          </button>
-        ))}
-        {active && (
-          <button
-            type="button"
-            className="work-filters-reset"
-            onClick={() => {
-              onReset();
-              refocusChip(0);
-            }}
-          >
-            Clear all
-          </button>
-        )}
+      {/* Always mounted so screen readers hear the first change. It opens and
+          closes by animating its row height, so the results below slide rather
+          than jump. */}
+      <div className={`work-filters-reveal${active ? ' is-open' : ''}`}>
+        <div className="work-filters-clip">
+          <div className="work-filters-status">
+            <p className="visually-hidden" aria-live="polite">
+              {count}
+            </p>
+            {/* Holds its last text while the row closes, like the chips. */}
+            <p className="work-filters-count" aria-hidden="true">
+              {active ? count : last.current.count}
+            </p>
+            <span className="work-filters-chips" inert={active ? undefined : ''}>
+              {shownChips.map((chip, index) => (
+                <button
+                  key={chip.key}
+                  type="button"
+                  className="work-chip"
+                  onClick={() => {
+                    chip.remove();
+                    refocusChip(index);
+                  }}
+                  aria-label={`Remove ${chip.text}`}
+                >
+                  {chip.text}
+                  <span aria-hidden="true">×</span>
+                </button>
+              ))}
+              <button
+                type="button"
+                className="work-filters-reset"
+                onClick={() => {
+                  onReset();
+                  refocusChip(0);
+                }}
+              >
+                Clear all
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
