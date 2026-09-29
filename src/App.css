@@ -2193,6 +2193,22 @@ nav.navbar {
   line-height: 1.2;
 }
 
+.post-body a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.post-body a:hover {
+  color: var(--accent);
+}
+
+.post-body strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 .post-body hr {
   border: none;
   border-top: 1px solid var(--glass-border);
