@@ -1,17 +1,15 @@
-// Filtering for the Development page. Facets are derived from the project
-// data, so a new company or skill shows up in the filters without edits here.
+// Filtering for the Development page: tech and free-text search. The tech
+// facet is derived from the project data, so a new skill shows up without
+// edits here. Types group the page into sections; they aren't a filter.
 
 export const TYPES = [
   { key: 'personal', label: 'Personal', categories: ['personal', 'visuals'] },
   { key: 'professional', label: 'Professional', categories: ['professional', 'client'] },
-  { key: 'earlier', label: 'Earlier', categories: ['earlier'] },
+  { key: 'earlier', label: 'Earlier (Demos)', categories: ['earlier'] },
 ];
 
+// `type` and `org` were filters once; old links drop them on the next change.
 const PARAMS = ['type', 'org', 'tech', 'q'];
-
-// "Personal" is a label on side projects, not a company to filter by.
-const companiesOf = (project) =>
-  project.org && project.org !== 'Personal' ? [project.org] : [];
 
 const skillsOf = (project) => project.skills || [];
 
@@ -35,8 +33,6 @@ const indexOf = (project) => {
   let entry = cache.get(project);
   if (!entry) {
     entry = {
-      type: typeOf(project),
-      orgs: companiesOf(project).map(slugify),
       tech: skillsOf(project).map(slugify),
       text: [
         project.title,
@@ -55,7 +51,7 @@ const indexOf = (project) => {
   return entry;
 };
 
-export const emptyFilters = { type: null, orgs: [], tech: [], q: '' };
+export const emptyFilters = { tech: [], q: '' };
 
 const knownValues = (projects, key) =>
   new Set(projects.flatMap((project) => indexOf(project)[key]));
@@ -66,37 +62,25 @@ const cleanList = (values, known) => [
   ...new Set(values.map(slugify).filter((value) => known.has(value))),
 ];
 
-export const readFilters = (params, projects) => {
-  const type = (params.get('type') || '').toLowerCase();
-  return {
-    type: TYPES.some((t) => t.key === type) ? type : null,
-    orgs: cleanList(params.getAll('org'), knownValues(projects, 'orgs')),
-    tech: cleanList(params.getAll('tech'), knownValues(projects, 'tech')),
-    q: params.get('q') || '',
-  };
-};
+export const readFilters = (params, projects) => ({
+  tech: cleanList(params.getAll('tech'), knownValues(projects, 'tech')),
+  q: params.get('q') || '',
+});
 
 // Keeps any params that aren't ours (utm_* and friends).
-export const writeFilters = (current, { type, orgs, tech, q }) => {
+export const writeFilters = (current, { tech, q }) => {
   const params = new URLSearchParams(current);
   PARAMS.forEach((key) => params.delete(key));
-  if (type) params.set('type', type);
-  orgs.forEach((org) => params.append('org', org));
   tech.forEach((skill) => params.append('tech', skill));
   if (q.trim()) params.set('q', q);
   return params;
 };
 
-export const hasFilters = ({ type, orgs, tech, q }) =>
-  Boolean(type || orgs.length || tech.length || q.trim());
+export const hasFilters = ({ tech, q }) => Boolean(tech.length || q.trim());
 
 // Each test can be skipped so a facet counts against every filter but its own.
 const matches = (project, filters, skip) => {
   const index = indexOf(project);
-  if (skip !== 'type' && filters.type && index.type !== filters.type) return false;
-  if (skip !== 'orgs' && filters.orgs.length) {
-    if (!filters.orgs.some((org) => index.orgs.includes(org))) return false;
-  }
   if (skip !== 'tech' && filters.tech.length) {
     if (!filters.tech.some((skill) => index.tech.includes(skill))) return false;
   }
@@ -126,7 +110,7 @@ export const warnSlugCollisions = (projects) => {
   if (process.env.NODE_ENV === 'production') return;
   const seen = new Map();
   projects.forEach((project) => {
-    [...companiesOf(project), ...skillsOf(project)].forEach((label) => {
+    skillsOf(project).forEach((label) => {
       const value = slugify(label);
       const other = seen.get(value);
       if (other && other !== label) {
@@ -151,16 +135,7 @@ const facet = (projects, filters, key, valuesOf) => {
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 };
 
-export const buildFacets = (projects, filters) => {
-  const typePool = projects.filter((project) => matches(project, filters, 'type'));
-  return {
-    all: projects.length,
-    total: typePool.length,
-    types: TYPES.map((type) => ({
-      ...type,
-      count: typePool.filter((project) => indexOf(project).type === type.key).length,
-    })),
-    orgs: facet(projects, filters, 'orgs', companiesOf),
-    tech: facet(projects, filters, 'tech', skillsOf),
-  };
-};
+export const buildFacets = (projects, filters) => ({
+  all: projects.length,
+  tech: facet(projects, filters, 'tech', skillsOf),
+});

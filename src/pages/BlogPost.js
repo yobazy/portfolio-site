@@ -1,7 +1,8 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { posts } from '../data/posts';
+import { TransitionLink, useArrival } from '../lib/pageTransition';
 
 const postContent = {
   'build-the-tool-you-can-see': {
@@ -21,7 +22,7 @@ const postContent = {
         <p>
           I could see exactly what I wanted: one window, every session across every project, the
           ones waiting on me at the top. So I built it. That's{' '}
-          <Link to="/projects/nebula-desktop">Nebula Desktop</Link>.
+          <TransitionLink to="/projects/nebula-desktop">Nebula Desktop</TransitionLink>.
         </p>
 
         <h2>When you can see it, build it</h2>
@@ -124,7 +125,7 @@ const postContent = {
           can't, it turns into a note you'll never open.
         </p>
         <p>
-          <Link to="/projects/ghosts-playground">ghosts-playground</Link> is basically a machine for
+          <TransitionLink to="/projects/ghosts-playground">ghosts-playground</TransitionLink> is basically a machine for
           catching ideas before they go cold.
         </p>
 
@@ -275,6 +276,7 @@ const postContent = {
 };
 
 function BlogPost() {
+  const arrived = useArrival();
   const { slug } = useParams();
   const meta = posts.find(p => p.slug === slug);
   const content = postContent[slug];
@@ -284,9 +286,9 @@ function BlogPost() {
       <div className="blog-page">
         <div className="container">
           <p style={{ color: 'var(--text-secondary)', paddingTop: '8rem' }}>Post not found.</p>
-          <Link to="/blog" className="btn-secondary" style={{ marginTop: '1rem', display: 'inline-flex' }}>
+          <TransitionLink to="/blog" className="btn-secondary" style={{ marginTop: '1rem', display: 'inline-flex' }}>
             Back to blog
-          </Link>
+          </TransitionLink>
         </div>
       </div>
     );
@@ -295,13 +297,13 @@ function BlogPost() {
   return (
     <motion.div
       className="blog-page"
-      initial={{ opacity: 0, y: 24 }}
+      initial={arrived ? false : { opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
       <div className="container">
         <div className="post-container">
-          <Link to="/blog" className="post-back">← Blog</Link>
+          <TransitionLink to="/blog" className="post-back">← Blog</TransitionLink>
 
           <header className="post-header">
             <div className="post-meta">
@@ -309,7 +311,7 @@ function BlogPost() {
               <span className="post-sep">·</span>
               <span className="post-read-time">{meta.readTime} read</span>
             </div>
-            <h1 className="post-title">{meta.title}</h1>
+            <h1 className="post-title page-title">{meta.title}</h1>
             <div className="post-tags">
               {meta.tags.map(tag => (
                 <span key={tag} className="post-tag">{tag}</span>

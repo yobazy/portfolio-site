@@ -173,11 +173,18 @@ const Work = () => {
       <LayoutGroup>
         <div className="gallery-page work-page">
           <header className="gallery-header">
-            <h1>Development</h1>
+            <h1 className="page-title">Development</h1>
             <p>What I'm building on my own, the systems I've shipped at work, and where it started.</p>
             <WorkFilters
               filters={filters}
               facets={facets}
+              sections={[
+                ['personal', 'Personal', independent],
+                ['professional', 'Professional', systems],
+                ['earlier', 'Earlier (Demos)', earlier],
+              ]
+                .filter(([, , list]) => list.length)
+                .map(([key, label, list]) => ({ key, label, count: list.length }))}
               shown={shown.length}
               active={filtered}
               onChange={update}
@@ -255,6 +262,7 @@ const Work = () => {
                     title={project.title}
                     subtitle={project.org}
                     line={project.line}
+                    tags={project.skills?.slice(0, 3)}
                     onClick={() => open(project)}
                     animation={settle(`professional:${project.slug}`)}
                   />
@@ -265,13 +273,14 @@ const Work = () => {
 
           {earlier.length > 0 && (
             <section className={blockClass('earlier', 'is-quiet')} aria-labelledby="work-earlier">
-              {heading('earlier', 'Earlier')}
+              {heading('earlier', 'Earlier (Demos)')}
               <ShowcaseGrid variant="gallery-earlier">
                 {earlier.map((project) => (
                   <ShowcaseTile
                     key={mountKey(`earlier:${project.slug}`)}
                     title={project.title}
                     line={project.line}
+                    tags={project.skills?.slice(0, 3)}
                     img={project.img}
                     onClick={() => open(project)}
                     animation={settle(`earlier:${project.slug}`)}

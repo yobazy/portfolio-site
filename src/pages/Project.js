@@ -1,21 +1,25 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from '../components/HeroField';
 import { getProjectBySlug } from '../data/projects';
+import { TransitionLink, useArrival } from '../lib/pageTransition';
 
 const Project = () => {
   const { slug } = useParams();
   const project = getProjectBySlug(slug);
   const reduce = useReducedMotion();
+  // Arriving through a page transition already animated the page in.
+  const arrived = useArrival();
+  const still = reduce || arrived;
 
   if (!project || !project.hasCaseStudy) {
     return (
       <div className="case-study">
         <div className="case-study-inner">
           <p className="case-study-missing">Project not found.</p>
-          <Link to="/projects" className="post-back">
+          <TransitionLink to="/projects" className="post-back">
             Back to development
-          </Link>
+          </TransitionLink>
         </div>
       </div>
     );
@@ -25,7 +29,7 @@ const Project = () => {
     return (
       <motion.article
         className="case-study playground-page"
-        initial={reduce ? false : { opacity: 0, y: 20 }}
+        initial={still ? false : { opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
@@ -34,13 +38,13 @@ const Project = () => {
         </div>
 
         <div className="case-study-inner">
-          <Link to="/projects" className="post-back">
+          <TransitionLink to="/projects" className="post-back">
             Back to development
-          </Link>
+          </TransitionLink>
 
           <header className="case-study-header">
             <span className="case-study-org">In progress</span>
-            <h1>{project.title}</h1>
+            <h1 className="page-title">{project.title}</h1>
             <p className="playground-lede">{project.description}</p>
             {project.url && (
               <a
@@ -81,18 +85,18 @@ const Project = () => {
   return (
     <motion.article
       className="case-study"
-      initial={reduce ? false : { opacity: 0, y: 20 }}
+      initial={still ? false : { opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="case-study-inner">
-        <Link to="/projects" className="post-back">
+        <TransitionLink to="/projects" className="post-back">
           Back to development
-        </Link>
+        </TransitionLink>
 
         <header className="case-study-header">
           {project.org && <span className="case-study-org">{project.org}</span>}
-          <h1>{project.title}</h1>
+          <h1 className="page-title">{project.title}</h1>
         </header>
 
         <div className="case-study-body">

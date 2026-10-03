@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { NavBar } from './components/NavBar';
 import { Footer } from './components/Footer';
 import { Routes, Route, useLocation } from 'react-router-dom';
@@ -11,12 +11,15 @@ import Project from './pages/Project';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import { About } from './components/About';
+import { settlePageTransition } from './lib/pageTransition';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  // Before paint, so a page transition's "after" snapshot starts at the top.
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    settlePageTransition();
   }, [pathname]);
 
   return null;

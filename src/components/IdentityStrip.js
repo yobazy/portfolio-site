@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from './HeroField';
 import { sections } from '../data/sections';
+import { TransitionLink } from '../lib/pageTransition';
 
 // Each wire runs from the heading up to its nav link; the endpoints are
 // measured from the live nav, so routes must match the NavBar hrefs.
@@ -259,10 +259,15 @@ const IdentityStrip = () => {
 
         <nav className="hero-index" aria-label="Sections">
           {ROUTES.map((route) => (
-            <Link key={route.to} to={route.to} className="hero-index-link">
+            <TransitionLink
+              key={route.to}
+              to={route.to}
+              className="hero-index-link"
+              morph={(link) => link.querySelector('.hero-index-label')}
+            >
               <span className="hero-index-label">{route.label}</span>
               <span className="hero-index-note">{route.note}</span>
-            </Link>
+            </TransitionLink>
           ))}
         </nav>
       </motion.div>
@@ -273,10 +278,14 @@ const IdentityStrip = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Link to="/projects/ghosts-playground" className="hero-visual-caption">
+        <TransitionLink
+          to="/projects/ghosts-playground"
+          className="hero-visual-caption"
+          morph={(link) => link.querySelector('.hero-visual-title')}
+        >
           <span className="hero-visual-kicker">visuals</span>
           <span className="hero-visual-title">ghosts-playground</span>
-        </Link>
+        </TransitionLink>
       </motion.div>
     </section>
   );

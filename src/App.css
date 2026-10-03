@@ -3197,6 +3197,14 @@ nav.navbar {
   font-size: 0.68rem;
 }
 
+.showcase-tile-tags {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  margin-top: 0.6rem;
+}
+
 .showcase-grid-gallery-lead .showcase-tile-title {
   font-size: clamp(1.25rem, 2vw, 1.7rem);
 }
@@ -3275,58 +3283,35 @@ nav.navbar {
   gap: 0.75rem 1.5rem;
 }
 
-.work-types {
+/* Section jumps: the page is already grouped, so these scroll rather than hide. */
+.work-jump {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
-  isolation: isolate;
-  padding: 3px;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-pill);
-  background: var(--glass-bg);
+  gap: 0.25rem 1.5rem;
 }
 
-.work-type {
+.work-jump a {
   font-family: var(--font-display-medium);
   font-size: 0.85rem;
   color: var(--text-secondary);
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-pill);
-  padding: 0.4rem 0.9rem;
-  cursor: pointer;
-  position: relative;
-  /* Timed with the sliding pill, so the label never goes dark before it arrives. */
-  transition: color var(--duration-base) var(--ease-premium);
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
 }
 
-.work-type:hover:not(:disabled):not([aria-pressed='true']) {
+.work-jump a:hover {
   color: var(--text-primary);
 }
 
-.work-type[aria-pressed='true'] {
-  color: var(--bg-base);
-}
-
-/* The pressed fill, one element that slides between tabs. */
-.work-type-pill {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--text-primary);
-}
-
-.work-type:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.work-type-count {
+.work-jump-count {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   margin-left: 0.2rem;
   opacity: 0.7;
+}
+
+/* Lands a jumped-to section clear of the fixed nav. */
+.work-page .gallery-list-block h2 {
+  scroll-margin-top: 96px;
 }
 
 .work-filters-tools {
@@ -3436,7 +3421,7 @@ nav.navbar {
   color: var(--text-secondary);
 }
 
-.work-type:focus-visible,
+.work-jump a:focus-visible,
 .work-facet-trigger:focus-visible,
 .work-search:focus-visible,
 .work-facet-search:focus-visible,
@@ -3621,25 +3606,6 @@ nav.navbar {
   .work-filters-row > * {
     min-width: 0;
     max-width: 100%;
-  }
-
-  /* Scrolls sideways; the fade says there is more, and the end padding lets
-     the last tab scroll clear of it. */
-  .work-types {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-right: 2rem;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 2rem), transparent);
-  }
-
-  .work-type {
-    flex: none;
-  }
-
-  .work-type:focus-visible {
-    outline-offset: -2px;
   }
 
   /* Panels anchor to the whole toolbar so they never open off-screen. */
@@ -4173,8 +4139,130 @@ nav.navbar {
     animation: none;
   }
 
-  .work-filters-reveal,
-  .work-type {
+  .work-filters-reveal {
     transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── Page transitions (src/lib/pageTransition.js) ──────────────────────────
+   Going deeper or across, the next page swipes up over this one as a sheet:
+   rounded top corners that flatten as it lands, an amber hairline on its
+   leading edge, while this page drops back beneath it like a card. Going
+   back up (to home, or a post to the blog) plays it in reverse: this page
+   slides away down and the one beneath lifts back into place. A clicked name
+   that matches the next title flies there on the same curve (data-morph);
+   otherwise titles are just part of their pages. The nav stays put. */
+:root {
+  --swipe-duration: 0.85s;
+  /* Moves the instant you click, then settles long and soft. */
+  --swipe-ease: cubic-bezier(0.45, 0, 0.1, 1);
+}
+
+nav.navbar {
+  view-transition-name: site-nav;
+}
+
+.page-title {
+  width: fit-content;
+}
+
+:root[data-morph] .page-title {
+  view-transition-name: page-title;
+}
+
+/* Stack the two pages rather than cross-fading them. */
+::view-transition-image-pair(root) {
+  isolation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+  animation-duration: var(--swipe-duration);
+  animation-timing-function: var(--swipe-ease);
+  animation-fill-mode: both;
+}
+
+::view-transition-old(root) {
+  animation-name: page-recede;
+  transform-origin: 50% 0;
+}
+
+::view-transition-new(root) {
+  animation-name: page-sheet;
+  box-shadow:
+    0 -1px 0 var(--accent-border),
+    0 -40px 90px rgba(0, 0, 0, 0.75);
+}
+
+::view-transition-group(page-title) {
+  animation-duration: var(--swipe-duration);
+  animation-timing-function: var(--swipe-ease);
+}
+
+::view-transition-old(page-title),
+::view-transition-new(page-title) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--ease-premium);
+}
+
+/* Back up: the current page is the sheet, sliding away over the one beneath. */
+:root[data-swipe='back']::view-transition-old(root) {
+  animation-name: page-sheet-leave;
+  z-index: 1;
+  box-shadow:
+    0 -1px 0 var(--accent-border),
+    0 -40px 90px rgba(0, 0, 0, 0.75);
+}
+
+:root[data-swipe='back']::view-transition-new(root) {
+  animation-name: page-emerge;
+  transform-origin: 50% 0;
+  box-shadow: none;
+}
+
+::view-transition-group(site-nav) {
+  animation-duration: var(--duration-base);
+}
+
+@keyframes page-recede {
+  to {
+    transform: translateY(-6vh) scale(0.92);
+    border-radius: 28px;
+    filter: brightness(0.3) saturate(0.6);
+  }
+}
+
+@keyframes page-emerge {
+  from {
+    transform: translateY(-6vh) scale(0.92);
+    border-radius: 28px;
+    filter: brightness(0.3) saturate(0.6);
+  }
+}
+
+@keyframes page-sheet-leave {
+  to {
+    transform: translateY(100vh);
+    border-radius: 32px 32px 0 0;
+  }
+}
+
+/* Rounded with border-radius, not clip-path, so the hairline and shadow show. */
+@keyframes page-sheet {
+  from {
+    transform: translateY(100vh);
+    border-radius: 32px 32px 0 0;
+  }
+  70% {
+    border-radius: 14px 14px 0 0;
+  }
+  to {
+    transform: none;
+    border-radius: 0;
   }
 }
