@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { sectionFor } from '../data/sections';
+import { TransitionLink } from '../lib/pageTransition';
 
 export const sectionHeadingId = (to) => `home-${sectionFor(to).label.toLowerCase()}`;
 
@@ -30,10 +30,15 @@ const SectionHead = ({ to, linkLabel }) => {
           variants={{ off: { scaleX: 0 }, on: { scaleX: 1 } }}
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
         />
-        <Link to={to} className="wire-head-link" aria-label={linkLabel}>
+        <TransitionLink
+          to={to}
+          className="wire-head-link"
+          aria-label={linkLabel}
+          morph={(link) => link.closest('.wire-head-row')?.querySelector('h2')}
+        >
           <span className="wire-head-link-text">{linkLabel}</span>
           <span className="wire-head-link-arrow" aria-hidden="true">→</span>
-        </Link>
+        </TransitionLink>
       </div>
     </motion.header>
   );

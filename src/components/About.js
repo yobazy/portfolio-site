@@ -1,8 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import portrait from '../assets/img/about.JPG';
+import { useArrival } from '../lib/pageTransition';
 
 export const About = () => {
   const reduce = useReducedMotion();
+  // Arriving through a page transition already animated the page in.
+  const arrived = useArrival();
+  const still = reduce || arrived;
 
   const desc =
     "I'm Bazil, a senior software developer. Most recently I was at Metrolinx, building cloud architecture and CN integrations for Ontario's railway operations. Azure Container Apps, React, Node.js, the whole stack. I got into software after a civil engineering degree (Bachelor's and Master's) at the University of Alberta. Systems thinking from that carried over.";
@@ -47,7 +51,7 @@ export const About = () => {
       <div className="about-page-inner">
         <div className="about-intro">
           <motion.figure
-            initial={reduce ? false : { opacity: 0, y: 16 }}
+            initial={still ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="about-portrait"
@@ -59,12 +63,12 @@ export const About = () => {
           </motion.figure>
 
           <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
+            initial={still ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="about-content"
           >
-            <h1>About</h1>
+            <h1 className="page-title">About</h1>
             <div className="about-text">
               <p>{desc}</p>
               <p>{desc2}</p>
@@ -73,7 +77,7 @@ export const About = () => {
         </div>
 
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
+          initial={still ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="about-experience"

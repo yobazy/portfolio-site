@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { TransitionLink } from '../lib/pageTransition';
 import navIcon1 from '../assets/img/nav-icon1.svg';
 import navIcon2 from '../assets/img/nav-icon2.svg';
 
@@ -44,9 +45,9 @@ export const NavBar = () => {
         {isHome && !pastHero ? (
           <span className="navbar-spacer" aria-hidden="true" />
         ) : (
-          <Link to="/" className="navbar-logo">
+          <TransitionLink to="/" className="navbar-logo">
             Hey, it's Baz.
-          </Link>
+          </TransitionLink>
         )}
         <button
           className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
@@ -61,18 +62,30 @@ export const NavBar = () => {
 
         <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`}>
           <div className="nav-links">
-            <Link to="/projects" className={isActive('/projects') ? 'active' : ''}>
+            <TransitionLink
+              to="/projects"
+              className={isActive('/projects') ? 'active' : ''}
+            >
               Development
-            </Link>
-            <Link to="/media" className={isActive('/media') ? 'active' : ''}>
+            </TransitionLink>
+            <TransitionLink
+              to="/media"
+              className={isActive('/media') ? 'active' : ''}
+            >
               Media
-            </Link>
-            <Link to="/blog" className={isActive('/blog') ? 'active' : ''}>
+            </TransitionLink>
+            <TransitionLink
+              to="/blog"
+              className={isActive('/blog') ? 'active' : ''}
+            >
               Blog
-            </Link>
-            <Link to="/about" className={isActive('/about') ? 'active' : ''}>
+            </TransitionLink>
+            <TransitionLink
+              to="/about"
+              className={isActive('/about') ? 'active' : ''}
+            >
               About
-            </Link>
+            </TransitionLink>
           </div>
 
           <div className="social-icons-container mobile-only">

@@ -11,7 +11,7 @@ const Media = () => {
   return (
     <div className="gallery-page">
       <header className="gallery-header">
-        <h1>Media</h1>
+        <h1 className="page-title">Media</h1>
         <p>
           Photography from the field.{' '}
           <a href={PIXIESET_URL} target="_blank" rel="noopener noreferrer">

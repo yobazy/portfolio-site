@@ -24,3 +24,5 @@ yarn-error.log*
 
 # browser automation output
 /.playwright-mcp
+
+__pycache__/

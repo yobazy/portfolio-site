@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { TransitionLink } from '../lib/pageTransition';
 import { motion } from 'framer-motion';
 
 const ShowcaseTile = ({
@@ -13,11 +13,14 @@ const ShowcaseTile = ({
   orientation,
   fit,
   as = 'auto',
+  // A few technologies, shown as a quiet line under the description.
+  tags,
   // Extra framer-motion props for the wrapper, e.g. layout animation on a filtered grid.
   animation,
 }) => {
   const kicker = subtitle && subtitle !== title ? subtitle : null;
   const isVisual = Boolean(img) || Boolean(field);
+  const tagLine = tags?.length ? <span className="showcase-tile-tags">{tags.join(' · ')}</span> : null;
   const className = [
     'showcase-tile',
     isVisual ? 'is-photo' : 'is-type',
@@ -38,6 +41,7 @@ const ShowcaseTile = ({
       <div className="showcase-tile-caption">
         <span className="showcase-tile-title">{title}</span>
         {line && <span className="showcase-tile-line">{line}</span>}
+        {tagLine}
         {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
       </div>
     </>
@@ -46,6 +50,7 @@ const ShowcaseTile = ({
       <div className="showcase-tile-copy">
         <span className="showcase-tile-title">{title}</span>
         {line && <span className="showcase-tile-line">{line}</span>}
+        {tagLine}
       </div>
       {kicker && <span className="showcase-tile-kicker">{kicker}</span>}
     </div>
@@ -62,9 +67,9 @@ const ShowcaseTile = ({
     const isInternal = href.startsWith('/');
     if (isInternal) {
       return wrap(
-        <Link to={href} className="showcase-tile-hit">
+        <TransitionLink to={href} className="showcase-tile-hit">
           {inner}
-        </Link>
+        </TransitionLink>
       );
     }
     return wrap(

@@ -312,12 +312,20 @@ export const projects = [
     featured: false,
     hasCaseStudy: false,
     tag: 'Next.js · Supabase',
-    line: 'A playlist for every day of the festival.',
+    line: 'Hear the lineup before you buy the ticket.',
     description:
-      'Festival companion that builds Spotify playlists from the artists playing each day. A ground-up rebuild of my bootcamp project in Next.js, Supabase, and Tailwind.',
+      'EDM event companion. Browse upcoming shows and festivals from EDMTrain and Resident Advisor, see who is playing, and preview every artist on Spotify. A ground-up rebuild of my bootcamp project in Next.js, Supabase, and the Spotify Web API.',
     skills: ['Next.js', 'TypeScript', 'Supabase', 'Spotify API'],
     img: imgFestify,
     url: 'https://github.com/yobazy/festify-2.0',
+    caseStudy: {
+      problem:
+        'Festival lineups are walls of names. Working out whether a show is worth it means looking up artists one by one, and listings from different sources rarely agree on what is on or who is playing.',
+      built:
+        'A sync script pulls events, artists, and gigs from EDMTrain and Resident Advisor into Supabase, then backfills artist images from Spotify. The Next.js App Router renders pages on the server from Postgres. Event pages order the lineup by artist popularity, artist pages preview top tracks, and a playlists page ranks upcoming events by lineup strength: headliner pull, depth, festival size, and how soon they are. Spotify tokens never reach the browser: search and top tracks go through server routes with a cached client-credentials token.',
+      outcome:
+        'Follow artists and save events without an account, and the home page recommends shows, including later dates for artists you follow. Sign in and connect Spotify, and saved playlists follow in your Spotify library too.',
+    },
   },
   {
     slug: 'link',

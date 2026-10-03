@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { TransitionLink } from '../lib/pageTransition';
 import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 import IdentityStrip from '../components/IdentityStrip';
@@ -104,13 +104,13 @@ function Home() {
           <ul className="home-work-list">
             {latest.map((post) => (
               <li key={post.slug}>
-                <Link to={`/blog/${post.slug}`} className="home-work-row home-post">
+                <TransitionLink to={`/blog/${post.slug}`} className="home-work-row home-post">
                   <span className="home-work-title">{post.title}</span>
                   <span className="home-work-line">{post.excerpt}</span>
                   <span className="home-post-meta">
                     {post.date} · {post.readTime}
                   </span>
-                </Link>
+                </TransitionLink>
               </li>
             ))}
           </ul>
