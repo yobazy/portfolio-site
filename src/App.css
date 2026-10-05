@@ -53,7 +53,7 @@
   /* Text */
   --text-primary:      #F0F0ED;
   --text-secondary:    #888884;
-  --text-muted:        #3A3A38;
+  --text-muted:        #7A7A75; /* 4.6:1 on bg-base; still a step below secondary */
   --text-accent:       #E8A400;
 
   /* Bootstrap overrides */
@@ -1808,6 +1808,56 @@ nav.navbar {
   margin-bottom: 0;
 }
 
+.footer-email {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.footer-email-link {
+  font-family: var(--font-display-medium);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 0.3em;
+  transition: text-decoration-color var(--duration-fast) ease;
+}
+
+.footer-email-link:hover {
+  color: var(--text-primary);
+  text-decoration-color: var(--accent);
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.75rem;
+  min-width: 5.5rem;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.footer-copy:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.footer-email-link:focus-visible,
+.footer-copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .copyright {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -2120,8 +2170,22 @@ nav.navbar {
 }
 
 /* Single post */
+.blog-page .container {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .blog-page .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+/* The reading column sits centered, like the case studies. */
 .post-container {
   max-width: 680px;
+  margin: 0 auto;
   padding-top: clamp(3rem, 8vw, 5rem);
   padding-bottom: var(--section-padding);
 }
@@ -2180,6 +2244,29 @@ nav.navbar {
 .post-body p {
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
+}
+
+/* Section breaks inside a post: a short amber rule, not a full-width line. */
+.post-body hr {
+  border: 0;
+  height: 1px;
+  width: 3rem;
+  margin: 3rem 0;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+/* Reading progress along the bottom edge of the nav. */
+.read-progress {
+  position: fixed;
+  top: 63px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  z-index: 1001;
+  pointer-events: none;
 }
 
 .post-body h2 {
@@ -2542,17 +2629,28 @@ nav.navbar {
   object-position: center;
 }
 
+/* Justified rows: each photo grows in proportion to its aspect ratio, so every
+   photo in a row lands at the same height and the row fills edge to edge.
+   The trailing spacer soaks up the last row so it isn't stretched. */
 .showcase-grid-media {
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-flow: dense;
+  --row-height: 340px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.showcase-grid-media .showcase-tile.is-landscape {
-  grid-column: span 3;
+.showcase-grid-media::after {
+  content: '';
+  flex-grow: 999;
+}
+
+.showcase-grid-media .showcase-tile {
+  --ar: 1.5;
+  flex: var(--ar) 1 calc(var(--ar) * var(--row-height));
+  aspect-ratio: var(--ar);
 }
 
 .showcase-grid-media .showcase-tile.is-portrait {
-  grid-column: span 2;
+  --ar: 0.6667;
 }
 
 .showcase-tile {
@@ -3973,19 +4071,13 @@ nav.navbar {
   .showcase-grid-gallery,
   .showcase-grid-gallery-lead,
   .showcase-grid-gallery-personal,
-  .showcase-grid-gallery-earlier,
-  .showcase-grid-media {
+  .showcase-grid-gallery-earlier {
     grid-template-columns: 1fr;
   }
 
-  .showcase-grid-media .showcase-tile,
-  .showcase-grid-media .showcase-tile.is-landscape,
-  .showcase-grid-media .showcase-tile.is-portrait {
-    grid-column: auto;
-    grid-row: auto;
-    aspect-ratio: 4 / 3;
-    min-height: 0;
-    height: auto;
+  .showcase-grid-media {
+    /* Low enough that a portrait and a landscape share a row on a phone. */
+    --row-height: min(150px, calc((100vw - 56px) / 2.2));
   }
 
   .showcase-grid-gallery .showcase-tile.is-type {
