@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { posts } from '../data/posts';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
 
@@ -277,6 +277,7 @@ const postContent = {
 
 function BlogPost() {
   const arrived = useArrival();
+  const { scrollYProgress } = useScroll();
   const { slug } = useParams();
   const meta = posts.find(p => p.slug === slug);
   const content = postContent[slug];
@@ -295,6 +296,9 @@ function BlogPost() {
   }
 
   return (
+    <>
+    {/* Outside the page wrapper: its entrance transform would anchor a fixed child. */}
+    <motion.div className="read-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
     <motion.div
       className="blog-page"
       initial={arrived ? false : { opacity: 0, y: 24 }}
@@ -325,6 +329,7 @@ function BlogPost() {
         </div>
       </div>
     </motion.div>
+    </>
   );
 }
 
