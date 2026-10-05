@@ -1,26 +1,26 @@
 export const posts = [
   {
     slug: 'build-it-while-its-warm',
-    title: 'Build it while it\'s warm',
+    title: 'Building ghosts-playground',
     date: 'September 2026',
-    readTime: '5 min',
-    excerpt: "ghosts-playground only exists because I could try an idea in the same minute I had it. On tight loops, live feedback, and why speed is a creative tool.",
+    readTime: '4 min',
+    excerpt: "A webcam, a projector and a pile of shaders. Most of what made it work came from seeing every change a frame later.",
     tags: ['creativity', 'webgl', 'side-projects'],
   },
   {
     slug: 'build-the-tool-you-can-see',
-    title: 'Build the tool you can see',
+    title: 'Keeping track of five coding agents',
     date: 'September 2026',
-    readTime: '5 min',
-    excerpt: "I built Nebula Desktop because I kept losing track of my own coding agents. When you can see the fix clearly, the fastest move is usually to just build it.",
+    readTime: '4 min',
+    excerpt: "I was running five Claude Code sessions at once and spending most of my time checking on them. So I built Nebula Desktop.",
     tags: ['tooling', 'workflow', 'agents'],
   },
   {
     slug: 'stop-burning-tokens',
-    title: "Avoid token burn",
+    title: 'Where my Claude tokens were going',
     date: 'March 2026',
-    readTime: '4 min',
-    excerpt: "More context doesn't always mean better results. Some habits that actually cost you when using Claude.",
+    readTime: '3 min',
+    excerpt: "I used to give Claude as much context as I could. Most of it was wasted. These are the habits that cost me the most.",
     tags: ['claude', 'llm', 'productivity'],
   }
 ];
