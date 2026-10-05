@@ -13,6 +13,8 @@ import imgMixvault from '../assets/img/mixvault.jpg';
 import imgInterviewPrep from '../assets/img/interview-prep.jpg';
 import imgExpecta from '../assets/img/expecta.jpg';
 import imgFestify from '../assets/img/festify.jpg';
+import imgObsidianRag from '../assets/img/obsidian-rag.jpg';
+import imgAbletonHelper from '../assets/img/ableton-helper.jpg';
 
 export const projects = [
   {
@@ -251,6 +253,7 @@ export const projects = [
     description:
       'A local RAG pipeline over an Obsidian vault. Notes are chunked and embedded with Voyage AI into pgvector, and Claude answers from what you actually wrote, citing the notes it used.',
     skills: ['Python', 'PostgreSQL', 'pgvector', 'Claude'],
+    img: imgObsidianRag,
     url: 'https://github.com/yobazy/obsidian-RAG-gpt',
     caseStudy: {
       problem:
@@ -296,6 +299,7 @@ export const projects = [
     description:
       'An AI arrangement assistant for Ableton Live 12. Put your loops in Session View, ask for tech house, and Claude lays out a genre-shaped arrangement in one batch through an MCP server and a Live Remote Script.',
     skills: ['Python', 'MCP', 'Claude', 'Ableton Live'],
+    img: imgAbletonHelper,
     caseStudy: {
       problem:
         'Making loops is the fun part. Turning them into a 224-bar track, section by section, is slow. Existing Ableton MCP servers send one request per change, so a single skeleton turns into about a hundred tool calls.',
