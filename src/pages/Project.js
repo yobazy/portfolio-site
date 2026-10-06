@@ -1,8 +1,43 @@
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from '../components/HeroField';
 import { getProjectBySlug } from '../data/projects';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
+
+// Clips loop silently, but only while on screen. With reduced motion they
+// stay on their poster frame and get controls instead.
+const LoopVideo = ({ src, poster, alt, reduce }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video || reduce || !('IntersectionObserver' in window)) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => {});
+        else video.pause();
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [reduce]);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      aria-label={alt}
+      muted
+      loop
+      playsInline
+      preload={reduce ? 'none' : 'metadata'}
+      controls={reduce}
+    />
+  );
+};
 
 const Project = () => {
   const { slug } = useParams();
@@ -69,6 +104,23 @@ const Project = () => {
               <p>{project.caseStudy.built}</p>
             </section>
           </div>
+
+          {project.media?.length > 0 && (
+            <div className="playground-media">
+              {project.media.map((item) => (
+                <figure
+                  key={item.src}
+                  className={`playground-media-item${item.wide ? ' is-wide' : ''}`}
+                >
+                  {item.type === 'video' ? (
+                    <LoopVideo {...item} reduce={Boolean(reduce)} />
+                  ) : (
+                    <img src={item.src} alt={item.alt} loading="lazy" />
+                  )}
+                </figure>
+              ))}
+            </div>
+          )}
 
           {project.skills?.length > 0 && (
             <ul className="case-study-stack">

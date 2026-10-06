@@ -7,6 +7,12 @@ import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
 import imgMyfi from '../assets/img/myfi-dashboard.png';
 import imgBarberbot from '../assets/img/barberbot.jpg';
 import imgPlayground from '../assets/img/ghosts-playground.jpg';
+import ghostsClipKaleido from '../assets/ghosts/clip-kaleido.mp4';
+import ghostsClipKaleidoPoster from '../assets/ghosts/clip-kaleido.jpg';
+import ghostsClipQuad from '../assets/ghosts/clip-quad.mp4';
+import ghostsClipQuadPoster from '../assets/ghosts/clip-quad.jpg';
+import ghostsStillGold from '../assets/ghosts/still-gold.jpg';
+import ghostsStillViolet from '../assets/ghosts/still-violet.jpg';
 import imgNebulaDesktop from '../assets/img/nebula-desktop.jpg';
 import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
@@ -148,6 +154,33 @@ export const projects = [
     line: 'Live visuals for a dark room.',
     url: 'https://ghosts.fyi',
     img: imgPlayground,
+    // Shot on ghosts.fyi. Wide items span the full row on the project page.
+    media: [
+      {
+        type: 'video',
+        src: ghostsClipKaleido,
+        poster: ghostsClipKaleidoPoster,
+        alt: 'A silhouette mirrored into a kaleidoscope of neon shapes',
+        wide: true,
+      },
+      {
+        type: 'image',
+        src: ghostsStillGold,
+        alt: 'A figure traced in molten gold, with echoes trailing behind',
+      },
+      {
+        type: 'image',
+        src: ghostsStillViolet,
+        alt: 'A face and raised hands broken into violet shards',
+      },
+      {
+        type: 'video',
+        src: ghostsClipQuad,
+        poster: ghostsClipQuadPoster,
+        alt: 'The same frame repeated four times in shifting color palettes',
+        wide: true,
+      },
+    ],
     description:
       'A camera playground: body as portal, traveling fields. Built for a room, prototyped at a desk, and live at ghosts.fyi. Open it with a webcam and step into frame.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
@@ -409,6 +442,10 @@ export const projects = [
     url: 'https://github.com/yobazy/buy-sell-website',
   },
 ];
+
+// The playground has its own page; every other project opens in the sheet.
+export const projectPage = (project) =>
+  project.kind === 'playground' ? `/projects/${project.slug}` : undefined;
 
 export const featuredProjects = projects.filter((project) => project.featured);
 
