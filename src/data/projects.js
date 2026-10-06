@@ -12,7 +12,7 @@ import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
 import imgInterviewPrep from '../assets/img/interview-prep.jpg';
 import imgExpecta from '../assets/img/expecta.jpg';
-import imgFestify from '../assets/img/festify.jpg';
+import imgFrontLeft from '../assets/img/front-left.jpg';
 import imgObsidianRag from '../assets/img/obsidian-rag.jpg';
 import imgAbletonHelper from '../assets/img/ableton-helper.jpg';
 
@@ -310,25 +310,27 @@ export const projects = [
     },
   },
   {
-    slug: 'festify',
-    title: 'Festify',
+    slug: 'front-left',
+    // Renamed from Festify; old links still resolve.
+    aliases: ['festify'],
+    title: 'Front Left',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
     tag: 'Next.js · Supabase',
     line: 'Hear the lineup before you buy the ticket.',
     description:
-      'EDM event companion. Browse upcoming shows and festivals from EDMTrain and Resident Advisor, see who is playing, and preview every artist on Spotify. A ground-up rebuild of my bootcamp project in Next.js, Supabase, and the Spotify Web API.',
+      'Music-event discovery for people who care who is on the bill. Every upcoming show and festival in your city, the lineup set like a poster, and every artist ready to play before you buy the ticket. A ground-up rebuild of my bootcamp project, Festify, in Next.js, Supabase, and the Spotify Web API.',
     skills: ['Next.js', 'TypeScript', 'Supabase', 'Spotify API'],
-    img: imgFestify,
+    img: imgFrontLeft,
     url: 'https://github.com/yobazy/festify-2.0',
     caseStudy: {
       problem:
-        'Festival lineups are walls of names. Working out whether a show is worth it means looking up artists one by one, and listings from different sources rarely agree on what is on or who is playing.',
+        'Listing sites treat a show as a date, a venue, and one headliner photo. Working out whether a night is worth it means looking up the rest of the bill one artist at a time, and EDMTrain and Resident Advisor rarely agree on what\'s on or who\'s playing.',
       built:
-        'A sync script pulls events, artists, and gigs from EDMTrain and Resident Advisor into Supabase, then backfills artist images from Spotify. The Next.js App Router renders pages on the server from Postgres. Event pages order the lineup by artist popularity, artist pages preview top tracks, and a playlists page ranks upcoming events by lineup strength: headliner pull, depth, festival size, and how soon they are. Spotify tokens never reach the browser: search and top tracks go through server routes with a cached client-credentials token.',
+        'A sync script pulls events, artists, and gigs from EDMTrain and Resident Advisor into Supabase and backfills artist images from Spotify. Next.js server components render every page from Postgres. The home page reads like a front page for your city: the strongest bill in the next two weeks, what\'s on tonight, a festival, and a big name in a small room. Festivals are set as contact sheets of the whole bill under a loupe that follows your pointer, and event pages list the lineup in the promoter\'s order. Spotify tokens stay on the server, with search and top tracks going through API routes on a cached client-credentials token.',
       outcome:
-        'Follow artists and save events without an account, and the home page recommends shows, including later dates for artists you follow. Sign in and connect Spotify, and saved playlists follow in your Spotify library too.',
+        'Follow artists and save events without an account, and the home page recommends shows, including later dates for artists you follow. Sign in and connect Spotify, and saved playlists land in your Spotify library too. The motion, from house lights on arrival to a logo that kicks at 124 BPM, switches off for reduced motion.',
     },
   },
   {
