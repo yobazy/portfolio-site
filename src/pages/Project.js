@@ -60,7 +60,7 @@ const Project = () => {
     );
   }
 
-  if (project.kind === 'playground') {
+  if (project.page === 'playground') {
     return (
       <motion.article
         className="case-study playground-page"

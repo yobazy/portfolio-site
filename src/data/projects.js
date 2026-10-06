@@ -26,6 +26,7 @@ export const projects = [
   {
     slug: '360-ops',
     title: '360 Internal Operations',
+    kind: 'web',
     org: 'Metrolinx',
     category: 'professional',
     featured: true,
@@ -47,6 +48,7 @@ export const projects = [
   {
     slug: 'cn-integration',
     title: 'CN-Metrolinx Integration',
+    kind: 'data',
     org: 'Metrolinx',
     category: 'professional',
     featured: true,
@@ -69,6 +71,7 @@ export const projects = [
   {
     slug: 'urbaneyes',
     title: 'UrbanEyes',
+    kind: 'web',
     org: 'UrbanEyes',
     category: 'professional',
     featured: true,
@@ -90,6 +93,7 @@ export const projects = [
   {
     slug: 'azure-pipelines',
     title: 'Azure Data Pipelines',
+    kind: 'data',
     org: 'ONxpress',
     category: 'professional',
     featured: false,
@@ -103,6 +107,7 @@ export const projects = [
   {
     slug: 'fabric-pipeline',
     title: 'Data Ingestion Pipeline',
+    kind: 'data',
     org: 'Contract',
     category: 'client',
     featured: false,
@@ -116,6 +121,7 @@ export const projects = [
   {
     slug: 'nebula-desktop',
     title: 'Nebula Desktop',
+    kind: 'apps',
     category: 'personal',
     lead: true,
     featured: false,
@@ -142,9 +148,10 @@ export const projects = [
     // Old links to /projects/playground-visuals still resolve.
     aliases: ['playground-visuals'],
     title: 'ghosts-playground',
+    kind: 'web',
     org: 'Personal',
     category: 'visuals',
-    kind: 'playground',
+    page: 'playground',
     status: 'In progress',
     lead: true,
     featured: true,
@@ -197,6 +204,7 @@ export const projects = [
   {
     slug: 'barberbot',
     title: 'BarberBot',
+    kind: 'ai',
     category: 'personal',
     featured: true,
     hasCaseStudy: false,
@@ -212,6 +220,7 @@ export const projects = [
   {
     slug: 'life-systems',
     title: 'Life Systems',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -234,6 +243,7 @@ export const projects = [
   {
     slug: 'mixvault',
     title: 'MixVault',
+    kind: 'apps',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -256,6 +266,7 @@ export const projects = [
   {
     slug: 'interview-prep',
     title: 'Interview Prep Dashboard',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -278,6 +289,7 @@ export const projects = [
   {
     slug: 'obsidian-rag',
     title: 'Obsidian RAG',
+    kind: 'ai',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -300,6 +312,7 @@ export const projects = [
   {
     slug: 'expecta',
     title: 'Expecta',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -323,6 +336,7 @@ export const projects = [
   {
     slug: 'ableton-helper',
     title: 'Ableton Helper',
+    kind: 'ai',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -347,6 +361,7 @@ export const projects = [
     // Renamed from Festify; old links still resolve.
     aliases: ['festify'],
     title: 'Front Left',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -369,6 +384,7 @@ export const projects = [
   {
     slug: 'link',
     title: 'Link',
+    kind: 'apps',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -383,6 +399,7 @@ export const projects = [
   {
     slug: 'myfi',
     title: 'MyFi',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -396,6 +413,7 @@ export const projects = [
   {
     slug: 'scheduler',
     title: 'Scheduler',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -408,6 +426,7 @@ export const projects = [
   {
     slug: 'jungle',
     title: 'Jungle',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -420,6 +439,7 @@ export const projects = [
   {
     slug: 'tinyapp',
     title: 'TinyApp',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -432,6 +452,7 @@ export const projects = [
   {
     slug: 'reasonable-realities',
     title: 'Reasonable Realities',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -445,7 +466,7 @@ export const projects = [
 
 // The playground has its own page; every other project opens in the sheet.
 export const projectPage = (project) =>
-  project.kind === 'playground' ? `/projects/${project.slug}` : undefined;
+  project.page === 'playground' ? `/projects/${project.slug}` : undefined;
 
 export const featuredProjects = projects.filter((project) => project.featured);
 

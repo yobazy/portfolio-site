@@ -8,7 +8,7 @@ const coarsePointer = () => window.matchMedia?.('(pointer: coarse)').matches;
 
 // A searchable, scrollable checklist behind a button, so the bar stays one row
 // whether there are three companies or fifty.
-const FacetMenu = ({ label, plural, options, selected, onToggle, onClear }) => {
+const FacetMenu = ({ label, plural, options, selected, onToggle, onClear, searchable = true }) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -24,7 +24,7 @@ const FacetMenu = ({ label, plural, options, selected, onToggle, onClear }) => {
 
   useEffect(() => {
     if (!open) return undefined;
-    if (!coarsePointer()) search.current?.focus();
+    if (!coarsePointer()) (search.current || list.current?.querySelector('input'))?.focus();
     const onDown = (event) => {
       if (!root.current?.contains(event.target)) setOpen(false);
     };
@@ -73,7 +73,7 @@ const FacetMenu = ({ label, plural, options, selected, onToggle, onClear }) => {
   };
 
   // Footer buttons unmount themselves; keep focus in the panel without raising a phone keyboard.
-  const refocus = () => (coarsePointer() ? trigger : search).current?.focus();
+  const refocus = () => (coarsePointer() || !searchable ? trigger : search).current?.focus();
 
   const boxes = () => [...(list.current?.querySelectorAll('input[type="checkbox"]') || [])];
 
@@ -84,7 +84,7 @@ const FacetMenu = ({ label, plural, options, selected, onToggle, onClear }) => {
       return;
     }
     if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
-    const stops = [trigger.current, search.current, ...boxes()];
+    const stops = [trigger.current, search.current, ...boxes()].filter(Boolean);
     const at = stops.indexOf(document.activeElement);
     if (at === -1) return;
     event.preventDefault();
@@ -129,16 +129,18 @@ const FacetMenu = ({ label, plural, options, selected, onToggle, onClear }) => {
 
       {open && (
         <div className="work-facet-panel" id={panelId} role="group" aria-label={`Filter by ${label.toLowerCase()}`}>
-          <input
-            ref={search}
-            type="search"
-            className="work-facet-search"
-            placeholder={`Search ${options.length} ${plural}`}
-            aria-label={`Search ${plural}`}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            onKeyDown={onSearchKey}
-          />
+          {searchable && (
+            <input
+              ref={search}
+              type="search"
+              className="work-facet-search"
+              placeholder={`Search ${options.length} ${plural}`}
+              aria-label={`Search ${plural}`}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={onSearchKey}
+            />
+          )}
           <ul className="work-facet-list" ref={list}>
             {visible.map((option) => {
               const checked = selected.includes(option.value);
@@ -276,6 +278,11 @@ const WorkFilters = ({
   const q = filters.q.trim();
 
   const chips = [
+    ...filters.kind.map((value) => ({
+      key: `kind-${value}`,
+      text: labelFor(facets.kind, value),
+      remove: () => toggle('kind', value),
+    })),
     ...filters.tech.map((value) => ({
       key: `tech-${value}`,
       text: labelFor(facets.tech, value),
@@ -317,6 +324,15 @@ const WorkFilters = ({
         </nav>
 
         <div className="work-filters-tools">
+          <FacetMenu
+            label="Kind"
+            plural="kinds"
+            options={facets.kind}
+            selected={filters.kind}
+            onToggle={(value) => toggle('kind', value)}
+            onClear={() => onChange({ kind: [] })}
+            searchable={false}
+          />
           <FacetMenu
             label="Tech"
             plural="technologies"
