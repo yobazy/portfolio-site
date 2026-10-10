@@ -388,13 +388,21 @@ export const projects = [
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
-    status: 'In progress',
+    status: 'Alpha',
     tag: 'React Native · Supabase',
-    line: 'Hangouts without the group chat.',
+    line: 'Make a plan. Friends tap to join.',
     description:
-      'Alpha mobile app for short-notice plans. A host sends a hangout to a few friends, people join in one tap, and silence counts as a no. React Native and Supabase.',
+      'Mobile app for short-notice plans. Every plan is a ticket: the time up top, who\'s in on the stub, and one button to join. Friends tap in until it\'s full, and no reply means no. React Native and Supabase, in alpha on TestFlight.',
     skills: ['React Native', 'Expo', 'TypeScript', 'Supabase'],
     img: imgLink,
+    caseStudy: {
+      problem:
+        'Small plans die in the group chat. Someone floats an idea, it turns into a poll, half the people never answer, and by the time it\'s settled the evening is gone.',
+      built:
+        'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and sends the plan to a few friends in about five taps, with a live preview of the ticket they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: invitees only see the place and time once they join, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Friends connect through a personal invite link that unfurls in iMessage, and push notifications go out through an Edge Function worker with retries.',
+      outcome:
+        'Version 1.1 is a full redesign around the ticket, from the feed to sign-in, and it\'s in alpha on TestFlight. Next on the roadmap: sharing plans straight into group chats, saved groups, and stickers.',
+    },
   },
   {
     slug: 'myfi',
