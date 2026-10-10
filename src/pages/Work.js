@@ -5,7 +5,7 @@ import ShowcaseGrid from '../components/ShowcaseGrid';
 import ShowcaseTile from '../components/ShowcaseTile';
 import ProjectSheet from '../components/ProjectSheet';
 import WorkFilters from '../components/WorkFilters';
-import { projects } from '../data/projects';
+import { projectPage, projects } from '../data/projects';
 import { ARRIVE, DURATION, EASE_PREMIUM } from '../lib/motion';
 import {
   applyFilters,
@@ -227,6 +227,7 @@ const Work = () => {
                       img={project.img}
                       fit={project.imgFit}
                       size="large"
+                      href={projectPage(project)}
                       onClick={() => open(project)}
                       animation={settle(`lead:${project.slug}`)}
                     />
@@ -243,6 +244,7 @@ const Work = () => {
                       line={project.line}
                       img={project.img}
                       fit={project.imgFit}
+                      href={projectPage(project)}
                       onClick={() => open(project)}
                       animation={settle(`personal:${project.slug}`)}
                     />

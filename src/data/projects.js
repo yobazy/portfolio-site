@@ -7,6 +7,12 @@ import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
 import imgMyfi from '../assets/img/myfi-dashboard.png';
 import imgBarberbot from '../assets/img/barberbot.jpg';
 import imgPlayground from '../assets/img/ghosts-playground.jpg';
+import ghostsClipKaleido from '../assets/ghosts/clip-kaleido.mp4';
+import ghostsClipKaleidoPoster from '../assets/ghosts/clip-kaleido.jpg';
+import ghostsClipQuad from '../assets/ghosts/clip-quad.mp4';
+import ghostsClipQuadPoster from '../assets/ghosts/clip-quad.jpg';
+import ghostsStillGold from '../assets/ghosts/still-gold.jpg';
+import ghostsStillViolet from '../assets/ghosts/still-violet.jpg';
 import imgNebulaDesktop from '../assets/img/nebula-desktop.jpg';
 import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
@@ -20,6 +26,7 @@ export const projects = [
   {
     slug: '360-ops',
     title: '360 Internal Operations',
+    kind: 'web',
     org: 'Metrolinx',
     category: 'professional',
     featured: true,
@@ -41,6 +48,7 @@ export const projects = [
   {
     slug: 'cn-integration',
     title: 'CN-Metrolinx Integration',
+    kind: 'data',
     org: 'Metrolinx',
     category: 'professional',
     featured: true,
@@ -63,6 +71,7 @@ export const projects = [
   {
     slug: 'urbaneyes',
     title: 'UrbanEyes',
+    kind: 'web',
     org: 'UrbanEyes',
     category: 'professional',
     featured: true,
@@ -84,6 +93,7 @@ export const projects = [
   {
     slug: 'azure-pipelines',
     title: 'Azure Data Pipelines',
+    kind: 'data',
     org: 'ONxpress',
     category: 'professional',
     featured: false,
@@ -97,6 +107,7 @@ export const projects = [
   {
     slug: 'fabric-pipeline',
     title: 'Data Ingestion Pipeline',
+    kind: 'data',
     org: 'Contract',
     category: 'client',
     featured: false,
@@ -110,6 +121,7 @@ export const projects = [
   {
     slug: 'nebula-desktop',
     title: 'Nebula Desktop',
+    kind: 'apps',
     category: 'personal',
     lead: true,
     featured: false,
@@ -136,9 +148,10 @@ export const projects = [
     // Old links to /projects/playground-visuals still resolve.
     aliases: ['playground-visuals'],
     title: 'ghosts-playground',
+    kind: 'web',
     org: 'Personal',
     category: 'visuals',
-    kind: 'playground',
+    page: 'playground',
     status: 'In progress',
     lead: true,
     featured: true,
@@ -148,6 +161,33 @@ export const projects = [
     line: 'Live visuals for a dark room.',
     url: 'https://ghosts.fyi',
     img: imgPlayground,
+    // Shot on ghosts.fyi. Wide items span the full row on the project page.
+    media: [
+      {
+        type: 'video',
+        src: ghostsClipKaleido,
+        poster: ghostsClipKaleidoPoster,
+        alt: 'A silhouette mirrored into a kaleidoscope of neon shapes',
+        wide: true,
+      },
+      {
+        type: 'image',
+        src: ghostsStillGold,
+        alt: 'A figure traced in molten gold, with echoes trailing behind',
+      },
+      {
+        type: 'image',
+        src: ghostsStillViolet,
+        alt: 'A face and raised hands broken into violet shards',
+      },
+      {
+        type: 'video',
+        src: ghostsClipQuad,
+        poster: ghostsClipQuadPoster,
+        alt: 'The same frame repeated four times in shifting color palettes',
+        wide: true,
+      },
+    ],
     description:
       'A camera playground: body as portal, traveling fields. Built for a room, prototyped at a desk, and live at ghosts.fyi. Open it with a webcam and step into frame.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
@@ -164,6 +204,7 @@ export const projects = [
   {
     slug: 'barberbot',
     title: 'BarberBot',
+    kind: 'ai',
     category: 'personal',
     featured: true,
     hasCaseStudy: false,
@@ -179,6 +220,7 @@ export const projects = [
   {
     slug: 'life-systems',
     title: 'Life Systems',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -201,6 +243,7 @@ export const projects = [
   {
     slug: 'mixvault',
     title: 'MixVault',
+    kind: 'apps',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -223,6 +266,7 @@ export const projects = [
   {
     slug: 'interview-prep',
     title: 'Interview Prep Dashboard',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -245,6 +289,7 @@ export const projects = [
   {
     slug: 'obsidian-rag',
     title: 'Obsidian RAG',
+    kind: 'ai',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -267,6 +312,7 @@ export const projects = [
   {
     slug: 'expecta',
     title: 'Expecta',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -290,6 +336,7 @@ export const projects = [
   {
     slug: 'ableton-helper',
     title: 'Ableton Helper',
+    kind: 'ai',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -314,6 +361,7 @@ export const projects = [
     // Renamed from Festify; old links still resolve.
     aliases: ['festify'],
     title: 'Front Left',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -336,20 +384,30 @@ export const projects = [
   {
     slug: 'link',
     title: 'Link',
+    kind: 'apps',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
-    status: 'In progress',
+    status: 'Alpha',
     tag: 'React Native · Supabase',
-    line: 'Hangouts without the group chat.',
+    line: 'Make a plan. Friends tap to join.',
     description:
-      'Alpha mobile app for short-notice plans. A host sends a hangout to a few friends, people join in one tap, and silence counts as a no. React Native and Supabase.',
+      'Mobile app for short-notice plans. Every plan is a ticket: the time up top, who\'s in on the stub, and one button to join. Friends tap in until it\'s full, and no reply means no. React Native and Supabase, in alpha on TestFlight.',
     skills: ['React Native', 'Expo', 'TypeScript', 'Supabase'],
     img: imgLink,
+    caseStudy: {
+      problem:
+        'Small plans die in the group chat. Someone floats an idea, it turns into a poll, half the people never answer, and by the time it\'s settled the evening is gone.',
+      built:
+        'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and sends the plan to a few friends in about five taps, with a live preview of the ticket they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: invitees only see the place and time once they join, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Friends connect through a personal invite link that unfurls in iMessage, and push notifications go out through an Edge Function worker with retries.',
+      outcome:
+        'Version 1.1 is a full redesign around the ticket, from the feed to sign-in, and it\'s in alpha on TestFlight. Next on the roadmap: sharing plans straight into group chats, saved groups, and stickers.',
+    },
   },
   {
     slug: 'myfi',
     title: 'MyFi',
+    kind: 'web',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
@@ -363,6 +421,7 @@ export const projects = [
   {
     slug: 'scheduler',
     title: 'Scheduler',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -375,6 +434,7 @@ export const projects = [
   {
     slug: 'jungle',
     title: 'Jungle',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -387,6 +447,7 @@ export const projects = [
   {
     slug: 'tinyapp',
     title: 'TinyApp',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -399,6 +460,7 @@ export const projects = [
   {
     slug: 'reasonable-realities',
     title: 'Reasonable Realities',
+    kind: 'web',
     category: 'earlier',
     featured: false,
     hasCaseStudy: false,
@@ -409,6 +471,10 @@ export const projects = [
     url: 'https://github.com/yobazy/buy-sell-website',
   },
 ];
+
+// The playground has its own page; every other project opens in the sheet.
+export const projectPage = (project) =>
+  project.page === 'playground' ? `/projects/${project.slug}` : undefined;
 
 export const featuredProjects = projects.filter((project) => project.featured);
 

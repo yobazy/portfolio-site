@@ -6,7 +6,7 @@ import IdentityStrip from '../components/IdentityStrip';
 import SectionHead, { sectionHeadingId } from '../components/SectionHead';
 import ShowcaseTile from '../components/ShowcaseTile';
 import ProjectSheet from '../components/ProjectSheet';
-import { getProjectBySlug } from '../data/projects';
+import { getProjectBySlug, projectPage } from '../data/projects';
 import { featuredMedia } from '../data/mediaItems';
 import { posts } from '../data/posts';
 
@@ -51,6 +51,7 @@ function Home() {
               img={project.img}
               fit={project.imgFit}
               size={i === 0 ? 'large' : 'default'}
+              href={projectPage(project)}
               onClick={() => open(project)}
             />
           ))}

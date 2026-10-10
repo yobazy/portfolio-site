@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 
 const linkLabel = (url) => {
   if (!url) return null;
-  if (url.includes('ghosts.fyi')) return 'Try it live at ghosts.fyi';
   if (url.includes('github.com')) return 'View on GitHub';
   return 'Open';
 };
@@ -85,7 +84,7 @@ const ProjectSheet = ({ project, onClose }) => {
 
           {project.url && (
             <a
-              className={`${project.kind === 'playground' ? 'btn-primary' : 'btn-secondary'} project-sheet-link`}
+              className="btn-secondary project-sheet-link"
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -95,20 +94,7 @@ const ProjectSheet = ({ project, onClose }) => {
             </a>
           )}
 
-          {project.caseStudy && project.kind === 'playground' && (
-            <div className="case-study-body">
-              <section>
-                <h3>The room</h3>
-                <p>{project.caseStudy.problem}</p>
-              </section>
-              <section>
-                <h3>Live and studio</h3>
-                <p>{project.caseStudy.built}</p>
-              </section>
-            </div>
-          )}
-
-          {project.caseStudy && project.kind !== 'playground' && (
+          {project.caseStudy && (
             <div className="case-study-body">
               <section>
                 <h3>The problem</h3>
