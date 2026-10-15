@@ -16,6 +16,14 @@ site memorable.
 - [ ] **Resume and availability.** A resume download and a status line
       ("Open to senior roles · …") in the footer. On hold.
 
+## Pending on project work
+
+- [ ] **MixVault screenshot and copy.** Waiting on the visual redesign
+      (`visual-redesign` branch). Retake the screenshot and update the copy
+      once it's merged.
+- [ ] **Observatory screenshot.** Waiting on the next build. The current image
+      predates the rename.
+
 ## Next level
 
 - [ ] **Living architecture diagrams.** Draw each professional system as an SVG
