@@ -4248,8 +4248,23 @@ nav.navbar {
   margin-bottom: 0.55rem;
 }
 
-.project-sheet-link {
+.project-sheet-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   margin: -0.75rem 0 2rem;
+}
+
+.project-sheet-gallery {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+}
+
+.project-sheet-gallery img {
+  width: 100%;
+  display: block;
+  background: var(--bg-elevated);
 }
 
 @media (max-width: 768px) {

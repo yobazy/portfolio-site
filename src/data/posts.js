@@ -12,7 +12,7 @@ export const posts = [
     title: 'Keeping track of five coding agents',
     date: 'September 2026',
     readTime: '4 min',
-    excerpt: "I was running five Claude Code sessions at once and spending most of my time checking on them. So I built Nebula Desktop.",
+    excerpt: "I was running five Claude Code sessions at once and spending most of my time checking on them. So I built an app for it, now called Observatory.",
     tags: ['tooling', 'workflow', 'agents'],
   },
   {

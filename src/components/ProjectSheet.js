@@ -82,16 +82,39 @@ const ProjectSheet = ({ project, onClose }) => {
           <h2 id="project-sheet-title">{project.title}</h2>
           {project.description && <p className="project-sheet-lede">{project.description}</p>}
 
-          {project.url && (
-            <a
-              className="btn-secondary project-sheet-link"
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {label}
-              <span aria-hidden="true">↗</span>
-            </a>
+          {(project.demo || project.url) && (
+            <div className="project-sheet-links">
+              {project.demo && (
+                <a
+                  className="btn-primary"
+                  href={project.demo.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.demo.label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+              {project.url && (
+                <a
+                  className="btn-secondary"
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {label}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </div>
+          )}
+
+          {project.gallery?.length > 0 && (
+            <div className="project-sheet-gallery">
+              {project.gallery.map((shot) => (
+                <img key={shot.src} src={shot.src} alt={shot.alt} loading="lazy" />
+              ))}
+            </div>
           )}
 
           {project.caseStudy && (
