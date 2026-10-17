@@ -10,6 +10,7 @@ import Media from './pages/Media';
 import Project from './pages/Project';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Now from './pages/Now';
 import { About } from './components/About';
 import { settlePageTransition } from './lib/pageTransition';
 
@@ -26,6 +27,9 @@ function ScrollToTop() {
 }
 
 function App() {
+  const { pathname } = useLocation();
+  // The pitch deck is its own screen: no nav, no footer.
+  const deck = pathname === '/now';
   return (
     <div className="App">
       <ScrollToTop />
@@ -38,8 +42,9 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/about" element={<About />} />
+        <Route path="/now" element={<Now />} />
       </Routes>
-      <Footer />
+      {!deck && <Footer />}
     </div>
   );
 }
