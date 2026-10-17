@@ -3678,6 +3678,12 @@ nav.navbar {
   object-position: top left;
 }
 
+.now-media.is-contain > img {
+  object-fit: contain;
+  object-position: center;
+  background: #0e101c;
+}
+
 .now-field {
   display: block;
 }

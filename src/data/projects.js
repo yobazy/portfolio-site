@@ -64,6 +64,7 @@ export const projects = [
     skills: ['Azure Container Apps', 'RabbitMQ', 'Microservices', 'Kubernetes'],
     facts: ['5 services', '20 queues · 10 consumers', 'Updates every 10–30 s'],
     img: imgCnDiagram,
+    imgFit: 'contain',
     caseStudy: {
       problem:
         'CN and Metrolinx needed to share live rail data while staying two separate systems. Updates had to land every 10 to 30 seconds, and each organization\'s data had to stay isolated.',

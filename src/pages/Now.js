@@ -212,7 +212,7 @@ const Now = () => {
               aria-hidden={!active}
             >
               <div className="now-project-inner">
-                <div className="now-media frame">
+                <div className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}`}>
                   <Media slide={slide} active={active} reduce={Boolean(reduce)} />
                 </div>
                 <div className="now-copy">
