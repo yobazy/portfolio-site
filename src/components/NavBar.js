@@ -1,132 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TransitionLink } from '../lib/pageTransition';
-import navIcon1 from '../assets/img/nav-icon1.svg';
-import navIcon2 from '../assets/img/nav-icon2.svg';
+import Rosette from './Rosette';
+import { nowSection, sections } from '../data/sections';
 
+const LINKEDIN = 'https://www.linkedin.com/in/bazilkhan';
+const GITHUB = 'https://github.com/yobazy';
+
+const LinkedInIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M6.5 8.6H3.2V21h3.3V8.6ZM4.9 3A1.9 1.9 0 1 0 4.9 6.9 1.9 1.9 0 0 0 4.9 3ZM21 13.4c0-3.3-1.8-5.1-4.5-5.1a4 4 0 0 0-3.5 1.9V8.6H9.8V21H13v-6.4c0-1.7.6-2.9 2.2-2.9 1.5 0 2.1 1 2.1 2.9V21H21v-7.6Z" />
+  </svg>
+);
+
+const GitHubIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.6 4.9.4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2Z" />
+  </svg>
+);
+
+const isActive = (pathname, to) =>
+  to === '/projects' ? pathname === '/projects' || pathname.startsWith('/projects/') : pathname === to || pathname.startsWith(`${to}/`);
+
+// Top bar on every screen; on phones the section links move to a dock at the
+// bottom, within reach of a thumb. Neither shows on /now, which is a deck.
 export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
+  const { pathname } = useLocation();
+  const isHome = pathname === '/';
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50);
-      // The home hero carries the name; the logo takes over once it's gone.
-      setPastHero(window.scrollY > window.innerHeight * 0.4);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
-    window.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location]);
-
-  const isHome = location.pathname === '/';
-
-  const isActive = (path) => {
-    if (path === '/projects') {
-      return location.pathname === '/projects' || location.pathname.startsWith('/projects/');
-    }
-    return location.pathname === path;
-  };
+  if (pathname === nowSection.to) return null;
 
   return (
-    <nav aria-label="Primary" className={`navbar ${scrolled || !isHome ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
-        {isHome && !pastHero ? (
-          <span className="navbar-spacer" aria-hidden="true" />
-        ) : (
-          <TransitionLink to="/" className="navbar-logo">
-            Hey, it's Baz.
+    <>
+      <nav aria-label="Primary" className={`navbar ${scrolled || !isHome ? 'scrolled' : ''}`}>
+        <div className="navbar-container">
+          <TransitionLink to="/" className="navbar-logo" aria-label="Bazil Khan, home">
+            <span>Bazil</span>
+            <Rosette size={12} />
+            <span>Khan</span>
           </TransitionLink>
-        )}
-        <button
-          className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation menu"
-          aria-expanded={isMenuOpen}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
 
-        <div className={`navbar-content ${isMenuOpen ? 'active' : ''}`}>
           <div className="nav-links">
-            <TransitionLink
-              to="/projects"
-              className={isActive('/projects') ? 'active' : ''}
-            >
-              Development
-            </TransitionLink>
-            <TransitionLink
-              to="/media"
-              className={isActive('/media') ? 'active' : ''}
-            >
-              Media
-            </TransitionLink>
-            <TransitionLink
-              to="/blog"
-              className={isActive('/blog') ? 'active' : ''}
-            >
-              Blog
-            </TransitionLink>
-            <TransitionLink
-              to="/about"
-              className={isActive('/about') ? 'active' : ''}
-            >
-              About
-            </TransitionLink>
+            {sections.map((section) => (
+              <TransitionLink
+                key={section.to}
+                to={section.to}
+                className={isActive(pathname, section.to) ? 'active' : ''}
+                aria-current={isActive(pathname, section.to) ? 'page' : undefined}
+              >
+                {section.label}
+              </TransitionLink>
+            ))}
           </div>
 
-          <div className="social-icons-container mobile-only">
-            <a
-              href="https://www.linkedin.com/in/bazilkhan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon-link"
-            >
-              <img src={navIcon1} alt="LinkedIn" className="social-icon-img" />
+          <div className="navbar-right">
+            <TransitionLink to={nowSection.to} className="navbar-now">
+              <span className="navbar-now-dot" aria-hidden="true" />
+              {nowSection.label}
+            </TransitionLink>
+            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="social-icon-link" aria-label="LinkedIn">
+              <LinkedInIcon />
             </a>
-            <a
-              href="https://github.com/yobazy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon-link"
-            >
-              <img src={navIcon2} alt="GitHub" className="social-icon-img" />
+            <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="social-icon-link" aria-label="GitHub">
+              <GitHubIcon />
             </a>
           </div>
         </div>
+      </nav>
 
-        <div className="social-icons-container desktop-only">
-          <a
-            href="https://www.linkedin.com/in/bazilkhan"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-icon-link"
+      <nav aria-label="Sections" className="dock">
+        {[...sections, nowSection].map((section) => (
+          <TransitionLink
+            key={section.to}
+            to={section.to}
+            className={`dock-item ${isActive(pathname, section.to) ? 'active' : ''} ${
+              section.to === nowSection.to ? 'is-now' : ''
+            }`}
+            aria-current={isActive(pathname, section.to) ? 'page' : undefined}
           >
-            <img src={navIcon1} alt="LinkedIn" className="social-icon-img" />
-          </a>
-          <a
-            href="https://github.com/yobazy"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-icon-link"
-          >
-            <img src={navIcon2} alt="GitHub" className="social-icon-img" />
-          </a>
-        </div>
-      </div>
-    </nav>
+            {section.to === nowSection.to && <span className="navbar-now-dot" aria-hidden="true" />}
+            {section.short}
+          </TransitionLink>
+        ))}
+      </nav>
+    </>
   );
 };
