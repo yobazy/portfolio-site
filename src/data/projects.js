@@ -39,6 +39,7 @@ export const projects = [
     description:
       'A portfolio management app for project managers and staff, built on the MERN stack. It shows each project\'s status, who\'s on it, what\'s blocking it, and whether it\'s still running. I was the tech lead and owned it end to end.',
     skills: ['MongoDB', 'Express', 'React', 'Node.js'],
+    facts: ['Tech lead, end to end', 'MERN', 'Every project in one view'],
     caseStudy: {
       problem:
         'Project information lived in separate tools, so getting a picture of the whole portfolio meant asking around. Portfolio managers had no easy way to see which projects were on track, who was staffed on them, or what was stuck.',
@@ -61,6 +62,7 @@ export const projects = [
     description:
       'Five containerized microservices on Azure Container Apps, connected by events. 20 queues and 10 RabbitMQ consumers move live rail data every 10 to 30 seconds, and each organization\'s data stays separate.',
     skills: ['Azure Container Apps', 'RabbitMQ', 'Microservices', 'Kubernetes'],
+    facts: ['5 services', '20 queues · 10 consumers', 'Updates every 10–30 s'],
     img: imgCnDiagram,
     caseStudy: {
       problem:
@@ -84,6 +86,7 @@ export const projects = [
     description:
       'Ported the codebase to Next.js, shipped map features, and deployed to Vercel.',
     skills: ['Next.js', 'React', 'Vercel', 'Maps'],
+    facts: ['Port to Next.js', 'Maps in the main flow', 'Deployed on Vercel'],
     caseStudy: {
       problem:
         'The product was on an older React setup. Maps and listings are the core of it, and they needed a stack the team could ship and host on its own.',
@@ -105,6 +108,7 @@ export const projects = [
     description:
       'Combined three source systems with automated business rules and transformations. The output feeds 20+ daily reports for finance and operations on a $1.6B rail infrastructure program.',
     skills: ['Azure', 'Data Pipelines', 'ETL', 'SQL'],
+    facts: ['3 source systems', '20+ daily reports', '$1.6B program'],
   },
   {
     slug: 'fabric-pipeline',
