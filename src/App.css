@@ -4,7 +4,7 @@
 @font-face {
   font-family: 'CentraNo2';
   src: url('./assets/font/CentraNo2-Bold.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -29,49 +29,53 @@
    DESIGN TOKENS
    ============================================================ */
 :root {
-  /* Backgrounds — warm near-black, no purple tint */
-  --bg-base:           #080808;
-  --bg-surface:        #0e0e0e;
-  --bg-elevated:       #141414;
+  /* Backgrounds: cold near-black with a midnight indigo wash (docs/BRAND.md) */
+  --bg-base:           #07080E;
+  --bg-surface:        #0C0E17;
+  --bg-elevated:       #121526;
+  --ink:               #181A3E;
+  --ink-deep:          #0F1130;
 
-  /* Single accent — amber/gold */
-  --accent:            #E8A400;
-  --accent-dim:        rgba(232, 164, 0, 0.10);
-  --accent-border:     rgba(232, 164, 0, 0.28);
+  /* One accent: the periwinkle glint. Deep variant for pressed states and packets. */
+  --accent:            #C4CDFF;
+  --accent-deep:       #7C8CFF;
+  --accent-dim:        rgba(196, 205, 255, 0.10);
+  --accent-border:     rgba(196, 205, 255, 0.28);
+  --accent-rgb:        196, 205, 255;
 
   /* Glassmorphism */
   --glass-bg:          rgba(255, 255, 255, 0.03);
   --glass-bg-hover:    rgba(255, 255, 255, 0.055);
   --glass-border:      rgba(255, 255, 255, 0.07);
-  --glass-border-accent: rgba(232, 164, 0, 0.28);
+  --glass-border-accent: rgba(196, 205, 255, 0.28);
   --glass-border-strong: rgba(255, 255, 255, 0.14);
   --glass-blur:        blur(20px);
-  --glass-glow:        0 0 40px rgba(232, 164, 0, 0.08);
-  --glass-glow-hover:  0 0 60px rgba(232, 164, 0, 0.15);
+  --glass-glow:        0 0 40px rgba(196, 205, 255, 0.08);
+  --glass-glow-hover:  0 0 60px rgba(196, 205, 255, 0.15);
   --glass-shadow:      0 8px 32px rgba(0, 0, 0, 0.5);
 
   /* Text */
-  --text-primary:      #F0F0ED;
-  --text-secondary:    #888884;
-  --text-muted:        #7A7A75; /* 4.6:1 on bg-base; still a step below secondary */
-  --text-accent:       #E8A400;
+  --text-primary:      #EEF0FA;
+  --text-secondary:    #9AA0BC;
+  --text-muted:        #7C829E; /* 4.6:1 on bg-base; still a step below secondary */
+  --text-accent:       #C4CDFF;
 
   /* Bootstrap overrides */
-  --bs-body-bg:        #080808;
-  --bs-body-color:     #F0F0ED;
+  --bs-body-bg:        #07080E;
+  --bs-body-color:     #EEF0FA;
 
   /* Legacy aliases */
-  --text-color:        #F0F0ED;
-  --primary-color:     #080808;
-  --secondary-color:   #141414;
-  --accent-color:      #E8A400;
+  --text-color:        #EEF0FA;
+  --primary-color:     #07080E;
+  --secondary-color:   #121526;
+  --accent-color:      #C4CDFF;
 
   /* Typography */
-  --font-display:      'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
-  --font-display-medium: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
-  --font-display-book: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
-  --font-mono:         'IBM Plex Mono', monospace;
-  --font-body:         'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
+  --font-display:      'Castoro', 'Iowan Old Style', Georgia, serif;
+  --font-display-medium: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-display-book: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:         'IBM Plex Mono', ui-monospace, monospace;
+  --font-body:         'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
 
   /* Spacing */
   --section-padding:   clamp(80px, 12vw, 140px);
@@ -115,28 +119,25 @@ body {
   flex-direction: column;
 }
 
-/* Film grain — analog texture overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.4;
-  mix-blend-mode: overlay;
-}
-
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
   margin: 0;
+}
+
+/* Castoro ships one weight; never let the browser fake a bold or an italic. */
+html {
+  font-synthesis: none;
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.28);
+  color: var(--text-primary);
 }
 
 h4, h5, h6 {
@@ -203,8 +204,8 @@ h4, h5, h6 {
   max-height: 900px;
   background: radial-gradient(
     ellipse at center,
-    rgba(232, 164, 0, 0.06) 0%,
-    rgba(232, 164, 0, 0.02) 45%,
+    rgba(196, 205, 255, 0.06) 0%,
+    rgba(196, 205, 255, 0.02) 45%,
     transparent 70%
   );
   border-radius: 50%;
@@ -224,7 +225,7 @@ h4, h5, h6 {
   max-height: 700px;
   background: radial-gradient(
     ellipse at center,
-    rgba(232, 164, 0, 0.03) 0%,
+    rgba(196, 205, 255, 0.03) 0%,
     transparent 65%
   );
   border-radius: 50%;
@@ -320,9 +321,9 @@ h4, h5, h6 {
 .banner h1 {
   font-family: var(--font-display);
   font-size: clamp(3.5rem, 9vw, 8rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 0.92;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
   margin-bottom: 2rem;
 }
@@ -417,7 +418,7 @@ h4, h5, h6 {
   gap: 0.5rem;
   background: var(--accent);
   border: none;
-  color: #080808;
+  color: #07080E;
   border-radius: 6px;
   transition:
     background var(--duration-base) var(--ease-premium),
@@ -429,9 +430,9 @@ h4, h5, h6 {
 
 .btn-primary:hover {
   background: #F0C040;
-  box-shadow: 0 0 24px rgba(232, 164, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 24px rgba(196, 205, 255, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
-  color: #080808;
+  color: #07080E;
 }
 
 .btn-secondary {
@@ -445,7 +446,7 @@ h4, h5, h6 {
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  box-shadow: inset 0 0 0 1px rgba(232, 164, 0, 0.4);
+  box-shadow: inset 0 0 0 1px rgba(196, 205, 255, 0.4);
   color: var(--text-primary);
   border-radius: 6px;
   transition:
@@ -457,9 +458,9 @@ h4, h5, h6 {
 }
 
 .btn-secondary:hover {
-  background: rgba(232, 164, 0, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(232, 164, 0, 0.8),
-              0 0 20px rgba(232, 164, 0, 0.12);
+  background: rgba(196, 205, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(196, 205, 255, 0.8),
+              0 0 20px rgba(196, 205, 255, 0.12);
   transform: translateY(-2px);
   color: var(--text-primary);
 }
@@ -486,17 +487,17 @@ nav.navbar {
 }
 
 .navbar.scrolled {
-  background: rgba(8, 8, 8, 0.88);
+  background: rgba(7, 8, 14, 0.88);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom-color: rgba(232, 164, 0, 0.10);
+  border-bottom-color: rgba(196, 205, 255, 0.10);
 }
 
 .navbar-logo {
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 500;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   text-decoration: none;
   white-space: nowrap;
@@ -601,12 +602,12 @@ nav.navbar {
 }
 
 .navbar:not(.scrolled) .nav-links a {
-  color: rgba(240, 240, 237, 0.82);
+  color: rgba(238, 240, 250, 0.82);
 }
 
 .navbar:not(.scrolled) .nav-links a:hover,
 .navbar:not(.scrolled) .nav-links a.active {
-  color: #F0F0ED;
+  color: #EEF0FA;
 }
 
 .nav-links a.active {
@@ -702,7 +703,7 @@ nav.navbar {
     left: 0;
     width: 100%;
     height: calc(100vh - 64px);
-    background: rgba(8, 8, 8, 0.97);
+    background: rgba(7, 8, 14, 0.97);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     flex-direction: column;
@@ -743,7 +744,7 @@ nav.navbar {
   }
 
   .nav-links a.active {
-    background: rgba(232, 164, 0, 0.06);
+    background: rgba(196, 205, 255, 0.06);
     border-radius: 6px;
     color: var(--text-primary);
   }
@@ -797,8 +798,8 @@ nav.navbar {
 .project-bx h2 {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.05em;
+  font-weight: 600;
+  letter-spacing: -0.025em;
   margin-bottom: 0.75rem;
   color: var(--text-primary);
 }
@@ -934,9 +935,9 @@ nav.navbar {
   height: 100%;
   background: linear-gradient(
     145deg,
-    rgba(232, 164, 0, 0.12) 0%,
-    rgba(8, 8, 8, 0.95) 55%,
-    rgba(232, 164, 0, 0.06) 100%
+    rgba(196, 205, 255, 0.12) 0%,
+    rgba(7, 8, 14, 0.95) 55%,
+    rgba(196, 205, 255, 0.06) 100%
   );
 }
 
@@ -1017,9 +1018,9 @@ nav.navbar {
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(8, 8, 8, 0.05) 0%,
-    rgba(8, 8, 8, 0.5) 50%,
-    rgba(8, 8, 8, 0.94) 100%
+    rgba(7, 8, 14, 0.05) 0%,
+    rgba(7, 8, 14, 0.5) 50%,
+    rgba(7, 8, 14, 0.94) 100%
   );
   padding: 1.5rem;
   display: flex;
@@ -1033,9 +1034,9 @@ nav.navbar {
 .project-card:not(.compact):hover .project-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(8, 8, 8, 0.12) 0%,
-    rgba(8, 8, 8, 0.72) 52%,
-    rgba(8, 8, 8, 0.96) 100%
+    rgba(7, 8, 14, 0.12) 0%,
+    rgba(7, 8, 14, 0.72) 52%,
+    rgba(7, 8, 14, 0.96) 100%
   );
   transition-duration: var(--card-hover-in);
   transition-timing-function: var(--ease-out-soft);
@@ -1044,8 +1045,8 @@ nav.navbar {
 .project-overlay h3 {
   font-family: var(--font-display);
   font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   margin-bottom: 0.45rem;
   color: var(--text-primary);
 }
@@ -1158,8 +1159,8 @@ nav.navbar {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 0.2rem 0.6rem;
-  background: rgba(232, 164, 0, 0.08);
-  border: 1px solid rgba(232, 164, 0, 0.2);
+  background: rgba(196, 205, 255, 0.08);
+  border: 1px solid rgba(196, 205, 255, 0.2);
   color: var(--accent);
   border-radius: 4px;
   transition:
@@ -1168,8 +1169,8 @@ nav.navbar {
 }
 
 .project-card:hover .skill-tag {
-  background: rgba(232, 164, 0, 0.16);
-  border-color: rgba(232, 164, 0, 0.4);
+  background: rgba(196, 205, 255, 0.16);
+  border-color: rgba(196, 205, 255, 0.4);
   transition-duration: var(--card-hover-in);
   transition-timing-function: var(--ease-out-soft);
 }
@@ -1181,7 +1182,7 @@ nav.navbar {
   top: 1rem;
   right: 1rem;
   background: var(--accent);
-  color: #080808;
+  color: #07080E;
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.1em;
@@ -1322,7 +1323,7 @@ nav.navbar {
 
 /* Selection */
 ::selection {
-  background: rgba(232, 164, 0, 0.25);
+  background: rgba(196, 205, 255, 0.25);
   color: var(--text-primary);
 }
 
@@ -1347,8 +1348,8 @@ nav.navbar {
 .skill-bx h2 {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
@@ -1435,8 +1436,8 @@ nav.navbar {
 }
 
 .skill-item:hover {
-  background: rgba(232, 164, 0, 0.06);
-  border-color: rgba(232, 164, 0, 0.2);
+  background: rgba(196, 205, 255, 0.06);
+  border-color: rgba(196, 205, 255, 0.2);
   color: var(--text-primary);
 }
 
@@ -1574,8 +1575,8 @@ nav.navbar {
 .about-content h2 {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 2rem;
   color: var(--text-primary);
 }
@@ -1794,8 +1795,8 @@ nav.navbar {
 .footer-content h3 {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   margin-bottom: 0.75rem;
 }
@@ -1906,7 +1907,7 @@ nav.navbar {
 
 .filter-button.active {
   background: var(--accent);
-  color: #080808;
+  color: #07080E;
   border-color: transparent;
 }
 
@@ -1960,7 +1961,7 @@ nav.navbar {
   left: 0;
   width: 100%;
   padding: 1.5rem;
-  background: linear-gradient(transparent, rgba(8, 8, 8, 0.9));
+  background: linear-gradient(transparent, rgba(7, 8, 14, 0.9));
   transform: translateY(100%);
   transition: transform var(--duration-base) var(--ease-premium);
 }
@@ -2005,7 +2006,7 @@ nav.navbar {
 }
 
 .play-button i {
-  color: #080808;
+  color: #07080E;
   font-size: 1.5rem;
 }
 
@@ -2025,7 +2026,7 @@ nav.navbar {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(8, 8, 8, 0.95);
+  background: rgba(7, 8, 14, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2130,8 +2131,8 @@ nav.navbar {
 .blog-list-title {
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 3vw, 1.75rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   line-height: 1.15;
@@ -2226,8 +2227,8 @@ nav.navbar {
 .post-title {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   line-height: 1.1;
   color: var(--text-primary);
   margin-bottom: 1.5rem;
@@ -2272,8 +2273,8 @@ nav.navbar {
 .post-body h2 {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
@@ -2384,8 +2385,8 @@ nav.navbar {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 46% 34% at 50% 58%, rgba(8, 8, 8, 0.72) 0%, rgba(8, 8, 8, 0.32) 55%, transparent 100%),
-    linear-gradient(to bottom, rgba(8, 8, 8, 0.35) 0%, transparent 28%, rgba(8, 8, 8, 0.5) 100%);
+    radial-gradient(ellipse 46% 34% at 50% 58%, rgba(7, 8, 14, 0.72) 0%, rgba(7, 8, 14, 0.32) 55%, transparent 100%),
+    linear-gradient(to bottom, rgba(7, 8, 14, 0.35) 0%, transparent 28%, rgba(7, 8, 14, 0.5) 100%);
   pointer-events: none;
 }
 
@@ -2502,18 +2503,18 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: clamp(3rem, 8.5vw, 7.5rem);
   font-weight: 500;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
   line-height: 0.95;
   color: var(--text-primary);
   margin: 0;
-  text-shadow: 0 2px 40px rgba(8, 8, 8, 0.55);
+  text-shadow: 0 2px 40px rgba(7, 8, 14, 0.55);
 }
 
 .hero-visual-sub {
   font-family: var(--font-display-book);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   line-height: 1.5;
-  color: rgba(240, 240, 237, 0.72);
+  color: rgba(238, 240, 250, 0.72);
   max-width: 30rem;
   margin: 1.4rem 0 0;
   text-wrap: balance;
@@ -2539,7 +2540,7 @@ nav.navbar {
   margin: 0;
   text-align: right;
   text-decoration: none;
-  text-shadow: 0 1px 12px rgba(8, 8, 8, 0.45);
+  text-shadow: 0 1px 12px rgba(7, 8, 14, 0.45);
 }
 
 .hero-visual-kicker {
@@ -2554,7 +2555,7 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   transition: color var(--duration-fast) var(--ease-premium);
 }
@@ -2621,7 +2622,7 @@ nav.navbar {
 }
 
 .showcase-tile.is-contain {
-  background: #1f2120;
+  background: #171A2C;
 }
 
 .showcase-tile.is-contain .showcase-tile-media img {
@@ -2710,7 +2711,7 @@ nav.navbar {
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 30% 20%, rgba(232, 164, 0, 0.16), transparent 50%),
+    radial-gradient(circle at 30% 20%, rgba(196, 205, 255, 0.16), transparent 50%),
     var(--bg-elevated);
 }
 
@@ -2720,7 +2721,7 @@ nav.navbar {
   right: 0;
   bottom: 0;
   padding: 2.25rem 1rem 0.9rem;
-  background: linear-gradient(to top, rgba(8, 8, 8, 0.82) 0%, rgba(8, 8, 8, 0.2) 55%, transparent 100%);
+  background: linear-gradient(to top, rgba(7, 8, 14, 0.82) 0%, rgba(7, 8, 14, 0.2) 55%, transparent 100%);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -2734,7 +2735,7 @@ nav.navbar {
 }
 
 .showcase-tile.is-photo .showcase-tile-line {
-  color: rgba(240, 240, 237, 0.78);
+  color: rgba(238, 240, 250, 0.78);
   max-width: 24rem;
 }
 
@@ -2751,7 +2752,7 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: clamp(0.95rem, 1.4vw, 1.2rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   line-height: 1.15;
 }
@@ -2806,7 +2807,7 @@ nav.navbar {
   display: block;
   font-size: clamp(1.45rem, 2.5vw, 2.15rem);
   font-weight: 500;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.025em;
   line-height: 1.08;
   text-wrap: balance;
 }
@@ -2854,7 +2855,7 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 3.4vw, 2.6rem);
   font-weight: 500;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
   line-height: 1;
   color: var(--text-primary);
   margin: 0;
@@ -3033,7 +3034,7 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: clamp(1.1rem, 1.6vw, 1.35rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
   transition: color var(--duration-fast) var(--ease-premium);
 }
@@ -3077,11 +3078,11 @@ nav.navbar {
 
 .home-photos .showcase-tile-caption {
   padding-top: 3.5rem;
-  background: linear-gradient(to top, rgba(8, 8, 8, 0.94) 0%, rgba(8, 8, 8, 0.6) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(7, 8, 14, 0.94) 0%, rgba(7, 8, 14, 0.6) 50%, transparent 100%);
 }
 
 .home-photos .showcase-tile-kicker {
-  text-shadow: 0 1px 8px rgba(8, 8, 8, 0.8);
+  text-shadow: 0 1px 8px rgba(7, 8, 14, 0.8);
 }
 
 /* Blog: same rows as "At work". */
@@ -3115,7 +3116,7 @@ nav.navbar {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 3.4rem);
   font-weight: 500;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
   line-height: 1.05;
   color: var(--text-primary);
   margin: 0;
@@ -3286,7 +3287,7 @@ nav.navbar {
 
 /* Screenshots of light UIs sit behind these captions, so the scrim runs deeper than on photos. */
 .work-page .showcase-tile-caption {
-  background: linear-gradient(to top, rgba(8, 8, 8, 0.92) 0%, rgba(8, 8, 8, 0.78) 45%, transparent 100%);
+  background: linear-gradient(to top, rgba(7, 8, 14, 0.92) 0%, rgba(7, 8, 14, 0.78) 45%, transparent 100%);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
   opacity: 1;
 }
@@ -3319,7 +3320,7 @@ nav.navbar {
 .gallery-list-block h2 {
   font-family: var(--font-display);
   font-size: 1.35rem;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   margin-bottom: 1.25rem;
   color: var(--text-primary);
 }
@@ -3772,7 +3773,7 @@ nav.navbar {
 
 .case-study-header h1 {
   font-size: clamp(2rem, 5vw, 3.25rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: 2.5rem;
 }
@@ -4065,7 +4066,7 @@ nav.navbar {
     font-family: var(--font-display);
     font-size: 1.5rem;
     font-weight: 500;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.02em;
     color: var(--text-primary);
   }
 
@@ -4212,7 +4213,7 @@ nav.navbar {
 }
 
 .project-sheet-media.is-contain {
-  background: #1f2120;
+  background: #171A2C;
 }
 
 .project-sheet-media.is-contain img {
@@ -4226,7 +4227,7 @@ nav.navbar {
 
 .project-sheet-body h2 {
   font-size: clamp(1.8rem, 4vw, 2.4rem);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
