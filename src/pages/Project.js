@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from '../components/HeroField';
 import { getProjectBySlug } from '../data/projects';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
+import Arrow from '../components/Arrow';
 
 // Clips loop silently, but only while on screen. With reduced motion they
 // stay on their poster frame and get controls instead.
@@ -53,6 +54,7 @@ const Project = () => {
         <div className="case-study-inner">
           <p className="case-study-missing">Project not found.</p>
           <TransitionLink to="/projects" className="post-back">
+            <Arrow dir="left" />
             Back to development
           </TransitionLink>
         </div>
@@ -74,12 +76,13 @@ const Project = () => {
 
         <div className="case-study-inner">
           <TransitionLink to="/projects" className="post-back">
+            <Arrow dir="left" />
             Back to development
           </TransitionLink>
 
           <header className="case-study-header">
-            <span className="case-study-org">In progress</span>
             <h1 className="page-title">{project.title}</h1>
+            <span className="case-study-org">{[project.status, project.tag].filter(Boolean).join(' · ')}</span>
             <p className="playground-lede">{project.description}</p>
             {project.url && (
               <a
@@ -88,8 +91,8 @@ const Project = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Try it live at ghosts.fyi
-                <span aria-hidden="true">↗</span>
+                <span>Try it live at ghosts.fyi</span>
+                <Arrow dir="up-right" />
               </a>
             )}
           </header>
@@ -143,12 +146,13 @@ const Project = () => {
     >
       <div className="case-study-inner">
         <TransitionLink to="/projects" className="post-back">
+          <Arrow dir="left" />
           Back to development
         </TransitionLink>
 
         <header className="case-study-header">
-          {project.org && <span className="case-study-org">{project.org}</span>}
           <h1 className="page-title">{project.title}</h1>
+          {project.org && <span className="case-study-org">{project.org}</span>}
         </header>
 
         <div className="case-study-body">

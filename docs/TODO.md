@@ -18,11 +18,37 @@ site memorable.
 
 ## Pending on project work
 
-- [ ] **MixVault screenshot and copy.** Waiting on the visual redesign
-      (`visual-redesign` branch). Retake the screenshot and update the copy
-      once it's merged.
-- [ ] **Observatory screenshot.** Waiting on the next build. The current image
-      predates the rename.
+- [x] **MixVault screenshot and copy.** Retaken 2026-10-17 from a fresh build
+      with `scripts/screenshots/mixvault.js`; copy covers Soulseek, the
+      Rekordbox bridge file and the Library.
+- [x] **Observatory screenshot.** Now the 0.6.1 release cover
+      (`nebula-desktop/docs/release/cover.jpg`). Retake when the app changes.
+- [ ] **House Rules and Afterglow.** Both repos are active (House Rules: 13
+      games, 80 commits; Afterglow: a JUCE audio visualizer at 0.2). Left off
+      the site on the October 15 decision; revisit.
+- [ ] **Link screenshots.** `link-app/docs/screenshots` has the Sage look
+      (Oct 15). The site still shows the earlier card. Retake when build 31
+      is out.
+
+## Redesign, October 17 2026 (branch `next-level`)
+
+- [x] **Midnight leopard palette and type.** Cold near-black, indigo wash,
+      one periwinkle glint. Castoro + Instrument Sans + IBM Plex Mono. See
+      `docs/BRAND.md`.
+- [x] **Touchable hero field.** Pointer pushes the silk, tap drops a ripple
+      and lights the name; rosettes printed tone on tone; renders only on
+      screen.
+- [x] **Phone dock** replaces the hamburger; **bottom sheet** with a pull
+      handle replaces the side sheet on phones.
+- [x] **/now pitch deck** for networking events: one slide a project, QR
+      code, email, share.
+- [x] **About layer stack** (Ground to Light) with real work per layer.
+- [x] **Project audit.** Copy and screenshots for Observatory, ghosts,
+      MixVault, Link, Life Systems, Interview Prep, Short Turn; three facts
+      per project for the sheet and the deck.
+- [ ] **Per-page OG image** in the new palette, and an OG image for `/now`.
+- [ ] **Ripple from the field up into the nav** (the packet idea) if the
+      wires ever come back; the field alone carries the hero now.
 
 ## Next level
 

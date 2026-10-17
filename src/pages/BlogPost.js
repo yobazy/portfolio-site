@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
 import { posts } from '../data/posts';
+import Arrow from '../components/Arrow';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
 
 const postContent = {
@@ -250,7 +251,10 @@ function BlogPost() {
     >
       <div className="container">
         <div className="post-container">
-          <TransitionLink to="/blog" className="post-back">← Blog</TransitionLink>
+          <TransitionLink to="/blog" className="post-back">
+            <Arrow dir="left" />
+            Blog
+          </TransitionLink>
 
           <header className="post-header">
             <div className="post-meta">
