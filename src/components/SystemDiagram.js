@@ -105,7 +105,7 @@ export const CN_DIAGRAM = {
   nodes: [
     { id: 'cn', x: 16, y: 126, w: 132, kind: 'org', label: 'CN', sub: 'Freight rail network' },
     { id: 'in1', x: 190, y: 44, w: 126, label: 'Ingest', sub: 'CN side' },
-    { id: 'mq', x: 304, y: 126, w: 152, kind: 'queue', label: 'RabbitMQ', sub: '20 queues · 10 consumers' },
+    { id: 'mq', x: 296, y: 126, w: 168, kind: 'queue', label: 'RabbitMQ', sub: '20 queues · 10 consumers' },
     { id: 'out1', x: 444, y: 44, w: 126, label: 'Deliver', sub: 'Metrolinx side' },
     { id: 'out2', x: 190, y: 208, w: 126, label: 'Deliver', sub: 'CN side' },
     { id: 'in2', x: 444, y: 208, w: 126, label: 'Ingest', sub: 'Metrolinx side' },
