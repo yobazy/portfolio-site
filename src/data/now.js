@@ -17,11 +17,6 @@ export const nowItems = [
     facts: ['Plain JavaScript and WebGL2, no build step', '50+ filters, sound-reactive', 'Live at ghosts.fyi'],
   },
   {
-    slug: 'cn-integration',
-    why: 'At Metrolinx I led the integration that moves live rail data between CN and Metrolinx. Two organizations, no shared database, updates every 10 to 30 seconds.',
-    facts: ['5 microservices on Azure Container Apps', '20 queues, 10 RabbitMQ consumers', 'Isolation designed in from day one'],
-  },
-  {
     slug: 'mixvault',
     why: 'Getting a playlist into Rekordbox meant hunting tracks one by one and ending up with duplicates. MixVault turns links into a clean crate and tells Rekordbox about it.',
     facts: ['Electron and React', 'SoundCloud, YouTube and Spotify in, Rekordbox out', 'Every change can be undone'],

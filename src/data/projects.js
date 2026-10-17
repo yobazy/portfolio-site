@@ -5,6 +5,7 @@ import imgReasonable from '../assets/img/proj-reasonable.png';
 import imgLink from '../assets/img/link-dark.jpg';
 import imgLinkInvite from '../assets/img/link-invite.jpg';
 import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
+import { CN_DIAGRAM } from '../components/SystemDiagram';
 import imgMyfi from '../assets/img/myfi-dashboard.jpg';
 import imgBarberbot from '../assets/img/barberbot.jpg';
 import imgPlayground from '../assets/img/ghosts-playground.jpg';
@@ -63,8 +64,9 @@ export const projects = [
       'Five containerized microservices on Azure Container Apps, connected by events. 20 queues and 10 RabbitMQ consumers move live rail data every 10 to 30 seconds, and each organization\'s data stays separate.',
     skills: ['Azure Container Apps', 'RabbitMQ', 'Microservices', 'Kubernetes'],
     facts: ['5 services', '20 queues · 10 consumers', 'Updates every 10–30 s'],
-    img: imgCnDiagram,
     imgFit: 'contain',
+    img: imgCnDiagram,
+    diagram: CN_DIAGRAM,
     caseStudy: {
       problem:
         'CN and Metrolinx needed to share live rail data while staying two separate systems. Updates had to land every 10 to 30 seconds, and each organization\'s data had to stay isolated.',
@@ -139,9 +141,9 @@ export const projects = [
     tag: 'Tauri · Rust',
     line: 'Every coding agent in one Mac window.',
     description:
-      'A macOS app for nebula, the daemon that runs Claude Code and Codex across a project\'s git worktrees. Every session in every project shows up in one window: what each one is asking, what finished while you were away, git state, one-click shipping, and what the week is costing. Built with Tauri, Rust, and React.',
-    facts: ['Tauri, Rust and React', 'Claude Code and Codex', 'v0.6.1, updates itself'],
+      'A macOS app for nebula, the daemon that runs coding agents like Claude Code and Codex across a project\'s git worktrees. Every session in every project shows up in one window, with git state, one-click shipping, and Claude usage. Built with Tauri, Rust, and React.',
     skills: ['Tauri', 'Rust', 'TypeScript', 'React'],
+    facts: ['Tauri, Rust and React', 'Claude Code and Codex', 'v0.6.1, updates itself'],
     img: imgObservatory,
     url: 'https://github.com/yobazy/observatory',
     demo: {
@@ -152,9 +154,9 @@ export const projects = [
       problem:
         'Running several coding agents at once across worktrees in a terminal UI means constantly checking which one is stuck on a permission prompt, which branch has unpushed work, and what the week is costing.',
       built:
-        'A Tauri app that speaks the same socket protocol as the nebula TUI, so both can be open on the same sessions. Rust handles the daemon connection, git state, and incremental parsing of Claude Code logs for usage. The React side keeps a queue of sessions waiting on you across every project, with notifications that say what each one is asking and buttons to answer permission prompts from the notification. Worktrees show their branch status, Ship merges a green PR and cleans up after it, an Activity view shows what every turn did, and projects group into folders with tags. Ideas is a list for things to start later, with a priority and a deadline, that can open as a task in one click.',
+        'A Tauri app that speaks the same socket protocol as the nebula TUI, so both can be open on the same sessions. Rust handles the daemon connection, git state, and incremental parsing of Claude Code logs for usage. The React side keeps a queue of sessions waiting on you across every project, with notifications that say what each one is asking and buttons to answer permission prompts. Worktrees show their branch status, Ship merges a green PR and cleans up after it, and the sidebar sums up what finished while you were away.',
       outcome:
-        'Version 0.6.1 is public on GitHub, with a signed DMG for Apple Silicon and Intel. On first launch it installs nebula at the version it was built for, and after that it updates itself in the background. A sandbox daemon with a fake agent CLI lets me develop it without touching real sessions.',
+        'In progress and public on GitHub, with a DMG to download. On first launch it installs nebula at the version it was built for, and after that it updates itself. A sandbox daemon with a fake agent CLI lets me develop it without touching real sessions.',
     },
   },
   {
@@ -203,16 +205,16 @@ export const projects = [
       },
     ],
     description:
-      'A webcam piece for a dark room. Your silhouette cuts a window into moving fluid, wave, and particle fields, and colored echoes of you trail behind. The room\'s sound can drive it: kicks punch the picture, bass pumps the rings. It\'s live at ghosts.fyi: open it, switch to your camera, and step into frame.',
+      'A webcam piece for a dark room. Your silhouette cuts a window into moving fluid, wave, and particle fields, and colored echoes of you trail behind. It\'s live at ghosts.fyi: open it with a webcam and step into frame.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
-    facts: ['WebGL2, no build step', '50+ filters and a dozen layers', 'Sound-reactive from the mic'],
+    facts: ['WebGL2, no build step', '50+ filters', 'Sound-reactive'],
     caseStudy: {
       problem:
         'Most visuals toys are desktop widgets or face filters. I wanted something that works at party scale: you walk into the room, your silhouette is the mask, and the visuals are already running.',
       built:
-        'Plain JavaScript and WebGL2 shaders, no build step. ghosts.fyi opens on a sample clip so something is moving the moment the page loads, and one tap switches to your camera. Frozen looks are the presets; swipe between them, or open the playground to mix more than fifty filters (fisheye, VHS, ascii, heat, moire, slit scan) and layers (waves, sparks, rim, ghosts, words), then save and share a look as a link. Studio mode is for making clips over a recording. The field behind this site\'s home page is a port of one of its modes.',
+        'Plain JavaScript and WebGL2 shaders. Live mode is for the party, with filters like fisheye and VHS, layers, sound reactivity, shuffle, and mixes you can save and share. Studio mode is for making clips. The field behind this site\'s home page is a port of one of its modes.',
       outcome:
-        'In progress and public at ghosts.fyi. It was made for a projector in a dark room, and the next step is running it as the backdrop at a real night.',
+        'In progress and public at ghosts.fyi. It needs a webcam, and it was made for a projector in a dark room.',
     },
   },
   {
@@ -226,17 +228,17 @@ export const projects = [
     tag: 'Electron · Node',
     line: 'Links in, a clean crate out.',
     description:
-      'Desktop crate tool for DJs. Paste SoundCloud, YouTube, or Spotify links and the tracks land in your crate folder, tagged, with cover art and a clean name. Match a streaming playlist against your Rekordbox collection, queue what\'s missing, and follow playlists through one Rekordbox bridge file.',
+      'Desktop crate tool for DJs. Paste SoundCloud, YouTube, or Spotify links and the tracks land in your crate folder. Then match a streaming playlist against your Rekordbox collection and queue what\'s missing.',
     skills: ['Electron', 'React', 'TypeScript', 'yt-dlp'],
-    facts: ['One crate folder is the library', 'Soulseek or YouTube for Spotify tracks', 'Every change can be undone'],
+    facts: ['One crate folder', 'SoundCloud, YouTube, Spotify in', 'Every change undoable'],
     img: imgMixvault,
     caseStudy: {
       problem:
         'Getting a playlist into Rekordbox meant working out by hand which tracks I already owned, finding the rest one by one, and ending up with a folder full of duplicates and low-bitrate rips.',
       built:
-        'An Electron app built around one crate folder and a paste field. Jobs run in a queue that skips files already in the crate. Spotify tracks are found on Soulseek, through a copy of slskd the app runs itself, or with a YouTube search; nothing is ripped from Spotify. Import reads a Rekordbox collection XML and sorts a playlist into in library, needs review, and missing. Followed playlists carry into Rekordbox through one bridge file. The Library measures loudness, reads every file\'s format and bitrate, flags what Rekordbox can\'t import, groups duplicates by tags and audio hash, and edits tags and file names through a preview.',
+        'An Electron app built around one crate folder and a link bar. Jobs run in a queue that skips files already in the crate, and Spotify playlists are read over OAuth (PKCE) and sourced from YouTube. Import reads a Rekordbox collection XML, sorts a playlist into in library, needs review, and missing, and exports an M3U. Crate health reads every file\'s format and bitrate, flags what Rekordbox can\'t import, and groups duplicates by tags and audio hash, with a suggestion for which copy to keep.',
       outcome:
-        'In progress, after a visual redesign in October 2026. Every change lands in one activity journal and can be undone, duplicates go to the system Trash, and an axe accessibility scan of the built app runs in CI.',
+        'In progress. Duplicates go to the system Trash, every change can be undone from the activity journal, and the app asks before touching anything Rekordbox already uses.',
     },
   },
   {
@@ -252,7 +254,7 @@ export const projects = [
     description:
       'A mobile app for short-notice plans. Send a plan to a few friends, they join with one tap, and no reply counts as a no. Built with React Native and Supabase, and in alpha on TestFlight.',
     skills: ['React Native', 'Expo', 'TypeScript', 'Supabase'],
-    facts: ['Expo and Supabase', 'TestFlight build 30', 'Links unfurl in iMessage and WhatsApp'],
+    facts: ['Expo and Supabase', 'TestFlight build 30', 'Links unfurl in iMessage'],
     img: imgLink,
     gallery: [
       {
@@ -266,7 +268,7 @@ export const projects = [
       built:
         'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and invites friends one by one or a whole group in a tap, with a live preview of the card they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: the place only shows once you\'ve joined, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Plan and group links unfurl in iMessage and WhatsApp as the plan\'s card with a Join button, and push notifications go out through an Edge Function worker with retries.',
       outcome:
-        'Version 1.1, build 30, is in alpha on TestFlight, and small fixes now reach phones over the air without a new build. Recent builds added stickers on plan cards (emoji, or cut out of your own photos), reactions in each plan\'s feed, time suggestions everyone can vote on, hosts styling a plan\'s card, and friend invites you approve. Saying yes gives a clink.',
+        'Version 1.1 (build 30) is in alpha on TestFlight. Plan cards take emoji stickers, feeds have reactions, time suggestions can be voted on, and small fixes ship over the air without a new build.',
     },
   },
   {
@@ -280,9 +282,9 @@ export const projects = [
     tag: 'React · Prisma',
     line: 'What you own, where it lives, and what it\'s for.',
     description:
-      'An app for the things you own. Each need, like the commute, the gym, or rain, is covered, flagged for an upgrade, or still a gap. It also maps where everything lives, picks outfits for the weather and your calendar, and builds packing lists for trips. An assistant, or any MCP client like Claude, can answer where your boots are and put things away.',
+      'An app for the things you own. Each need, like the commute, the gym, or rain, is covered, flagged for an upgrade, or still a gap. It also maps where everything lives, picks outfits for the weather and your calendar, and builds packing lists for trips. An assistant answers questions about your own stuff.',
     skills: ['React', 'TypeScript', 'Node.js', 'Prisma', 'MCP'],
-    facts: ['Status is derived, never stored', 'Floor plans and a 3D walkthrough', 'An MCP server for Claude'],
+    facts: ['Status is derived, never stored', 'Floor plans and a 3D walkthrough', 'MCP server for Claude'],
     img: imgLifeSystems,
     caseStudy: {
       problem:

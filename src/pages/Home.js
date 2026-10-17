@@ -62,11 +62,7 @@ function Home() {
       <IdentityStrip />
 
       <section className="home-section" aria-labelledby={sectionHeadingId('/projects')}>
-        <SectionHead
-          to="/projects"
-          linkLabel="All development"
-          aside="Three things I'm building on my own right now, and the systems I shipped at work."
-        />
+        <SectionHead to="/projects" linkLabel="All development" />
 
         <div className="home-lead">
           {lead.map((project, i) => (
@@ -86,7 +82,7 @@ function Home() {
         </div>
 
         <div className="home-work">
-          <h3 className="home-work-label">At work</h3>
+          <h3 className="home-work-label">Professional</h3>
           <ul className="home-work-list">
             {atWork.map((project) => (
               <li key={project.slug}>
@@ -105,7 +101,7 @@ function Home() {
       </section>
 
       <section className="home-section" aria-labelledby={sectionHeadingId('/media')}>
-        <SectionHead to="/media" linkLabel="All media" aside="Ricoh GR IIIx, mostly in canyons." />
+        <SectionHead to="/media" linkLabel="All media" />
         <div className="home-photos">
           {photos.map((item, i) => (
             <ShowcaseTile
@@ -155,20 +151,13 @@ function Home() {
       <section className="home-section home-about" aria-labelledby={sectionHeadingId('/about')}>
         <SectionHead to="/about" linkLabel="Read more" />
         <div className="home-about-body">
-          <p className="home-about-statement">
-            The system doesn&rsquo;t care which <em>layer</em> the problem is on.
-          </p>
           <div className="home-about-text">
             <p>
-              I did a Bachelor&rsquo;s and Master&rsquo;s in civil engineering at the University of
-              Alberta, then moved into software. Most recently I was a senior developer at
-              Metrolinx, working on Azure infrastructure and the CN integration. Before that, two
-              years of middleware for ONxpress on a $1.6B rail project, and a port to Next.js for a
-              startup in Berkeley.
-            </p>
-            <p>
-              Outside work I build tools for the things I care about: coding agents, DJing, live
-              visuals, plans with friends. I also shoot photos and video.
+              I did a Bachelor's and Master's in civil engineering at the University of Alberta,
+              then moved into software. Most recently I was a senior developer at Metrolinx,
+              working on Azure infrastructure and CN integrations. Before that, two years of
+              middleware for ONxpress on a $1.6B rail project, and a port to Next.js for a startup
+              in Berkeley. I also shoot photos and video.
             </p>
           </div>
         </div>

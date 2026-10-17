@@ -57,10 +57,7 @@ const IdentityStrip = () => {
           <h1 className="hero-heading">
             Hey, it&rsquo;s <em>Baz</em>.
           </h1>
-          <p className="hero-sub">
-            Software engineer in {CITY}. I build the systems underneath and the visuals on top,
-            and the system doesn&rsquo;t care which layer the problem is on.
-          </p>
+          <p className="hero-sub">Software + visuals.</p>
           <div className="hero-actions">
             <TransitionLink to="/now" className="hero-cta">
               <span>What I&rsquo;m building now</span>

@@ -12,9 +12,10 @@ moves, it lands. The site should feel like that. Nothing shouts. One accent.
 Large, calm type. Motion that behaves like a material (fluid, weight, settle),
 never like a slideshow.
 
-The brand line stays: **The system doesn't care which layer the problem is on.**
-Baz builds across layers, from Azure queues to shaders, and the site shows both
-at once: a live visual on the surface, systems underneath.
+The old line ("The system doesn't care which layer the problem is on") is
+retired; Baz never liked it as copy. There is no replacement slogan yet. The
+site shows the range instead of stating it: a live visual on the surface,
+systems underneath.
 
 ## Audience and use
 
@@ -43,9 +44,9 @@ indigo, inside the hero field, never as a loud pattern or on text.
 
 ## Type
 
-- **Castoro** for display. One word per headline in italic, the way the
-  wordmark does it. Tight tracking at large sizes, generous at small.
-- **Instrument Sans** for UI and body. Neutral, slightly technical, not Inter.
+- **Instrument Sans** for everything: headings at 600 with tight tracking,
+  body at 400. (Castoro with an italic accent word was tried on October 17 and
+  dropped the same day: it read as AI-made.)
 - **IBM Plex Mono** for labels, numbers and the status line. Same mono as
   Observatory's terminal.
 

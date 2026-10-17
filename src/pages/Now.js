@@ -134,12 +134,9 @@ const Now = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    What I&rsquo;m <em>building</em> right now.
+                    What I'm building right now.
                   </motion.h1>
-                  <p>
-                    {nowItems.length} things, one a slide. Swipe, or use the arrows. Tap any title to open the
-                    live thing.
-                  </p>
+                  <p>Swipe through, or use the arrows.</p>
                   <button type="button" className="now-cta" onClick={() => go(1)}>
                     <span>Start</span>
                     <Arrow />
@@ -153,10 +150,7 @@ const Now = () => {
               <section key="end" className="now-slide now-end" aria-label="Take it with you" aria-hidden={!active}>
                 <div className="now-end-inner">
                   <div className="now-end-copy">
-                    <h2>
-                      Take it <em>with</em> you.
-                    </h2>
-                    <p>Scan for this deck, or grab the email. I&rsquo;m in Toronto.</p>
+                    <h2>Get in touch</h2>
                     <div className="now-end-actions">
                       <a href={`mailto:${EMAIL}`} className="now-end-email">
                         {EMAIL}
@@ -226,7 +220,7 @@ const Now = () => {
                     </Title>
                   </h2>
                   <p className="now-line">{project.line}</p>
-                  <p className="now-why">{slide.why}</p>
+                  <p className="now-why">{project.description}</p>
                   <ul className="now-facts">
                     {slide.facts.map((fact) => (
                       <li key={fact}>{fact}</li>

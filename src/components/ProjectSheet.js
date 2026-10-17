@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import Arrow from './Arrow';
+import SystemDiagram, { CN_DIAGRAM } from './SystemDiagram';
 
 const linkLabel = (url) => {
   if (!url) return null;
@@ -115,10 +116,16 @@ const ProjectSheet = ({ project, onClose }) => {
           </button>
         </div>
 
-        {project.img && (
-          <div className={`project-sheet-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}`}>
-            <img src={project.img} alt="" />
+        {project.diagram ? (
+          <div className="project-sheet-media">
+            <SystemDiagram {...project.diagram} />
           </div>
+        ) : (
+          project.img && (
+            <div className={`project-sheet-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}`}>
+              <img src={project.img} alt="" />
+            </div>
+          )
         )}
 
         <div className="project-sheet-body">

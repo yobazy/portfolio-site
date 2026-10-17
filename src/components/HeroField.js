@@ -90,7 +90,7 @@ void main() {
   float trough = pow(smoothstep(0.0, 1.0, -field), 1.4);
   // Smaller and quieter on a tall screen, where a cell would be a hand wide.
   float cells = mix(8.0, 5.5, smoothstep(0.6, 1.4, aspect));
-  float ros = rosettes(q * cells + vec2(0.0, t * 0.3)) * uRosette * mix(0.55, 1.0, smoothstep(0.6, 1.4, aspect));
+  float ros = uRosette > 0.0 ? rosettes(q * cells + vec2(0.0, t * 0.3)) * uRosette * mix(0.55, 1.0, smoothstep(0.6, 1.4, aspect)) : 0.0;
 
   vec3 deep = vec3(0.027, 0.031, 0.055);
   vec3 ink = vec3(0.094, 0.102, 0.243);
@@ -134,7 +134,7 @@ const HeroField = ({
   reduce = false,
   touchable = false,
   intensity = 0.9,
-  rosette = 1,
+  rosette = 0,
   dprCap = 1.5,
   onRipple,
   className = 'hero-field',

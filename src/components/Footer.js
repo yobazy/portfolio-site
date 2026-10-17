@@ -33,10 +33,8 @@ export const Footer = () => {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-lead">
-          <p className="footer-title">
-            Let&rsquo;s <em>talk</em>.
-          </p>
-          <p className="footer-text">Roles, collaborations, or a note about the work.</p>
+          <p className="footer-title">Let's connect</p>
+          <p className="footer-text">Collaborations, roles, or a note about the work.</p>
           <div className="footer-email">
             <a href={`mailto:${EMAIL}`} className="footer-email-link">
               {EMAIL}

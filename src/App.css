@@ -44,7 +44,7 @@
   --accent-color:      #C4CDFF;
 
   /* Typography */
-  --font-display:      'Castoro', 'Iowan Old Style', Georgia, serif;
+  --font-display:      'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-display-medium: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-display-book: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
   --font-mono:         'IBM Plex Mono', ui-monospace, monospace;
@@ -97,9 +97,9 @@ body {
    ============================================================ */
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.02;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   margin: 0;
 }
 
@@ -303,9 +303,10 @@ nav.navbar::after {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  font-family: var(--font-display);
-  font-size: 1.02rem;
-  letter-spacing: 0.01em;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   text-decoration: none;
   white-space: nowrap;
@@ -628,8 +629,8 @@ nav.navbar::after {
 }
 
 .footer-title em {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  color: inherit;
 }
 
 .footer-text {
@@ -731,8 +732,9 @@ nav.navbar::after {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: var(--font-display);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
   color: var(--text-primary);
 }
 
@@ -1134,19 +1136,19 @@ nav.navbar::after {
 
 .hero-heading {
   font-family: var(--font-display);
-  font-size: clamp(3.6rem, 9.5vw, 6rem);
-  font-weight: 400;
+  font-size: clamp(3.4rem, 9vw, 6rem);
+  font-weight: 600;
   line-height: 0.96;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   color: var(--text-primary);
   margin: 0;
   text-shadow: 0 2px 40px rgba(7, 8, 14, 0.6);
 }
 
 .hero-heading em {
-  font-style: italic;
-  color: var(--accent);
-  transition: text-shadow 0.9s var(--ease-premium), color 0.3s var(--ease-premium);
+  font-style: normal;
+  color: inherit;
+  transition: text-shadow 0.9s var(--ease-premium);
 }
 
 .hero.is-lit .hero-heading em {
@@ -1293,8 +1295,8 @@ nav.navbar::after {
 }
 
 .hero-credit-title {
-  font-family: var(--font-display);
-  font-style: italic;
+  font-family: var(--font-body);
+  font-weight: 500;
   font-size: 1rem;
   color: var(--text-primary);
   transition: color var(--duration-fast) var(--ease-premium);
@@ -1641,9 +1643,9 @@ nav.navbar::after {
 
 .wire-head-row h2 {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
-  font-weight: 400;
-  letter-spacing: -0.025em;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
   line-height: 1;
   color: var(--text-primary);
   margin: 0;
@@ -1844,9 +1846,8 @@ nav.navbar::after {
 }
 
 .home-work-label {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -2014,17 +2015,15 @@ nav.navbar::after {
 /* About */
 .home-about-body {
   display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: clamp(2rem, 5vw, 6rem);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
   padding-top: 0.5rem;
 }
 
 .home-about-statement {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4.4vw, 4rem);
-  font-weight: 400;
-  letter-spacing: -0.025em;
+  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
   line-height: 1.04;
   color: var(--text-primary);
   margin: 0;
@@ -2033,21 +2032,21 @@ nav.navbar::after {
 }
 
 .home-about-statement em {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  color: inherit;
 }
 
 .home-about-text {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 32rem;
+  max-width: 44rem;
 }
 
 .home-about-text p {
   font-family: var(--font-body);
-  font-size: 1.02rem;
-  line-height: 1.65;
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  line-height: 1.5;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -2916,8 +2915,8 @@ nav.navbar::after {
 }
 
 .about-layers h2 em {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  color: inherit;
 }
 
 .about-layers-lede {
@@ -3296,9 +3295,9 @@ nav.navbar::after {
 }
 
 .project-sheet .case-study-body h3 {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.15rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
   letter-spacing: 0;
   color: var(--text-secondary);
   margin-bottom: 0.5rem;
@@ -3530,8 +3529,9 @@ nav.navbar {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: var(--font-display);
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
   color: var(--text-primary);
   text-decoration: none;
 }
@@ -3637,8 +3637,8 @@ nav.navbar {
 
 .now-cover-copy em,
 .now-end-copy em {
-  font-style: italic;
-  color: var(--accent);
+  font-style: normal;
+  color: inherit;
 }
 
 .now-cover-copy p {
@@ -3737,9 +3737,8 @@ a.now-title:hover .arrow {
 }
 
 .now-line {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
   color: var(--text-secondary);
   margin: 0;
 }
@@ -4068,4 +4067,73 @@ a.now-title:hover .arrow {
   .now-count {
     display: none;
   }
+}
+
+/* ============================================================
+   SYSTEM DIAGRAM
+   Nodes and wires with packets moving at the system's pace.
+   ============================================================ */
+.sysd {
+  margin: 0;
+  width: 100%;
+  background: var(--bg-elevated);
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  overflow: hidden;
+}
+
+.sysd svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sysd-wire {
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.28;
+  stroke-width: 1;
+}
+
+.sysd-packet {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 4px rgba(196, 205, 255, 0.9));
+}
+
+.sysd-node rect {
+  fill: rgba(255, 255, 255, 0.03);
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 1;
+}
+
+.sysd-node.is-org rect {
+  fill: rgba(24, 26, 62, 0.45);
+  stroke: rgba(196, 205, 255, 0.22);
+}
+
+.sysd-node.is-queue rect {
+  fill: rgba(196, 205, 255, 0.08);
+  stroke: rgba(196, 205, 255, 0.45);
+}
+
+.sysd-label {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  fill: var(--text-primary);
+}
+
+.sysd-sub {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  fill: var(--text-muted);
+}
+
+.sysd-note {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--text-muted);
 }

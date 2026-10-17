@@ -27,8 +27,8 @@ export const experience = [
   },
 ];
 
-// The brand line, taken literally: the layers Baz has shipped at, bottom to
-// top, each with real work from projects.js.
+// The layers Baz has shipped at, bottom to top, each with real work from
+// projects.js.
 const layers = [
   { name: 'Ground', what: 'Civil engineering, rail as the domain', work: [['Short Turn', 'short-turn'], ['Azure Data Pipelines', 'azure-pipelines']] },
   { name: 'Infrastructure', what: 'Azure, containers, queues, CI/CD', work: [['CN-Metrolinx Integration', 'cn-integration'], ['Azure Data Pipelines', 'azure-pipelines']] },
@@ -63,30 +63,26 @@ export const About = () => {
             <h1 className="page-title">About</h1>
             <div className="about-text">
               <p>
-                I&rsquo;m Bazil, a software engineer in Toronto. Most recently I was a senior developer at
-                Metrolinx, building cloud architecture and the CN integration for Ontario&rsquo;s railway
-                operations: Azure Container Apps, React, Node.js, the whole stack. I got into software after
-                a civil engineering degree (Bachelor&rsquo;s and Master&rsquo;s) at the University of Alberta,
-                and the systems thinking from that carried over.
+                I'm Bazil, a senior software developer. Most recently I was at Metrolinx, building
+                cloud architecture and CN integrations for Ontario's railway operations. Azure
+                Container Apps, React, Node.js, the whole stack. I got into software after a civil
+                engineering degree (Bachelor's and Master's) at the University of Alberta. Systems
+                thinking from that carried over.
               </p>
               <p>
-                Most of my recent work is backend-heavy: Azure infrastructure, API design, C#, and Node.js.
-                Before Metrolinx I spent two years at ONxpress building middleware for a $1.6B rail project,
-                and before that I was at a real estate startup in Berkeley porting their app to Next.js.
-                Outside work I build tools for coding agents, DJing and plans with friends, make live
-                visuals, and shoot photos and video. I care about how the work looks, not just how it runs.
+                Most of my recent work is backend-heavy: Azure infrastructure, API design, C#, and
+                Node.js. Before Metrolinx I spent two years at ONxpress building middleware for a
+                $1.6B rail project, and before that was at a real estate startup in Berkeley porting
+                their app to Next.js. I also shoot photography and video, and I care about how the
+                work looks, not just how it runs.
               </p>
             </div>
           </motion.div>
         </div>
 
         <motion.section {...rise(0.12)} className="about-layers" aria-labelledby="about-layers-title">
-          <h2 id="about-layers-title">
-            The system doesn&rsquo;t care which <em>layer</em> the problem is on.
-          </h2>
-          <p className="about-layers-lede">
-            Taken literally. The layers I&rsquo;ve shipped at, bottom to top, with the work at each one.
-          </p>
+          <h2 id="about-layers-title">Layers</h2>
+          <p className="about-layers-lede">The layers, top to bottom, and the work at each one.</p>
           <ol className="layer-stack">
             {[...layers].reverse().map((layer, i) => (
               <li key={layer.name} className="layer" style={{ '--i': i }}>
