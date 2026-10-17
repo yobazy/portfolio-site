@@ -1,8 +1,7 @@
-import { useCallback, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { TransitionLink } from '../lib/pageTransition';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
+
 import IdentityStrip from '../components/IdentityStrip';
 import HeroField from '../components/HeroField';
 import SectionHead, { sectionHeadingId } from '../components/SectionHead';
@@ -12,6 +11,14 @@ import Arrow from '../components/Arrow';
 import { getProjectBySlug, projectPage } from '../data/projects';
 import { featuredMedia } from '../data/mediaItems';
 import { posts } from '../data/posts';
+
+// The lightbox only loads once a photo is opened.
+const Lightbox = lazy(() =>
+  Promise.all([
+    import('yet-another-react-lightbox'),
+    import('yet-another-react-lightbox/styles.css'),
+  ]).then(([m]) => m)
+);
 
 const LEAD = ['observatory', 'ghosts-playground', 'mixvault'];
 const AT_WORK = ['cn-integration', '360-ops', 'azure-pipelines', 'urbaneyes'];
@@ -41,7 +48,13 @@ function Home() {
   // ghosts-playground's tile runs a small live field instead of a screenshot.
   const liveTile = (project) =>
     project.slug === 'ghosts-playground' ? (
-      <HeroField reduce={Boolean(reduce)} intensity={1.1} rosette={0} dprCap={1} className="tile-field" />
+      <HeroField
+        reduce={Boolean(reduce)}
+        intensity={1.1}
+        rosette={0}
+        dprCap={1}
+        className="tile-field"
+      />
     ) : undefined;
 
   return (
@@ -104,12 +117,19 @@ function Home() {
             />
           ))}
         </div>
-        <Lightbox
-          open={photo >= 0}
-          index={photo}
-          close={() => setPhoto(-1)}
-          slides={photos.map((item) => ({ src: item.src, alt: item.title }))}
-        />
+        {photo >= 0 && (
+          <Suspense fallback={null}>
+            <Lightbox
+              open
+              index={photo}
+              close={() => setPhoto(-1)}
+              slides={photos.map((item) => ({
+                src: item.src,
+                alt: item.title,
+              }))}
+            />
+          </Suspense>
+        )}
       </section>
 
       <section className="home-section" aria-labelledby={sectionHeadingId('/blog')}>

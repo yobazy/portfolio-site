@@ -147,183 +147,207 @@ const HeroField = ({
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
 
-    const gl = canvas.getContext('webgl', {
-      alpha: false,
-      antialias: false,
-      depth: false,
-      stencil: false,
-      premultipliedAlpha: false,
-      preserveDrawingBuffer: false,
-      powerPreference: 'low-power',
-    });
-
-    if (!gl) return undefined;
-
-    const vs = compile(gl, gl.VERTEX_SHADER, VERT);
-    const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
-    if (!vs || !fs) return undefined;
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.bindAttribLocation(program, 0, 'aPos');
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return undefined;
-    gl.useProgram(program);
-
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-
-    const u = (name) => gl.getUniformLocation(program, name);
-    const uRes = u('uRes');
-    const uTime = u('uTime');
-    const uPointer = u('uPointer');
-    const uPointerOn = u('uPointerOn');
-    const uRipples = u('uRipples');
-    gl.uniform1f(u('uIntensity'), intensity);
-    gl.uniform1f(u('uRosette'), rosette);
-
-    // Pointer state, eased toward its target every frame so it trails.
-    const pointer = { x: 0.5, y: 0.5, on: 0 };
-    const target = { x: 0.5, y: 0.5, on: 0 };
-    const ripples = new Float32Array(16).fill(-1);
-    let nextRipple = 0;
-
-    let frame = 0;
-    let running = !reduce;
-    let visible = true;
-    const origin = performance.now();
-    const seconds = () => (performance.now() - origin) / 1000;
-
-    const draw = (time) => {
-      gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-      gl.uniform2f(uRes, gl.drawingBufferWidth, gl.drawingBufferHeight);
-      gl.uniform1f(uTime, time);
-      gl.uniform2f(uPointer, pointer.x, pointer.y);
-      gl.uniform1f(uPointerOn, pointer.on);
-      gl.uniform4fv(uRipples, ripples);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-    };
-
-    const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
-      const width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
-      const height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
-      if (canvas.width !== width || canvas.height !== height) {
-        canvas.width = width;
-        canvas.height = height;
-      }
-      if (reduce) draw(5);
-    };
-
-    resize();
-    const observer = new ResizeObserver(resize);
-    observer.observe(canvas);
-
-    const tick = () => {
-      if (!running || !visible || document.hidden) {
-        frame = 0;
-        return;
-      }
-      pointer.x += (target.x - pointer.x) * 0.1;
-      pointer.y += (target.y - pointer.y) * 0.1;
-      pointer.on += (target.on - pointer.on) * 0.08;
-      draw(seconds());
-      frame = window.requestAnimationFrame(tick);
-    };
-    const start = () => {
-      if (!frame && running && visible && !document.hidden) frame = window.requestAnimationFrame(tick);
-    };
-
-    // Only render while on screen and while the tab is in front.
-    const io = new IntersectionObserver(
+    // Nothing is compiled until the canvas is on screen, so a field below the
+    // fold costs nothing on the way in.
+    let teardown = null;
+    let started = false;
+    const gate = new IntersectionObserver(
       ([entry]) => {
-        visible = entry.isIntersecting;
-        if (visible) start();
+        if (!entry.isIntersecting || started) return;
+        started = true;
+        gate.disconnect();
+        teardown = start();
       },
-      { threshold: 0.02 }
+      { rootMargin: '200px' }
     );
-    io.observe(canvas);
-    document.addEventListener('visibilitychange', start);
-    start();
+    gate.observe(canvas);
 
-    // Touch and pointer, on the hero rather than the canvas.
-    const surface = touchable && !reduce ? canvas.parentElement : null;
-    let down = null;
-    const place = (event) => {
-      const box = canvas.getBoundingClientRect();
-      return {
-        x: (event.clientX - box.left) / box.width,
-        y: 1 - (event.clientY - box.top) / box.height,
+    function start() {
+      const gl = canvas.getContext('webgl', {
+        alpha: false,
+        antialias: false,
+        depth: false,
+        stencil: false,
+        premultipliedAlpha: false,
+        preserveDrawingBuffer: false,
+        powerPreference: 'low-power',
+      });
+
+      if (!gl) return undefined;
+
+      const vs = compile(gl, gl.VERTEX_SHADER, VERT);
+      const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
+      if (!vs || !fs) return undefined;
+
+      const program = gl.createProgram();
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.bindAttribLocation(program, 0, 'aPos');
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return undefined;
+      gl.useProgram(program);
+
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+      const u = (name) => gl.getUniformLocation(program, name);
+      const uRes = u('uRes');
+      const uTime = u('uTime');
+      const uPointer = u('uPointer');
+      const uPointerOn = u('uPointerOn');
+      const uRipples = u('uRipples');
+      gl.uniform1f(u('uIntensity'), intensity);
+      gl.uniform1f(u('uRosette'), rosette);
+
+      // Pointer state, eased toward its target every frame so it trails.
+      const pointer = { x: 0.5, y: 0.5, on: 0 };
+      const target = { x: 0.5, y: 0.5, on: 0 };
+      const ripples = new Float32Array(16).fill(-1);
+      let nextRipple = 0;
+
+      let frame = 0;
+      let running = !reduce;
+      let visible = true;
+      const origin = performance.now();
+      const seconds = () => (performance.now() - origin) / 1000;
+
+      const draw = (time) => {
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        gl.uniform2f(uRes, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        gl.uniform1f(uTime, time);
+        gl.uniform2f(uPointer, pointer.x, pointer.y);
+        gl.uniform1f(uPointerOn, pointer.on);
+        gl.uniform4fv(uRipples, ripples);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
       };
-    };
-    const interactive = (event) =>
-      event.target instanceof Element && event.target.closest('a, button, input, [data-no-field]');
-    const onMove = (event) => {
-      if (event.pointerType === 'touch' && !down) return;
-      const at = place(event);
-      target.x = at.x;
-      target.y = at.y;
-      target.on = 1;
-    };
-    const onLeave = () => {
-      target.on = 0;
-    };
-    const onDown = (event) => {
-      if (interactive(event)) return;
-      down = { x: event.clientX, y: event.clientY, t: performance.now() };
-      const at = place(event);
-      target.x = at.x;
-      target.y = at.y;
-      target.on = 1;
-    };
-    const onUp = (event) => {
-      if (!down) return;
-      const moved = Math.hypot(event.clientX - down.x, event.clientY - down.y);
-      const held = performance.now() - down.t;
-      down = null;
-      if (event.pointerType === 'touch') target.on = 0;
-      if (moved > TAP_PX || held > TAP_MS) return;
-      const at = place(event);
-      const slot = nextRipple * 4;
-      ripples[slot] = at.x;
-      ripples[slot + 1] = at.y;
-      ripples[slot + 2] = seconds();
-      nextRipple = (nextRipple + 1) % 4;
-      rippleCallback.current?.(at);
-    };
-    const onCancel = () => {
-      down = null;
-      target.on = 0;
-    };
-    if (surface) {
-      surface.addEventListener('pointermove', onMove, { passive: true });
-      surface.addEventListener('pointerleave', onLeave);
-      surface.addEventListener('pointerdown', onDown, { passive: true });
-      surface.addEventListener('pointerup', onUp);
-      surface.addEventListener('pointercancel', onCancel);
+
+      const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+        const width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+        const height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+        if (reduce) draw(5);
+      };
+
+      resize();
+      const observer = new ResizeObserver(resize);
+      observer.observe(canvas);
+
+      const tick = () => {
+        if (!running || !visible || document.hidden) {
+          frame = 0;
+          return;
+        }
+        pointer.x += (target.x - pointer.x) * 0.1;
+        pointer.y += (target.y - pointer.y) * 0.1;
+        pointer.on += (target.on - pointer.on) * 0.08;
+        draw(seconds());
+        frame = window.requestAnimationFrame(tick);
+      };
+      const start = () => {
+        if (!frame && running && visible && !document.hidden)
+          frame = window.requestAnimationFrame(tick);
+      };
+
+      // Only render while on screen and while the tab is in front.
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          if (visible) start();
+        },
+        { threshold: 0.02 }
+      );
+      io.observe(canvas);
+      document.addEventListener('visibilitychange', start);
+      start();
+
+      // Touch and pointer, on the hero rather than the canvas.
+      const surface = touchable && !reduce ? canvas.parentElement : null;
+      let down = null;
+      const place = (event) => {
+        const box = canvas.getBoundingClientRect();
+        return {
+          x: (event.clientX - box.left) / box.width,
+          y: 1 - (event.clientY - box.top) / box.height,
+        };
+      };
+      const interactive = (event) =>
+        event.target instanceof Element &&
+        event.target.closest('a, button, input, [data-no-field]');
+      const onMove = (event) => {
+        if (event.pointerType === 'touch' && !down) return;
+        const at = place(event);
+        target.x = at.x;
+        target.y = at.y;
+        target.on = 1;
+      };
+      const onLeave = () => {
+        target.on = 0;
+      };
+      const onDown = (event) => {
+        if (interactive(event)) return;
+        down = { x: event.clientX, y: event.clientY, t: performance.now() };
+        const at = place(event);
+        target.x = at.x;
+        target.y = at.y;
+        target.on = 1;
+      };
+      const onUp = (event) => {
+        if (!down) return;
+        const moved = Math.hypot(event.clientX - down.x, event.clientY - down.y);
+        const held = performance.now() - down.t;
+        down = null;
+        if (event.pointerType === 'touch') target.on = 0;
+        if (moved > TAP_PX || held > TAP_MS) return;
+        const at = place(event);
+        const slot = nextRipple * 4;
+        ripples[slot] = at.x;
+        ripples[slot + 1] = at.y;
+        ripples[slot + 2] = seconds();
+        nextRipple = (nextRipple + 1) % 4;
+        rippleCallback.current?.(at);
+      };
+      const onCancel = () => {
+        down = null;
+        target.on = 0;
+      };
+      if (surface) {
+        surface.addEventListener('pointermove', onMove, { passive: true });
+        surface.addEventListener('pointerleave', onLeave);
+        surface.addEventListener('pointerdown', onDown, { passive: true });
+        surface.addEventListener('pointerup', onUp);
+        surface.addEventListener('pointercancel', onCancel);
+      }
+
+      return () => {
+        running = false;
+        window.cancelAnimationFrame(frame);
+        observer.disconnect();
+        io.disconnect();
+        document.removeEventListener('visibilitychange', start);
+        if (surface) {
+          surface.removeEventListener('pointermove', onMove);
+          surface.removeEventListener('pointerleave', onLeave);
+          surface.removeEventListener('pointerdown', onDown);
+          surface.removeEventListener('pointerup', onUp);
+          surface.removeEventListener('pointercancel', onCancel);
+        }
+        gl.deleteBuffer(buffer);
+        gl.deleteProgram(program);
+        gl.deleteShader(vs);
+        gl.deleteShader(fs);
+      };
     }
 
     return () => {
-      running = false;
-      window.cancelAnimationFrame(frame);
-      observer.disconnect();
-      io.disconnect();
-      document.removeEventListener('visibilitychange', start);
-      if (surface) {
-        surface.removeEventListener('pointermove', onMove);
-        surface.removeEventListener('pointerleave', onLeave);
-        surface.removeEventListener('pointerdown', onDown);
-        surface.removeEventListener('pointerup', onUp);
-        surface.removeEventListener('pointercancel', onCancel);
-      }
-      gl.deleteBuffer(buffer);
-      gl.deleteProgram(program);
-      gl.deleteShader(vs);
-      gl.deleteShader(fs);
+      gate.disconnect();
+      teardown?.();
     };
   }, [reduce, touchable, intensity, rosette, dprCap]);
 
