@@ -60,7 +60,9 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
     // Only a transition with a morph source lifts the next title out of its page.
     if (title) root.dataset.morph = '';
     else delete root.dataset.morph;
-    root.dataset.swipe = to === '/' || pathname.startsWith(`${to}/`) ? 'back' : 'forward';
+    // The deck is the hero adapting, not a new page: it fades in place.
+    const deck = to === '/now' || pathname === '/now';
+    root.dataset.swipe = deck ? 'fade' : to === '/' || pathname.startsWith(`${to}/`) ? 'back' : 'forward';
     arriving = true;
 
     const transition = document.startViewTransition(

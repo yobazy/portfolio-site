@@ -3458,6 +3458,33 @@ nav.navbar {
   box-shadow: none;
 }
 
+/* Fade: the deck appears over the same field the hero shows. */
+:root[data-swipe='fade']::view-transition-old(root),
+:root[data-swipe='fade']::view-transition-new(root) {
+  animation-duration: 0.45s;
+  animation-timing-function: var(--ease-premium);
+  box-shadow: none;
+  transform-origin: 50% 50%;
+}
+
+:root[data-swipe='fade']::view-transition-old(root) {
+  animation-name: page-fade-out;
+  z-index: 0;
+}
+
+:root[data-swipe='fade']::view-transition-new(root) {
+  animation-name: page-fade-in;
+  z-index: 1;
+}
+
+@keyframes page-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; }
+}
+
 ::view-transition-group(site-nav) {
   animation-duration: var(--duration-base);
 }
