@@ -15,6 +15,7 @@ const Media = lazy(() => import('./pages/Media'));
 const Project = lazy(() => import('./pages/Project'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
+const XrayLab = lazy(() => import('./pages/XrayLab'));
 const About = lazy(() => import('./components/About').then((m) => ({ default: m.About })));
 // The tweak panel: always in development, and anywhere with ?tweak in the URL
 // (handy on a Vercel preview, on a phone).
@@ -50,6 +51,7 @@ function App() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/about" element={<About />} />
           <Route path="/now" element={<Home />} />
+        <Route path="/lab/xray" element={<XrayLab />} />
         </Routes>
       </Suspense>
       <Footer />
