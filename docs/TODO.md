@@ -46,6 +46,16 @@ site memorable.
 - [x] **Project audit.** Copy and screenshots for Observatory, ghosts,
       MixVault, Link, Life Systems, Interview Prep, Short Turn; three facts
       per project for the sheet and the deck.
+- [ ] **In-site demos per project.** Baz's idea (Oct 17): each project gets
+      a small working demo on the site, even if it isn't the real software.
+      The CN diagram with moving packets is the first one. Planned:
+      Observatory (a session flips to "Waiting on you" with a prompt you can
+      answer), ghosts (the field plus filter chips, maybe a camera mask),
+      MixVault (paste a sample link, watch it land in the crate),
+      Link (a plan card you can join), Short Turn (one route with moving
+      vehicles and its grade), Life Systems (toggle items, status recomputes).
+      Build them into the `/now` slides and the sheets.
+- [ ] **A statement to replace the retired brand line**, if any. Baz decides.
 - [ ] **Per-page OG image** in the new palette, and an OG image for `/now`.
 - [ ] **Ripple from the field up into the nav** (the packet idea) if the
       wires ever come back; the field alone carries the hero now.
