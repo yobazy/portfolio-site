@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import Arrow from './Arrow';
-import SystemDiagram, { CN_DIAGRAM } from './SystemDiagram';
+import SystemDiagram from './SystemDiagram';
 
 const linkLabel = (url) => {
   if (!url) return null;
