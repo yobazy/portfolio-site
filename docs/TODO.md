@@ -78,9 +78,10 @@ site memorable.
 
 ## Also discussed
 
-- [x] **Group Development by kind of work.** Sections are Web apps, Desktop &
-      mobile, AI & automation, Data & infrastructure; Personal / Professional /
-      Earlier is a filter and a marker on every tile (Oct 18 2026).
+- [x] **Kinds on Development.** The page keeps its Personal / Professional /
+      Earlier sections; a row of kind buttons (Web apps, Desktop & mobile, AI &
+      automation, Data & infrastructure) filters them, and the grid glides as
+      tiles leave (Oct 18 2026).
 - [ ] **Animate browser Back/Forward** with the same swipe transitions.
 
 ## Skipped on purpose

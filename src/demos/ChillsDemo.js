@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
+// iPhone 15 logical points. The phone is laid out at this size and scaled
+// to fit, so it always has the proportions people know.
+const PHONE_W = 393;
+const PHONE_H = 852;
+
 // A small, working version of Any Chills? for the deck: the feed from the
 // site's phone, with everything tappable. Join a plan, vote on a time, stick
 // an emoji on a card, make a plan and send it. Nothing is saved anywhere.
@@ -71,8 +76,29 @@ const ChillsDemo = () => {
   const [tab, setTab] = useState('This week');
   const timer = useRef(null);
   const feed = useRef(null);
+  const frame = useRef(null);
+  const [scale, setScale] = useState(0.8);
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  // Fit the phone to the space it has, never larger than life.
+  useEffect(() => {
+    const node = frame.current;
+    if (!node) return undefined;
+    const fit = () => {
+      const phone = window.matchMedia('(max-width: 900px)').matches;
+      const maxH = phone ? window.innerHeight * 0.7 : Math.min(window.innerHeight * 0.68, 700);
+      setScale(Math.min(1, node.clientWidth / PHONE_W, maxH / PHONE_H));
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(node);
+    window.addEventListener('resize', fit);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', fit);
+    };
+  }, []);
 
   const say = (text, sub) => {
     setToast({ text, sub });
@@ -145,8 +171,22 @@ const ChillsDemo = () => {
     setDraft((d) => ({ ...d, friends: d.friends.includes(name) ? d.friends.filter((f) => f !== name) : [...d.friends, name] }));
 
   return (
-    <div className="ch" data-no-field>
-      <div className="ch-phone" role="group" aria-label="Any Chills? demo. Tap around; nothing is saved.">
+    <div className="ch" data-no-field ref={frame}>
+      <div className="ch-device" style={{ width: PHONE_W * scale, height: PHONE_H * scale }}>
+      <div
+        className="ch-phone"
+        role="group"
+        aria-label="Any Chills? demo. Tap around; nothing is saved."
+        style={{ width: PHONE_W, height: PHONE_H, transform: `scale(${scale})` }}
+      >
+        <div className="ch-status" aria-hidden="true">
+          <span>9:41</span>
+          <span className="ch-island" />
+          <span className="ch-signal">
+            <i /><i /><i /><i />
+            <b />
+          </span>
+        </div>
         <div className="ch-top">
           <span className="ch-brand">
             <span className="ch-clink" aria-hidden="true" />
@@ -329,6 +369,8 @@ const ChillsDemo = () => {
           <span>Activity</span>
           <span>You</span>
         </div>
+        <span className="ch-home" aria-hidden="true" />
+      </div>
       </div>
       <p className="ch-note">A working sketch of the app. Tap anything. Nothing is saved.</p>
     </div>

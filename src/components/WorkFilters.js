@@ -248,7 +248,8 @@ const SearchBox = ({ value, onChange, flushRef }) => {
 const WorkFilters = ({
   filters,
   facets,
-  sections,
+  kinds,
+  kind,
   shown,
   onChange,
   onReset,
@@ -283,11 +284,6 @@ const WorkFilters = ({
       text: labelFor(facets.type, value),
       remove: () => toggle('type', value),
     })),
-    ...filters.kind.map((value) => ({
-      key: `kind-${value}`,
-      text: labelFor(facets.kind, value),
-      remove: () => toggle('kind', value),
-    })),
     ...filters.tech.map((value) => ({
       key: `tech-${value}`,
       text: labelFor(facets.tech, value),
@@ -319,25 +315,33 @@ const WorkFilters = ({
   return (
     <div className="work-filters" ref={root}>
       <div className="work-filters-row">
-        {/* The page is grouped by kind; these jump, they don't hide. */}
-        <nav className="work-jump" aria-label="Sections">
-          {sections.map((section) => (
-            <a key={section.key} href={`#work-${section.key}`}>
-              {section.label} <span className="work-jump-count">{section.count}</span>
-            </a>
-          ))}
-        </nav>
+        {/* Kinds filter: pick one and everything else glides away. */}
+        <div className="work-kinds" role="group" aria-label="Kind">
+          <button
+            type="button"
+            className={`work-kind ${kind.length ? '' : 'is-on'}`}
+            aria-pressed={!kind.length}
+            onClick={() => onChange({ kind: [] })}
+          >
+            All <span className="work-kind-count">{facets.all}</span>
+          </button>
+          {kinds.map((option) => {
+            const on = kind.includes(option.value);
+            return (
+              <button
+                key={option.value}
+                type="button"
+                className={`work-kind ${on ? 'is-on' : ''}`}
+                aria-pressed={on}
+                onClick={() => onChange({ kind: on ? [] : [option.value] })}
+              >
+                {option.label} <span className="work-kind-count">{option.count}</span>
+              </button>
+            );
+          })}
+        </div>
 
         <div className="work-filters-tools">
-          <FacetMenu
-            label="Type"
-            plural="types"
-            options={facets.type}
-            selected={filters.type}
-            onToggle={(value) => toggle('type', value)}
-            onClear={() => onChange({ type: [] })}
-            searchable={false}
-          />
           <FacetMenu
             label="Tech"
             plural="technologies"
