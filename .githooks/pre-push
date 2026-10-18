@@ -1,0 +1,10 @@
+#!/bin/sh
+# Runs before every push. Vercel builds with CI=true, which turns every lint
+# warning into a failed deploy, so the same lint runs here first. Skip once
+# with `git push --no-verify`.
+echo "pre-push: linting src (what Vercel's build enforces)…"
+npx eslint src --max-warnings=0 || {
+  echo ""
+  echo "pre-push: lint failed. Fix the warnings above, or push with --no-verify."
+  exit 1
+}
