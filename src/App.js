@@ -15,7 +15,6 @@ const Media = lazy(() => import('./pages/Media'));
 const Project = lazy(() => import('./pages/Project'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
-const Now = lazy(() => import('./pages/Now'));
 const About = lazy(() => import('./components/About').then((m) => ({ default: m.About })));
 // The tweak panel: always in development, and anywhere with ?tweak in the URL
 // (handy on a Vercel preview, on a phone).
@@ -27,7 +26,9 @@ function ScrollToTop() {
 
   // Before paint, so a page transition's "after" snapshot starts at the top.
   useLayoutEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    // The deck opens over the hero without a page change, so glide up to it.
+    const deck = pathname === '/now';
+    window.scrollTo({ top: 0, left: 0, behavior: deck && window.scrollY > 0 ? 'smooth' : 'instant' });
     settlePageTransition();
   }, [pathname]);
 
@@ -35,9 +36,6 @@ function ScrollToTop() {
 }
 
 function App() {
-  const { pathname } = useLocation();
-  // The pitch deck is its own screen: no nav, no footer.
-  const deck = pathname === '/now';
   return (
     <div className="App">
       <ScrollToTop />
@@ -51,10 +49,10 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/about" element={<About />} />
-          <Route path="/now" element={<Now />} />
+          <Route path="/now" element={<Home />} />
         </Routes>
       </Suspense>
-      {!deck && <Footer />}
+      <Footer />
       {Tweaks && (
         <Suspense fallback={null}>
           <Tweaks />

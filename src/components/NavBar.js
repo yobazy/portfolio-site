@@ -23,11 +23,12 @@ const isActive = (pathname, to) =>
   to === '/projects' ? pathname === '/projects' || pathname.startsWith('/projects/') : pathname === to || pathname.startsWith(`${to}/`);
 
 // Top bar on every screen; on phones the section links move to a dock at the
-// bottom, within reach of a thumb. Neither shows on /now, which is a deck.
+// bottom, within reach of a thumb.
 export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
+  const deckOpen = pathname === nowSection.to;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -35,8 +36,6 @@ export const NavBar = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  if (pathname === nowSection.to) return null;
 
   return (
     <>
@@ -62,9 +61,13 @@ export const NavBar = () => {
           </div>
 
           <div className="navbar-right">
-            <TransitionLink to={nowSection.to} className="navbar-now">
-              <span className="navbar-now-dot" aria-hidden="true" />
-              {nowSection.label}
+            {/* On the deck the same pill closes it; the page underneath never left. */}
+            <TransitionLink
+              to={deckOpen ? '/' : nowSection.to}
+              className={`navbar-now ${deckOpen ? 'is-close' : ''}`}
+            >
+              {!deckOpen && <span className="navbar-now-dot" aria-hidden="true" />}
+              {deckOpen ? 'Close' : nowSection.label}
             </TransitionLink>
             <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="social-icon-link" aria-label="LinkedIn">
               <LinkedInIcon />
@@ -80,7 +83,7 @@ export const NavBar = () => {
         {[...sections, nowSection].map((section) => (
           <TransitionLink
             key={section.to}
-            to={section.to}
+            to={section.to === nowSection.to && deckOpen ? '/' : section.to}
             className={`dock-item ${isActive(pathname, section.to) ? 'active' : ''} ${
               section.to === nowSection.to ? 'is-now' : ''
             }`}

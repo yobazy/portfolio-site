@@ -46,6 +46,9 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
   const go = (event) => {
     onClick?.(event);
     if (!plainClick(event) || !supported() || to === pathname) return;
+    // Home and the deck are one page: the deck comes in over the hero.
+    const home = (path) => path === '/' || path === '/now';
+    if (home(to) && home(pathname)) return;
     event.preventDefault();
 
     // This page's own title leaves with the page, unless it is the morph source.
@@ -60,9 +63,7 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
     // Only a transition with a morph source lifts the next title out of its page.
     if (title) root.dataset.morph = '';
     else delete root.dataset.morph;
-    // The deck is the hero adapting, not a new page: it fades in place.
-    const deck = to === '/now' || pathname === '/now';
-    root.dataset.swipe = deck ? 'fade' : to === '/' || pathname.startsWith(`${to}/`) ? 'back' : 'forward';
+    root.dataset.swipe = to === '/' || pathname.startsWith(`${to}/`) ? 'back' : 'forward';
     arriving = true;
 
     const transition = document.startViewTransition(

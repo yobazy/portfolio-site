@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import HeroField from './HeroField';
+import Deck from './Deck';
 import Arrow from './Arrow';
 import { TransitionLink } from '../lib/pageTransition';
 import { projects } from '../data/projects';
@@ -14,9 +16,12 @@ const localTime = () =>
     .replace(/^24/, '00');
 
 // The hero: a field you can touch, with the name set in it. The copy sits low
-// and left like a caption on a photograph; the field is the picture.
-const IdentityStrip = () => {
+// and left like a caption on a photograph; the field is the picture. With
+// `deck` on, the pitch deck comes in over the same field and the copy steps
+// aside; the page never changes.
+const IdentityStrip = ({ deck = false }) => {
   const reduce = useReducedMotion();
+  const navigate = useNavigate();
   const [time, setTime] = useState(localTime);
   const [touched, setTouched] = useState(false);
   const [lit, setLit] = useState(false);
@@ -41,18 +46,23 @@ const IdentityStrip = () => {
   const rise = (delay) => ({
     initial: reduce ? false : { opacity: 0, y: 14 },
     animate: { opacity: 1, y: 0 },
+    exit: reduce ? undefined : { opacity: 0, y: 10, transition: { duration: 0.25 } },
     transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
   });
 
   return (
     <section
-      className={`hero ${reduce ? 'is-still' : ''} ${lit ? 'is-lit' : ''}`}
+      className={`hero ${reduce ? 'is-still' : ''} ${lit ? 'is-lit' : ''} ${deck ? 'is-deck' : ''}`}
       onPointerMove={() => !touched && setTouched(true)}
     >
       <HeroField reduce={Boolean(reduce)} touchable onRipple={onRipple} className="hero-field" />
       <div className="hero-scrim" aria-hidden="true" />
 
-      <div className="hero-body">
+      <AnimatePresence mode="wait" initial={false}>
+        {deck ? (
+          <Deck key="deck" onClose={() => navigate('/')} />
+        ) : (
+          <motion.div key="hero" className="hero-body" {...rise(0)}>
         <motion.div className="hero-copy" {...rise(0.1)}>
           <h1 className="hero-heading">
             Hey, it&rsquo;s <em>Baz</em>.
@@ -97,7 +107,9 @@ const IdentityStrip = () => {
             </TransitionLink>
           </div>
         </motion.div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

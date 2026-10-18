@@ -1,15 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TransitionLink } from '../lib/pageTransition';
-import HeroField from '../components/HeroField';
-import Rosette from '../components/Rosette';
-import Arrow from '../components/Arrow';
-import { EMAIL, LINKS, useCopy } from '../components/Footer';
+import HeroField from './HeroField';
+import Arrow from './Arrow';
+import { EMAIL, LINKS, useCopy } from './Footer';
 import { getProjectBySlug, projectPage } from '../data/projects';
 import { NOW_UPDATED, NOW_URL, nowItems } from '../data/now';
 
 const slides = [
-  { kind: 'cover' },
   ...nowItems
     .map((item) => ({ kind: 'project', ...item, project: getProjectBySlug(item.slug) }))
     .filter((item) => item.project),
@@ -36,9 +34,10 @@ const Media = ({ slide, active, reduce }) => {
   return <HeroField reduce={reduce} intensity={1.1} dprCap={1} className="now-field" />;
 };
 
-// The pitch deck: one project per slide, swiped sideways, meant to be handed
-// over on a phone. Arrow keys work too. The last slide hands the site over.
-const Now = () => {
+// The pitch deck, laid over the hero's field: one project per slide, swiped
+// sideways, meant to be handed over on a phone. Arrow keys work too. The last
+// slide hands the site over. Nothing leaves the page.
+const Deck = ({ onClose }) => {
   const reduce = useReducedMotion();
   const track = useRef(null);
   const [index, setIndex] = useState(0);
@@ -78,15 +77,17 @@ const Now = () => {
       if (event.target instanceof HTMLInputElement) return;
       if (event.key === 'ArrowRight') go(index + 1);
       if (event.key === 'ArrowLeft') go(index - 1);
+      if (event.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [go, index]);
+  }, [go, index, onClose]);
 
   useEffect(() => {
+    const previous = document.title;
     document.title = 'What Baz is building now';
     return () => {
-      document.title = "Bazil Khan · Hey, it's Baz.";
+      document.title = previous;
     };
   }, []);
 
@@ -106,48 +107,42 @@ const Now = () => {
     window.setTimeout(() => setShared(null), 2000);
   };
 
-  return (
-    <div className="now">
-      <header className="now-bar">
-        <TransitionLink to="/" className="now-mark" aria-label="Bazil Khan, home">
-          <span>Bazil</span>
-          <Rosette size={11} />
-          <span>Khan</span>
-        </TransitionLink>
-        <span className="now-bar-title">Building now · {NOW_UPDATED}</span>
-        <TransitionLink to="/" className="now-close">
-          Close
-        </TransitionLink>
-      </header>
+  const ease = [0.16, 1, 0.3, 1];
 
-      <div className="now-track" ref={track} aria-roledescription="carousel" aria-label="What I'm building now">
+  return (
+    <motion.div
+      className="deck"
+      initial={reduce ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={reduce ? undefined : { opacity: 0, transition: { duration: 0.25 } }}
+      transition={{ duration: 0.4, ease }}
+    >
+      <motion.header
+        className="deck-bar"
+        initial={reduce ? false : { opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease, delay: 0.05 }}
+      >
+        <span className="deck-title">What I&rsquo;m building · {NOW_UPDATED}</span>
+        <span className="deck-hint" aria-hidden="true">
+          swipe · esc to close
+        </span>
+      </motion.header>
+
+      <motion.div
+        className="now-track"
+        ref={track}
+        aria-roledescription="carousel"
+        aria-label="What I'm building now"
+        initial={reduce ? false : { opacity: 0, x: 48 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease, delay: 0.08 }}
+      >
         {slides.map((slide, i) => {
           const active = i === index;
-          if (slide.kind === 'cover') {
-            return (
-              <section key="cover" className="now-slide now-cover" aria-label="Start" aria-hidden={!active}>
-                <HeroField reduce={Boolean(reduce)} touchable intensity={1} className="now-cover-field" />
-                <div className="now-cover-scrim" aria-hidden="true" />
-                <div className="now-cover-copy">
-                  <motion.h1
-                    initial={reduce ? false : { opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    What I'm building right now.
-                  </motion.h1>
-                  <p>Swipe through, or use the arrows.</p>
-                  <button type="button" className="now-cta" onClick={() => go(1)}>
-                    <span>Start</span>
-                    <Arrow />
-                  </button>
-                </div>
-              </section>
-            );
-          }
           if (slide.kind === 'end') {
             return (
-              <section key="end" className="now-slide now-end" aria-label="Take it with you" aria-hidden={!active}>
+              <section key="end" className="now-slide now-end" aria-label="Get in touch" aria-hidden={!active}>
                 <div className="now-end-inner">
                   <div className="now-end-copy">
                     <h2>Get in touch</h2>
@@ -188,7 +183,9 @@ const Now = () => {
             (project.url
               ? {
                   href: project.url,
-                  label: project.url.includes('github.com') ? 'View on GitHub' : `Open ${project.url.replace(/^https?:\/\//, '')}`,
+                  label: project.url.includes('github.com')
+                    ? 'View on GitHub'
+                    : `Open ${project.url.replace(/^https?:\/\//, '')}`,
                 }
               : null);
           const titleProps = page
@@ -196,23 +193,15 @@ const Now = () => {
             : live
               ? { as: 'a', href: live.href, target: '_blank', rel: 'noopener noreferrer' }
               : { as: 'span' };
-          const Title = titleProps.as;
-          const { as, ...titleRest } = titleProps;
+          const { as: Title, ...titleRest } = titleProps;
           return (
-            <section
-              key={project.slug}
-              className="now-slide now-project"
-              aria-label={project.title}
-              aria-hidden={!active}
-            >
+            <section key={project.slug} className="now-slide now-project" aria-label={project.title} aria-hidden={!active}>
               <div className="now-project-inner">
                 <div className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}`}>
                   <Media slide={slide} active={active} reduce={Boolean(reduce)} />
                 </div>
                 <div className="now-copy">
-                  <p className="now-status">
-                    {[project.status, project.org, project.tag].filter(Boolean).join(' · ')}
-                  </p>
+                  <p className="now-status">{[project.status, project.org, project.tag].filter(Boolean).join(' · ')}</p>
                   <h2>
                     <Title className="now-title" {...titleRest}>
                       {project.title}
@@ -237,9 +226,14 @@ const Now = () => {
             </section>
           );
         })}
-      </div>
+      </motion.div>
 
-      <footer className="now-controls">
+      <motion.footer
+        className="now-controls"
+        initial={reduce ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease, delay: 0.15 }}
+      >
         <button type="button" className="now-arrow" onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous">
           <Arrow dir="left" />
         </button>
@@ -262,9 +256,9 @@ const Now = () => {
         <button type="button" className="now-arrow" onClick={() => go(index + 1)} disabled={index === count - 1} aria-label="Next">
           <Arrow />
         </button>
-      </footer>
-    </div>
+      </motion.footer>
+    </motion.div>
   );
 };
 
-export default Now;
+export default Deck;
