@@ -40,8 +40,11 @@ site memorable.
       screen.
 - [x] **Phone dock** replaces the hamburger; **bottom sheet** with a pull
       handle replaces the side sheet on phones.
-- [x] **/now pitch deck** for networking events: one slide a project, QR
-      code, email, share.
+- [x] **/now pitch deck** for networking events. Now an x-ray gallery over
+      the hero (frames you can drag, see-through where they cross); tap a
+      frame and its picture grows into the project panel, with the demo, the
+      facts and the live link. Nothing leaves the page. Get in touch is a
+      panel too, with the QR code.
 - [x] **About layer stack** (Ground to Light) with real work per layer.
 - [x] **Project audit.** Copy and screenshots for Observatory, ghosts,
       MixVault, Link, Life Systems, Interview Prep, Short Turn; three facts

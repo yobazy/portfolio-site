@@ -1,34 +1,27 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'framer-motion';
 import { TransitionLink } from '../lib/pageTransition';
-import HeroField from './HeroField';
+import XrayGallery, { GALLERY } from './XrayGallery';
 import Arrow from './Arrow';
 import { EMAIL, LINKS, useCopy } from './Footer';
 import { getProjectBySlug, projectPage } from '../data/projects';
 import { NOW_UPDATED, NOW_URL, nowItems } from '../data/now';
 import { demos } from '../demos';
 
-const slides = [
-  ...nowItems
-    .map((item) => ({ kind: 'project', ...item, project: getProjectBySlug(item.slug) }))
-    .filter((item) => item.project),
-  { kind: 'end' },
-];
+const ORDER = GALLERY.map((card) => card.slug);
+const factsFor = (slug) => nowItems.find((item) => item.slug === slug)?.facts || getProjectBySlug(slug)?.facts || [];
 
-// A clip plays only while its slide is on screen.
-const Clip = ({ src, poster, alt, active }) => {
+// A clip plays only while its panel is open.
+const Clip = ({ src, poster, alt }) => {
   const ref = useRef(null);
   useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    if (active) video.play().catch(() => {});
-    else video.pause();
-  }, [active]);
+    ref.current?.play().catch(() => {});
+  }, []);
   return <video ref={ref} src={src} poster={poster} aria-label={alt} muted loop playsInline preload="metadata" />;
 };
 
-const Media = ({ slide, active, reduce }) => {
-  const { project } = slide;
+const Media = ({ project, reduce }) => {
   const Demo = project.interactive && demos[project.interactive];
   if (Demo) {
     return (
@@ -38,59 +31,44 @@ const Media = ({ slide, active, reduce }) => {
     );
   }
   const clip = project.media?.find((item) => item.type === 'video');
-  if (clip && !reduce) return <Clip {...clip} active={active} />;
-  if (project.img) return <img src={project.img} alt="" />;
-  return <HeroField reduce={reduce} intensity={1.1} dprCap={1} className="now-field" />;
+  if (clip && !reduce) return <Clip {...clip} />;
+  return <img src={project.img} alt="" />;
 };
 
-// The pitch deck, laid over the hero's field: one project per slide, swiped
-// sideways, meant to be handed over on a phone. Arrow keys work too. The last
-// slide hands the site over. Nothing leaves the page.
+// What Baz is building, laid over the hero's field and never leaving it. The
+// projects float as an x-ray gallery; tap one and its picture grows into a
+// panel with the demo, the line, three facts and the live link. Close it and
+// the picture goes back to its frame. Arrow keys step between projects.
 const Deck = ({ onClose }) => {
   const reduce = useReducedMotion();
-  const track = useRef(null);
-  const [index, setIndex] = useState(0);
+  const [params, setParams] = useSearchParams();
+  const selected = params.get('p');
   const [copied, copy] = useCopy(EMAIL);
   const [shared, setShared] = useState(null);
-  const count = slides.length;
 
-  const go = useCallback(
-    (to) => {
-      const node = track.current;
-      if (!node) return;
-      const next = Math.max(0, Math.min(count - 1, to));
-      node.scrollTo({ left: next * node.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
-    },
-    [count, reduce]
-  );
-
-  useEffect(() => {
-    const node = track.current;
-    if (!node) return undefined;
-    let frame = 0;
-    const onScroll = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        setIndex(Math.round(node.scrollLeft / node.clientWidth));
-      });
-    };
-    node.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.cancelAnimationFrame(frame);
-      node.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+  const select = (slug) => {
+    const next = new URLSearchParams(params);
+    if (slug) next.set('p', slug);
+    else next.delete('p');
+    setParams(next);
+  };
+  const step = (by) => {
+    const at = ORDER.indexOf(selected);
+    if (at < 0) return;
+    select(ORDER[(at + by + ORDER.length) % ORDER.length]);
+  };
 
   useEffect(() => {
     const onKey = (event) => {
       if (event.target instanceof HTMLInputElement) return;
-      if (event.key === 'ArrowRight') go(index + 1);
-      if (event.key === 'ArrowLeft') go(index - 1);
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') (selected ? select(null) : onClose());
+      if (selected && event.key === 'ArrowRight') step(1);
+      if (selected && event.key === 'ArrowLeft') step(-1);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [go, index, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, onClose]);
 
   useEffect(() => {
     const previous = document.title;
@@ -117,6 +95,19 @@ const Deck = ({ onClose }) => {
   };
 
   const ease = [0.16, 1, 0.3, 1];
+  const project = selected && selected !== 'contact' ? getProjectBySlug(selected) : null;
+  const page = project && projectPage(project);
+  const live =
+    project &&
+    (project.demo ||
+      (project.url
+        ? {
+            href: project.url,
+            label: project.url.includes('github.com')
+              ? 'View on GitHub'
+              : `Open ${project.url.replace(/^https?:\/\//, '')}`,
+          }
+        : null));
 
   return (
     <motion.div
@@ -134,25 +125,102 @@ const Deck = ({ onClose }) => {
       >
         <span className="deck-title">What I&rsquo;m building · {NOW_UPDATED}</span>
         <span className="deck-hint" aria-hidden="true">
-          swipe · esc to close
+          {selected ? '← → between projects · esc back' : 'drag the frames · tap one to open'}
         </span>
+        <button type="button" className="now-chip deck-contact" onClick={() => select(selected === 'contact' ? null : 'contact')}>
+          Get in touch
+        </button>
       </motion.header>
 
-      <motion.div
-        className="now-track"
-        ref={track}
-        aria-roledescription="carousel"
-        aria-label="What I'm building now"
-        initial={reduce ? false : { opacity: 0, x: 48 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7, ease, delay: 0.08 }}
-      >
-        {slides.map((slide, i) => {
-          const active = i === index;
-          if (slide.kind === 'end') {
-            return (
-              <section key="end" className="now-slide now-end" aria-label="Get in touch" aria-hidden={!active}>
-                <div className="now-end-inner">
+      <LayoutGroup>
+        <div className="deck-stage">
+          <XrayGallery selected={selected} onSelect={select} dim={Boolean(selected)} />
+
+          <AnimatePresence>
+            {project && (
+              <motion.section
+                key={project.slug}
+                className="deck-panel"
+                aria-label={project.title}
+                initial={reduce ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduce ? undefined : { opacity: 0, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.35, ease }}
+              >
+                <button type="button" className="deck-panel-scrim" aria-label="Back to the gallery" onClick={() => select(null)} />
+                <div className="deck-panel-inner">
+                  <motion.div
+                    layoutId={`pic-${project.slug}`}
+                    className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}${project.interactive ? ' is-demo' : ''}`}
+                    transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+                  >
+                    <Media project={project} reduce={Boolean(reduce)} />
+                  </motion.div>
+                  <motion.div
+                    className="now-copy"
+                    initial={reduce ? false : { opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, ease, delay: 0.15 }}
+                  >
+                    <p className="now-status">{[project.status, project.org, project.tag].filter(Boolean).join(' · ')}</p>
+                    <h2>
+                      {page ? (
+                        <TransitionLink to={page} className="now-title">
+                          {project.title}
+                          <Arrow size={18} />
+                        </TransitionLink>
+                      ) : (
+                        <span className="now-title">{project.title}</span>
+                      )}
+                    </h2>
+                    <p className="now-line">{project.line}</p>
+                    <p className="now-why">{project.description}</p>
+                    <ul className="now-facts">
+                      {factsFor(project.slug).map((fact) => (
+                        <li key={fact}>{fact}</li>
+                      ))}
+                    </ul>
+                    <div className="deck-panel-actions">
+                      {live && (
+                        <a className="now-cta" href={live.href} target="_blank" rel="noopener noreferrer">
+                          <span>{live.label}</span>
+                          <Arrow dir="up-right" />
+                        </a>
+                      )}
+                      <span className="deck-panel-nav">
+                        <button type="button" className="now-arrow" onClick={() => step(-1)} aria-label="Previous project">
+                          <Arrow dir="left" />
+                        </button>
+                        <button type="button" className="now-arrow" onClick={() => step(1)} aria-label="Next project">
+                          <Arrow />
+                        </button>
+                        <button type="button" className="now-close" onClick={() => select(null)}>
+                          Back
+                        </button>
+                      </span>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.section>
+            )}
+
+            {selected === 'contact' && (
+              <motion.section
+                key="contact"
+                className="deck-panel is-contact"
+                aria-label="Get in touch"
+                initial={reduce ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduce ? undefined : { opacity: 0, transition: { duration: 0.2 } }}
+                transition={{ duration: 0.35, ease }}
+              >
+                <button type="button" className="deck-panel-scrim" aria-label="Back to the gallery" onClick={() => select(null)} />
+                <motion.div
+                  className="now-end-inner"
+                  initial={reduce ? false : { opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease }}
+                >
                   <div className="now-end-copy">
                     <h2>Get in touch</h2>
                     <div className="now-end-actions">
@@ -163,7 +231,7 @@ const Deck = ({ onClose }) => {
                         {copied ? 'Copied' : 'Copy email'}
                       </button>
                       <button type="button" className="now-chip" onClick={share}>
-                        {shared || 'Share this deck'}
+                        {shared || 'Share this'}
                       </button>
                     </div>
                     <ul className="now-end-links">
@@ -176,100 +244,20 @@ const Deck = ({ onClose }) => {
                         </li>
                       ))}
                     </ul>
+                    <button type="button" className="now-close" onClick={() => select(null)}>
+                      Back
+                    </button>
                   </div>
                   <figure className="now-qr">
                     <img src="/qr-now.svg" alt={`QR code for ${NOW_URL}`} width="200" height="200" />
                     <figcaption>heyitsbaz.com/now</figcaption>
                   </figure>
-                </div>
-              </section>
-            );
-          }
-          const { project } = slide;
-          const page = projectPage(project);
-          const live =
-            project.demo ||
-            (project.url
-              ? {
-                  href: project.url,
-                  label: project.url.includes('github.com')
-                    ? 'View on GitHub'
-                    : `Open ${project.url.replace(/^https?:\/\//, '')}`,
-                }
-              : null);
-          const titleProps = page
-            ? { as: TransitionLink, to: page }
-            : live
-              ? { as: 'a', href: live.href, target: '_blank', rel: 'noopener noreferrer' }
-              : { as: 'span' };
-          const { as: Title, ...titleRest } = titleProps;
-          return (
-            <section key={project.slug} className="now-slide now-project" aria-label={project.title} aria-hidden={!active}>
-              <div className="now-project-inner">
-                <div
-                  className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}${
-                    project.interactive ? ' is-demo' : ''
-                  }`}
-                >
-                  <Media slide={slide} active={active} reduce={Boolean(reduce)} />
-                </div>
-                <div className="now-copy">
-                  <p className="now-status">{[project.status, project.org, project.tag].filter(Boolean).join(' · ')}</p>
-                  <h2>
-                    <Title className="now-title" {...titleRest}>
-                      {project.title}
-                      {Title !== 'span' && <Arrow dir={page ? 'right' : 'up-right'} size={18} />}
-                    </Title>
-                  </h2>
-                  <p className="now-line">{project.line}</p>
-                  <p className="now-why">{project.description}</p>
-                  <ul className="now-facts">
-                    {slide.facts.map((fact) => (
-                      <li key={fact}>{fact}</li>
-                    ))}
-                  </ul>
-                  {live && (
-                    <a className="now-cta" href={live.href} target="_blank" rel="noopener noreferrer">
-                      <span>{live.label}</span>
-                      <Arrow dir="up-right" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </section>
-          );
-        })}
-      </motion.div>
-
-      <motion.footer
-        className="now-controls"
-        initial={reduce ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease, delay: 0.15 }}
-      >
-        <button type="button" className="now-arrow" onClick={() => go(index - 1)} disabled={index === 0} aria-label="Previous">
-          <Arrow dir="left" />
-        </button>
-        <ol className="now-dots" aria-label="Slides">
-          {slides.map((slide, i) => (
-            <li key={slide.slug || slide.kind}>
-              <button
-                type="button"
-                className={i === index ? 'is-current' : ''}
-                aria-label={`Slide ${i + 1} of ${count}`}
-                aria-current={i === index ? 'true' : undefined}
-                onClick={() => go(i)}
-              />
-            </li>
-          ))}
-        </ol>
-        <span className="now-count" aria-hidden="true">
-          {String(index + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}
-        </span>
-        <button type="button" className="now-arrow" onClick={() => go(index + 1)} disabled={index === count - 1} aria-label="Next">
-          <Arrow />
-        </button>
-      </motion.footer>
+                </motion.div>
+              </motion.section>
+            )}
+          </AnimatePresence>
+        </div>
+      </LayoutGroup>
     </motion.div>
   );
 };
