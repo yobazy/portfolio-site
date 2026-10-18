@@ -2,9 +2,11 @@ import imgScheduler from '../assets/img/proj-scheduler.png';
 import imgJungle from '../assets/img/proj-jungle.png';
 import imgTinyapp from '../assets/img/proj-tinyapp.png';
 import imgReasonable from '../assets/img/proj-reasonable.png';
-import imgLink from '../assets/img/link-screens.jpg';
+import imgLink from '../assets/img/link-dark.jpg';
+import imgLinkInvite from '../assets/img/link-invite.jpg';
 import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
-import imgMyfi from '../assets/img/myfi-dashboard.png';
+import { CN_DIAGRAM } from '../components/SystemDiagram';
+import imgMyfi from '../assets/img/myfi-dashboard.jpg';
 import imgBarberbot from '../assets/img/barberbot.jpg';
 import imgPlayground from '../assets/img/ghosts-playground.jpg';
 import ghostsClipKaleido from '../assets/ghosts/clip-kaleido.mp4';
@@ -13,7 +15,7 @@ import ghostsClipQuad from '../assets/ghosts/clip-quad.mp4';
 import ghostsClipQuadPoster from '../assets/ghosts/clip-quad.jpg';
 import ghostsStillGold from '../assets/ghosts/still-gold.jpg';
 import ghostsStillViolet from '../assets/ghosts/still-violet.jpg';
-import imgNebulaDesktop from '../assets/img/nebula-desktop.jpg';
+import imgObservatory from '../assets/img/observatory.jpg';
 import imgLifeSystems from '../assets/img/life-systems.jpg';
 import imgMixvault from '../assets/img/mixvault.jpg';
 import imgInterviewPrep from '../assets/img/interview-prep.jpg';
@@ -21,6 +23,8 @@ import imgExpecta from '../assets/img/expecta.jpg';
 import imgFrontLeft from '../assets/img/front-left.jpg';
 import imgObsidianRag from '../assets/img/obsidian-rag.jpg';
 import imgAbletonHelper from '../assets/img/ableton-helper.jpg';
+import imgShortTurn from '../assets/img/short-turn.jpg';
+import imgShortTurnGrades from '../assets/img/short-turn-report-cards.jpg';
 
 export const projects = [
   {
@@ -32,17 +36,18 @@ export const projects = [
     featured: true,
     featuredSize: 'large',
     hasCaseStudy: true,
-    line: 'Daily ops platform for the rail network.',
+    line: 'Where every project stands, in one view.',
     description:
-      'Daily workflow platform for the operations team. React frontend, Node.js backend, MongoDB. Tech lead. Owned end to end.',
-    skills: ['React', 'Node.js', 'MongoDB'],
+      'A portfolio management app for project managers and staff, built on the MERN stack. It shows each project\'s status, who\'s on it, what\'s blocking it, and whether it\'s still running. I was the tech lead and owned it end to end.',
+    skills: ['MongoDB', 'Express', 'React', 'Node.js'],
+    facts: ['Tech lead, end to end', 'MERN', 'Every project in one view'],
     caseStudy: {
       problem:
-        'Operations ran across disconnected tools. Daily work lived in spreadsheets, email, and one-off dashboards, so nobody had a shared picture of what was happening on the network.',
+        'Project information lived in separate tools, so getting a picture of the whole portfolio meant asking around. Portfolio managers had no easy way to see which projects were on track, who was staffed on them, or what was stuck.',
       built:
-        'A React and Node.js platform that became the daily surface for the operations team. I led the work end to end: data model, APIs, frontend, and the workflows people actually use.',
+        'A MERN app (MongoDB, Express, React, and Node.js) that gives portfolio managers and employees one view of every project: its current status, the roster, open blockers and issues, and whether it\'s ongoing. I led it end to end, from the data model and APIs to the frontend.',
       outcome:
-        'One place to run the day instead of a pile of side systems. The team works from a live operational picture instead of stitching it together by hand.',
+        'Portfolio managers and staff can check the state of any project in one place, including who\'s on it and what\'s holding it up.',
     },
   },
   {
@@ -56,16 +61,19 @@ export const projects = [
     hasCaseStudy: true,
     line: 'Live rail data between two organizations.',
     description:
-      'Five containerized microservices on Azure Container Apps with event-driven architecture. 20 queues, 10 RabbitMQ consumers, real-time rail data every 10-30s. Multi-org data isolation across CN and Metrolinx.',
+      'Five containerized microservices on Azure Container Apps, connected by events. 20 queues and 10 RabbitMQ consumers move live rail data every 10 to 30 seconds, and each organization\'s data stays separate.',
     skills: ['Azure Container Apps', 'RabbitMQ', 'Microservices', 'Kubernetes'],
+    facts: ['5 services', '20 queues · 10 consumers', 'Updates every 10–30 s'],
+    imgFit: 'contain',
     img: imgCnDiagram,
+    diagram: CN_DIAGRAM,
     caseStudy: {
       problem:
-        'CN and Metrolinx needed to share live rail data without collapsing two organizations into one system. Updates had to land every 10-30 seconds, and each org had to stay isolated.',
+        'CN and Metrolinx needed to share live rail data while staying two separate systems. Updates had to land every 10 to 30 seconds, and each organization\'s data had to stay isolated.',
       built:
-        'Five microservices on Azure Container Apps. Event-driven: 20 queues, 10 RabbitMQ consumers, Kubernetes around the edges. Multi-org isolation is part of the design, not a later patch.',
+        'Five event-driven microservices on Azure Container Apps, with 20 queues, 10 RabbitMQ consumers, and Kubernetes around the edges. Isolation between the two organizations was designed in from the start.',
       outcome:
-        'Real-time rail data moves between the two networks without a shared database or a brittle nightly sync.',
+        'Live rail data moves between the two networks without a shared database or a nightly sync.',
     },
   },
   {
@@ -81,13 +89,13 @@ export const projects = [
     description:
       'Ported the codebase to Next.js, shipped map features, and deployed to Vercel.',
     skills: ['Next.js', 'React', 'Vercel', 'Maps'],
+    facts: ['Port to Next.js', 'Maps in the main flow', 'Deployed on Vercel'],
     caseStudy: {
       problem:
-        'The product was stuck on an older React stack. Maps and listing flows were the core of the product and needed to move to something that could ship and host independently.',
+        'The product was on an older React setup. Maps and listings are the core of it, and they needed a stack the team could ship and host on its own.',
       built:
-        'I ported the app to Next.js, built the map features, and deployed to Vercel so the team could iterate without a heavy ops layer.',
-      outcome:
-        'The live product runs on Next.js. Maps are part of the main flow, not a side experiment.',
+        'I ported the app to Next.js, built the map features, and deployed to Vercel so the team could ship changes without running its own servers.',
+      outcome: 'The live product runs on Next.js, with maps in the main flow.',
     },
   },
   {
@@ -101,8 +109,9 @@ export const projects = [
     hasCaseStudy: false,
     line: '20+ daily reports for a $1.6B program.',
     description:
-      'Unified three source systems with automated business rules and transformations, powering 20+ daily operational reports for Finance and ops. Part of a $1.6B rail infrastructure program.',
+      'Combined three source systems with automated business rules and transformations. The output feeds 20+ daily reports for finance and operations on a $1.6B rail infrastructure program.',
     skills: ['Azure', 'Data Pipelines', 'ETL', 'SQL'],
+    facts: ['3 source systems', '20+ daily reports', '$1.6B program'],
   },
   {
     slug: 'fabric-pipeline',
@@ -115,12 +124,14 @@ export const projects = [
     hasCaseStudy: false,
     line: 'Raw sources into reporting-ready data.',
     description:
-      'Transforms raw data sources from Microsoft Fabric into presentation-ready format for downstream reporting and dashboards.',
+      'Turns raw data in Microsoft Fabric into a clean format for downstream reports and dashboards.',
     skills: ['Microsoft Fabric', 'ETL', 'Data Engineering'],
   },
   {
-    slug: 'nebula-desktop',
-    title: 'Nebula Desktop',
+    slug: 'observatory',
+    // Renamed from Nebula Desktop; old links still resolve.
+    aliases: ['nebula-desktop'],
+    title: 'Observatory',
     kind: 'apps',
     category: 'personal',
     lead: true,
@@ -128,19 +139,24 @@ export const projects = [
     hasCaseStudy: false,
     status: 'In progress',
     tag: 'Tauri · Rust',
-    line: 'A desktop cockpit for coding agents.',
+    line: 'Every coding agent in one Mac window.',
     description:
-      'macOS client for the nebula agent daemon. Every agent session across every project and worktree in one window, with git state, one-click shipping, and Claude usage. Tauri, Rust, and React.',
+      'A macOS app for nebula, the daemon that runs coding agents like Claude Code and Codex across a project\'s git worktrees. Every session in every project shows up in one window, with git state, one-click shipping, and Claude usage. Built with Tauri, Rust, and React.',
     skills: ['Tauri', 'Rust', 'TypeScript', 'React'],
-    img: imgNebulaDesktop,
-    url: 'https://github.com/yobazy/nebula-desktop',
+    facts: ['Tauri, Rust and React', 'Claude Code and Codex', 'v0.6.1, updates itself'],
+    img: imgObservatory,
+    url: 'https://github.com/yobazy/observatory',
+    demo: {
+      href: 'https://github.com/yobazy/observatory/releases/latest/download/Observatory.dmg',
+      label: 'Download for macOS',
+    },
     caseStudy: {
       problem:
         'Running several coding agents at once across worktrees in a terminal UI means constantly checking which one is stuck on a permission prompt, which branch has unpushed work, and what the week is costing.',
       built:
-        'A Tauri app that speaks the same socket protocol as the nebula TUI, so both run side by side on the same sessions. Rust handles the daemon connection, git state, and incremental parsing of Claude Code logs for usage. The React side has a cross-project "waiting on you" queue with notifications, worktree bands with branch status, and Commit & push that hands the job to an idle agent and waits until it finishes its turn. Settings are written to the same files the TUI reads.',
+        'A Tauri app that speaks the same socket protocol as the nebula TUI, so both can be open on the same sessions. Rust handles the daemon connection, git state, and incremental parsing of Claude Code logs for usage. The React side keeps a queue of sessions waiting on you across every project, with notifications that say what each one is asking and buttons to answer permission prompts. Worktrees show their branch status, Ship merges a green PR and cleans up after it, and the sidebar sums up what finished while you were away.',
       outcome:
-        'In progress and public on GitHub. A one-line setup script installs nebula at the pinned protocol version and builds the app, and a sandbox daemon with a fake agent CLI lets me develop without touching real sessions.',
+        'In progress and public on GitHub, with a DMG to download. On first launch it installs nebula at the version it was built for, and after that it updates itself. A sandbox daemon with a fake agent CLI lets me develop it without touching real sessions.',
     },
   },
   {
@@ -189,55 +205,16 @@ export const projects = [
       },
     ],
     description:
-      'A camera playground: body as portal, traveling fields. Built for a room, prototyped at a desk, and live at ghosts.fyi. Open it with a webcam and step into frame.',
+      'A webcam piece for a dark room. Your silhouette cuts a window into moving fluid, wave, and particle fields, and colored echoes of you trail behind. It\'s live at ghosts.fyi: open it with a webcam and step into frame.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
+    facts: ['WebGL2, no build step', '50+ filters', 'Sound-reactive'],
     caseStudy: {
       problem:
-        'Most “visuals” toys are desktop widgets or face filters. I wanted something that reads at rave scale: you walk in, your silhouette is the mask, and the field is already happening.',
+        'Most visuals toys are desktop widgets or face filters. I wanted something that works at party scale: you walk into the room, your silhouette is the mask, and the visuals are already running.',
       built:
-        'Live is the party camera. Studio is the clip workbench. The field behind the homepage is a quiet port of one of its modes.',
+        'Plain JavaScript and WebGL2 shaders. Live mode is for the party, with filters like fisheye and VHS, layers, sound reactivity, shuffle, and mixes you can save and share. Studio mode is for making clips. The field behind this site\'s home page is a port of one of its modes.',
       outcome:
-        'In progress, and public. The piece is the live mixer, not a product page, so the best way to see it is to try it.',
-    },
-  },
-
-  {
-    slug: 'barberbot',
-    title: 'BarberBot',
-    kind: 'ai',
-    category: 'personal',
-    featured: true,
-    hasCaseStudy: false,
-    status: 'Live pilot',
-    tag: 'VAPI · Square',
-    line: 'Voice AI that books the chair.',
-    description:
-      'VAPI voice AI assistant in live pilot with an active barbershop. Handles inbound calls, books appointments, and connects to GoHighLevel CRM and Square, with no human in the loop.',
-    skills: ['VAPI', 'Voice AI', 'GoHighLevel', 'Square'],
-    img: imgBarberbot,
-    imgFit: 'contain',
-  },
-  {
-    slug: 'life-systems',
-    title: 'Life Systems',
-    kind: 'web',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    status: 'In progress',
-    tag: 'React · Prisma',
-    line: 'Own less, cover more.',
-    description:
-      'Tracks the situations your stuff has to cover, and whether each one is covered, flagged for an upgrade, or still a gap. One item library, linked to as many use cases as it serves, with an assistant you can ask what to buy next.',
-    skills: ['React', 'TypeScript', 'Node.js', 'Prisma'],
-    img: imgLifeSystems,
-    caseStudy: {
-      problem:
-        'Buying decisions usually start from the product. I wanted them to start from the need: the commute, the gym, a carry-on trip. Then it is obvious what is missing, what is redundant, and what is wearing out.',
-      built:
-        'A React and Node app on Prisma. A use case is a gap, an upgrade, or covered, and that status is always derived, never stored. Primaries, backups, and candidates hang off each use case, and one item can cover several. On top of that: a ranked next-steps list, replacement cycles with due dates, a shopping list that puts owned candidates first, a side-by-side compare view, an event log of every switch, and an assistant that answers questions about your own gaps.',
-      outcome:
-        'In progress. The service layer has no HTTP in it, so auth and a move to Postgres can come later without rewriting the rules.',
+        'In progress and public at ghosts.fyi. It needs a webcam, and it was made for a projector in a dark room.',
     },
   },
   {
@@ -251,134 +228,17 @@ export const projects = [
     tag: 'Electron · Node',
     line: 'Links in, a clean crate out.',
     description:
-      'Desktop crate tool for DJs. Paste SoundCloud, YouTube, or Spotify links and the tracks land in a crate folder, then match a streaming playlist against your Rekordbox collection and queue what is missing.',
+      'Desktop crate tool for DJs. Paste SoundCloud, YouTube, or Spotify links and the tracks land in your crate folder. Then match a streaming playlist against your Rekordbox collection and queue what\'s missing.',
     skills: ['Electron', 'React', 'TypeScript', 'yt-dlp'],
+    facts: ['One crate folder', 'SoundCloud, YouTube, Spotify in', 'Every change undoable'],
     img: imgMixvault,
     caseStudy: {
       problem:
         'Getting a playlist into Rekordbox meant working out by hand which tracks I already owned, finding the rest one by one, and ending up with a folder full of duplicates and low-bitrate rips.',
       built:
-        'An Electron app built around one crate folder and a link bar. Jobs run in a sequential queue that skips files already in the crate, and Spotify playlists are read over OAuth (PKCE) and sourced from YouTube. Import reads a Rekordbox collection XML, sorts a playlist into in library, needs review, and missing, and exports an M3U. Crate health reads every file\'s format and bitrate, flags what Rekordbox can\'t import, and groups duplicates by tags and audio hash, suggesting which copy to keep.',
+        'An Electron app built around one crate folder and a link bar. Jobs run in a queue that skips files already in the crate, and Spotify playlists are read over OAuth (PKCE) and sourced from YouTube. Import reads a Rekordbox collection XML, sorts a playlist into in library, needs review, and missing, and exports an M3U. Crate health reads every file\'s format and bitrate, flags what Rekordbox can\'t import, and groups duplicates by tags and audio hash, with a suggestion for which copy to keep.',
       outcome:
-        'In progress. Duplicates go to the system Trash rather than being deleted, and the app asks before touching anything Rekordbox already uses.',
-    },
-  },
-  {
-    slug: 'interview-prep',
-    title: 'Interview Prep Dashboard',
-    kind: 'web',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    status: 'In progress',
-    tag: 'React · Claude CLI',
-    line: 'A daily plan for senior interviews.',
-    description:
-      'Local dashboard for senior software interview prep: coding, system design, and behavioral in one daily plan, with mock interviews graded through the Claude CLI.',
-    skills: ['React', 'TypeScript', 'Vite', 'Claude'],
-    img: imgInterviewPrep,
-    caseStudy: {
-      problem:
-        'Senior interview prep is three tracks at once, and it is easy to drill the comfortable one. Progress also lived in status labels that said "confident" long after the practice behind them had gone stale.',
-      built:
-        'A React dashboard with no backend: state lives in the browser, and Vite dev-server plugins read a markdown prep folder from disk. Home builds a daily plan and a weekly goal, and a readiness gauge moves from Not ready to Interview ready only on graded evidence that expires after 21 days. On Record runs behavioral, coding, system design, and recruiter-screen mocks by voice or text, graded through the local Claude CLI. Coding solutions run against hidden tests in the browser, and system design is a nine-module course with timed designs scored on a six-part rubric.',
-      outcome:
-        'In progress. Booked interviews get their own countdown page with the company\'s most-asked problems and a daily target.',
-    },
-  },
-  {
-    slug: 'obsidian-rag',
-    title: 'Obsidian RAG',
-    kind: 'ai',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    tag: 'Python · pgvector',
-    line: 'Ask your notes, get your own answers.',
-    description:
-      'A local RAG pipeline over an Obsidian vault. Notes are chunked and embedded with Voyage AI into pgvector, and Claude answers from what you actually wrote, citing the notes it used.',
-    skills: ['Python', 'PostgreSQL', 'pgvector', 'Claude'],
-    img: imgObsidianRag,
-    url: 'https://github.com/yobazy/obsidian-RAG-gpt',
-    caseStudy: {
-      problem:
-        'Years of notes are only useful if you can find them. Keyword search misses anything phrased differently, and a general chatbot answers from the internet, not from what you wrote down.',
-      built:
-        'Python scripts around Postgres with pgvector in Docker. Ingestion chunks each note into overlapping 400-word windows, strips Obsidian markup, and skips unchanged files by hash, and a watcher re-ingests a note the moment it is saved. Retrieval drops chunks under a similarity threshold, then pulls in notes linked by [[wikilinks]] before Claude answers in a CLI chat that remembers the conversation.',
-      outcome:
-        'Every answer lists its source notes with similarity scores, and an eval harness scores retrieval and answers against hand-written questions, so changes to chunking or thresholds are measured instead of guessed.',
-    },
-  },
-  {
-    slug: 'expecta',
-    title: 'Expecta',
-    kind: 'web',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    status: 'Hackathon',
-    tag: 'React · TypeScript',
-    line: 'Is this safe right now? Scan and see.',
-    description:
-      'Mobile-first product checker for people trying to conceive, pregnant, or nursing. Scan a barcode or paste an ingredient list, and it checks against guidance for your stage and links the source. Built at Cursor\'s Toronto hackathon, July 2026.',
-    skills: ['React', 'TypeScript', 'Vite', 'ZXing'],
-    img: imgExpecta,
-    url: 'https://github.com/yobazy/expecta-cursor-hackathon',
-    caseStudy: {
-      problem:
-        'Whether a product is fine depends on the stage: a retinol serum that is out during pregnancy can be a different answer while nursing. Most checkers give one verdict for everyone and no source.',
-      built:
-        'A React 19 and TypeScript app with five stages, from planning through each trimester to nursing. The camera scans barcodes with ZXing, food lookups go to Open Food Facts, and pasted ingredient lists run against a small sourced rule set. Each result is safe, caution, avoid, or unknown, with the reason and a link to the guidance behind it.',
-      outcome:
-        'A working prototype built in a day, with no backend: history and favorites stay in the browser. The production architecture, API, data model, and safety constraints are written up in the repo.',
-    },
-  },
-  {
-    slug: 'ableton-helper',
-    title: 'Ableton Helper',
-    kind: 'ai',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    status: 'In progress',
-    tag: 'Python · MCP',
-    line: 'Loops in, a full arrangement out.',
-    description:
-      'An AI arrangement assistant for Ableton Live 12. Put your loops in Session View, ask for tech house, and Claude lays out a genre-shaped arrangement in one batch through an MCP server and a Live Remote Script.',
-    skills: ['Python', 'MCP', 'Claude', 'Ableton Live'],
-    img: imgAbletonHelper,
-    caseStudy: {
-      problem:
-        'Making loops is the fun part. Turning them into a 224-bar track, section by section, is slow. Existing Ableton MCP servers send one request per change, so a single skeleton turns into about a hundred tool calls.',
-      built:
-        'A Python MCP server that compiles YAML genre templates into bar ranges, guesses which track is the kick, bass, or chords from track and clip names, and turns the plan into a list of operations. A Remote Script inside Live runs the whole list in one main-thread tick over TCP. The Live API code is tested against a fake, so it runs without Live open.',
-      outcome:
-        'In progress. A house skeleton that took 108 tool calls takes one, and the whole build is a single undo in Live. A benchmark command measures the difference on your own machine.',
-    },
-  },
-  {
-    slug: 'front-left',
-    // Renamed from Festify; old links still resolve.
-    aliases: ['festify'],
-    title: 'Front Left',
-    kind: 'web',
-    category: 'personal',
-    featured: false,
-    hasCaseStudy: false,
-    tag: 'Next.js · Supabase',
-    line: 'Hear the lineup before you buy the ticket.',
-    description:
-      'Music-event discovery for people who care who is on the bill. Every upcoming show and festival in your city, the lineup set like a poster, and every artist ready to play before you buy the ticket. A ground-up rebuild of my bootcamp project, Festify, in Next.js, Supabase, and the Spotify Web API.',
-    skills: ['Next.js', 'TypeScript', 'Supabase', 'Spotify API'],
-    img: imgFrontLeft,
-    url: 'https://github.com/yobazy/festify-2.0',
-    caseStudy: {
-      problem:
-        'Listing sites treat a show as a date, a venue, and one headliner photo. Working out whether a night is worth it means looking up the rest of the bill one artist at a time, and EDMTrain and Resident Advisor rarely agree on what\'s on or who\'s playing.',
-      built:
-        'A sync script pulls events, artists, and gigs from EDMTrain and Resident Advisor into Supabase and backfills artist images from Spotify. Next.js server components render every page from Postgres. The home page reads like a front page for your city: the strongest bill in the next two weeks, what\'s on tonight, a festival, and a big name in a small room. Festivals are set as contact sheets of the whole bill under a loupe that follows your pointer, and event pages list the lineup in the promoter\'s order. Spotify tokens stay on the server, with search and top tracks going through API routes on a cached client-credentials token.',
-      outcome:
-        'Follow artists and save events without an account, and the home page recommends shows, including later dates for artists you follow. Sign in and connect Spotify, and saved playlists land in your Spotify library too. The motion, from house lights on arrival to a logo that kicks at 124 BPM, switches off for reduced motion.',
+        'In progress. Duplicates go to the system Trash, every change can be undone from the activity journal, and the app asks before touching anything Rekordbox already uses.',
     },
   },
   {
@@ -392,17 +252,214 @@ export const projects = [
     tag: 'React Native · Supabase',
     line: 'Make a plan. Friends tap to join.',
     description:
-      'Mobile app for short-notice plans. Every plan is a ticket: the time up top, who\'s in on the stub, and one button to join. Friends tap in until it\'s full, and no reply means no. React Native and Supabase, in alpha on TestFlight.',
+      'A mobile app for short-notice plans. Send a plan to a few friends, they join with one tap, and no reply counts as a no. Built with React Native and Supabase, and in alpha on TestFlight.',
     skills: ['React Native', 'Expo', 'TypeScript', 'Supabase'],
+    facts: ['Expo and Supabase', 'TestFlight build 30', 'Links unfurl in iMessage'],
     img: imgLink,
+    gallery: [
+      {
+        src: imgLinkInvite,
+        alt: 'Three steps of accepting a friend invite: Theo wants to make plans with you, then you and Theo are on Link together',
+      },
+    ],
     caseStudy: {
       problem:
         'Small plans die in the group chat. Someone floats an idea, it turns into a poll, half the people never answer, and by the time it\'s settled the evening is gone.',
       built:
-        'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and sends the plan to a few friends in about five taps, with a live preview of the ticket they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: invitees only see the place and time once they join, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Friends connect through a personal invite link that unfurls in iMessage, and push notifications go out through an Edge Function worker with retries.',
+        'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and invites friends one by one or a whole group in a tap, with a live preview of the card they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: the place only shows once you\'ve joined, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Plan and group links unfurl in iMessage and WhatsApp as the plan\'s card with a Join button, and push notifications go out through an Edge Function worker with retries.',
       outcome:
-        'Version 1.1 is a full redesign around the ticket, from the feed to sign-in, and it\'s in alpha on TestFlight. Next on the roadmap: sharing plans straight into group chats, saved groups, and stickers.',
+        'Version 1.1 (build 30) is in alpha on TestFlight. Plan cards take emoji stickers, feeds have reactions, time suggestions can be voted on, and small fixes ship over the air without a new build.',
     },
+  },
+  {
+    slug: 'life-systems',
+    title: 'Life Systems',
+    kind: 'web',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'In progress',
+    tag: 'React · Prisma',
+    line: 'What you own, where it lives, and what it\'s for.',
+    description:
+      'An app for the things you own. Each need, like the commute, the gym, or rain, is covered, flagged for an upgrade, or still a gap. It also maps where everything lives, picks outfits for the weather and your calendar, and builds packing lists for trips. An assistant answers questions about your own stuff.',
+    skills: ['React', 'TypeScript', 'Node.js', 'Prisma', 'MCP'],
+    facts: ['Status is derived, never stored', 'Floor plans and a 3D walkthrough', 'MCP server for Claude'],
+    img: imgLifeSystems,
+    caseStudy: {
+      problem:
+        'Buying decisions usually start from the product. I wanted them to start from the need: the commute, the gym, a carry-on trip. Then it\'s obvious what\'s missing, what\'s redundant, and what\'s wearing out.',
+      built:
+        'A React and Node app on Prisma. A need is a gap, an upgrade, or covered, and that status is always derived, never stored. One item can cover several needs. Around that sit a ranked list of next steps, replacement cycles with due dates, a shopping list that puts things you already own first, and a log of every switch. Places has floor plans you can edit and a 3D model you can walk through, opening closets and drawers to see what\'s inside, with a printable QR label for each shelf. Clothing suggests a look for each occasion from the forecast and your calendar, and Trips turns where and when into a packing list.',
+      outcome:
+        'In progress. The service layer has no HTTP in it, so auth and a move to Postgres can come later without rewriting the rules, and Playwright tests click through the real app on desktop and phone.',
+    },
+  },
+  {
+    slug: 'short-turn',
+    title: 'Short Turn',
+    kind: 'data',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'In progress',
+    tag: 'Python · MCP',
+    line: 'How reliable is the TTC, really?',
+    description:
+      'Records the TTC\'s live feeds around the clock and grades every route on extra waiting, bunching, and ghost trips, and on how far to trust the official countdowns. A dashboard, an HTTP API, and an MCP server for Claude all read from the same data.',
+    skills: ['Python', 'GTFS-Realtime', 'LightGBM', 'React', 'MCP'],
+    facts: ['Polls the TTC feeds around the clock', 'Positions are 60 to 76 s old', 'Dashboard, API and MCP server'],
+    img: imgShortTurn,
+    gallery: [
+      {
+        src: imgShortTurnGrades,
+        alt: 'Report cards grading TTC routes from A to D, worst first',
+      },
+    ],
+    caseStudy: {
+      problem:
+        'The TTC map and countdowns say where a streetcar is, but not how far to trust them. Positions are about a minute old by the time you see them, and nothing public says which routes bunch up or run ghost trips.',
+      built:
+        'An asyncio collector polls the GTFS-Realtime feeds into a deduplicated Parquet archive. A daily pipeline snaps vehicles to their route shapes to work out when each one reached each stop, then scores routes on excess wait time, bunching, and ghost trips. A LightGBM quantile model with conformal calibration predicts arrivals as ranges. The live map moves each vehicle to where it probably is now, with a halo for how unsure that is.',
+      outcome:
+        'In progress. Two findings so far: positions are 60 to 76 seconds old when fetched, and the TTC\'s two realtime feeds use stop IDs that overlap, so joining them naively matches the wrong stops.',
+    },
+  },
+  {
+    slug: 'frontleft',
+    // Renamed from Festify, then spelled as one word; old links still resolve.
+    aliases: ['festify', 'front-left'],
+    title: 'FrontLeft',
+    kind: 'web',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'Live',
+    tag: 'Next.js · Supabase',
+    line: 'Hear the lineup before you buy the ticket.',
+    description:
+      'Music event discovery for people who care who\'s on the bill. Every upcoming show and festival in your city, with the lineup set like a poster and every artist ready to play before you buy a ticket. A rebuild of my bootcamp project, Festify, in Next.js, Supabase, and the Spotify Web API.',
+    skills: ['Next.js', 'TypeScript', 'Supabase', 'Spotify API'],
+    img: imgFrontLeft,
+    demo: { href: 'https://gofrontleft.vercel.app', label: 'Visit FrontLeft' },
+    caseStudy: {
+      problem:
+        'Listing sites treat a show as a date, a venue, and one headliner photo. Working out whether a night is worth it means looking up the rest of the bill one artist at a time, and EDMTrain and Resident Advisor rarely agree on what\'s on or who\'s playing.',
+      built:
+        'A sync script pulls events, artists, and gigs from EDMTrain and Resident Advisor into Supabase and fills in artist images from Spotify. Next.js server components render every page from Postgres. The home page reads like a front page for your city: the strongest bill in the next two weeks, what\'s on tonight, a festival, and a big name in a small room. Festivals are set as contact sheets of the whole bill under a loupe that follows your pointer, and event pages list the lineup in the promoter\'s order. Spotify tokens stay on the server.',
+      outcome:
+        'You can follow artists and save events without an account, and the home page recommends shows, including later dates for artists you follow. Connect Spotify and saved playlists land in your library too. The motion, from house lights on arrival to a logo that kicks at 124 BPM, switches off for reduced motion.',
+    },
+  },
+  {
+    slug: 'interview-prep',
+    title: 'Interview Prep Dashboard',
+    kind: 'web',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'In progress',
+    tag: 'React · Claude CLI',
+    line: 'A daily plan for senior interviews.',
+    description:
+      'Local dashboard for senior software interview prep. Coding, system design, behavioral, and the job search itself in one daily plan, with mock interviews graded by Claude through the CLI.',
+    skills: ['React', 'TypeScript', 'Vite', 'Claude'],
+    img: imgInterviewPrep,
+    caseStudy: {
+      problem:
+        'Senior interview prep is three tracks at once, and it\'s easy to drill the comfortable one. Progress also lived in status labels that said "confident" long after the practice behind them had gone stale.',
+      built:
+        'A React dashboard with no backend: state lives in the browser, and Vite dev-server plugins read a markdown prep folder and a job tracker from disk. Home builds a daily plan and a weekly goal, and a readiness gauge only moves on graded evidence, which expires after 21 days. On Record runs recruiter, coding, system design, fundamentals, and behavioral mocks by voice or text, graded through the local Claude CLI, and behavioral answers are checked against a fact sheet of my own stories. Coding solutions run against hidden tests in the browser, and system design is a nine-module course with timed designs scored on a six-part rubric.',
+      outcome:
+        'In progress. Booked interviews get their own countdown page with the company\'s most-asked problems and a daily target.',
+    },
+  },
+  {
+    slug: 'ableton-helper',
+    title: 'Ableton Helper',
+    kind: 'ai',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'In progress',
+    tag: 'Python · MCP',
+    line: 'Loops in, a full arrangement out.',
+    description:
+      'An arrangement assistant for Ableton Live 12. Put your loops in Session View, ask for tech house, and Claude lays out an arrangement in that genre in one batch, through an MCP server and a Live Remote Script.',
+    skills: ['Python', 'MCP', 'Claude', 'Ableton Live'],
+    img: imgAbletonHelper,
+    url: 'https://github.com/yobazy/ableton-helper',
+    caseStudy: {
+      problem:
+        'Making loops is the fun part. Turning them into a 224-bar track, section by section, is slow. Existing Ableton MCP servers send one request per change, so a single skeleton turns into about a hundred tool calls.',
+      built:
+        'A Python MCP server that compiles YAML genre templates into bar ranges, guesses which track is the kick, bass, or chords from track and clip names, and turns the plan into a list of operations. A Remote Script inside Live runs the whole list in one main-thread tick over TCP. The Live API code is tested against a fake, so the tests run without Live open.',
+      outcome:
+        'In progress. A house skeleton that took 108 tool calls takes one, and the whole build is a single undo in Live. A benchmark command measures the difference on your own machine.',
+    },
+  },
+  {
+    slug: 'obsidian-rag',
+    title: 'Obsidian RAG',
+    kind: 'ai',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    tag: 'Python · pgvector',
+    line: 'Ask your notes, get your own answers.',
+    description:
+      'A local RAG pipeline over an Obsidian vault. Notes are chunked, embedded with Voyage AI, and stored in pgvector, and Claude answers from what you wrote and lists the notes it used.',
+    skills: ['Python', 'PostgreSQL', 'pgvector', 'Claude'],
+    img: imgObsidianRag,
+    url: 'https://github.com/yobazy/obsidian-RAG-gpt',
+    caseStudy: {
+      problem:
+        'Years of notes are only useful if you can find them. Keyword search misses anything phrased differently, and a general chatbot answers from the internet instead of from what you wrote down.',
+      built:
+        'Python scripts around Postgres with pgvector in Docker. Ingestion splits each note into overlapping 400-word chunks, strips Obsidian markup, and skips unchanged files by hash, and a watcher re-ingests a note as soon as it\'s saved. Retrieval drops chunks under a similarity threshold, then pulls in notes linked by [[wikilinks]] before Claude answers in a CLI chat that remembers the conversation.',
+      outcome:
+        'Every answer lists its source notes with similarity scores. An eval harness scores retrieval and answers against hand-written questions, so I can measure a change to chunking or thresholds before keeping it.',
+    },
+  },
+  {
+    slug: 'expecta',
+    title: 'Expecta',
+    kind: 'web',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'Hackathon',
+    tag: 'React · TypeScript',
+    line: 'Is this safe right now? Scan and see.',
+    description:
+      'Mobile-first product checker for people trying to conceive, pregnant, or nursing. Scan a barcode or paste an ingredient list, and it checks against guidance for your stage and links the source. Built at Cursor\'s Toronto hackathon in July 2026.',
+    skills: ['React', 'TypeScript', 'Vite', 'ZXing'],
+    img: imgExpecta,
+    url: 'https://github.com/yobazy/expecta-cursor-hackathon',
+    caseStudy: {
+      problem:
+        'Whether a product is fine depends on the stage. A retinol serum that\'s out during pregnancy can be a different answer while nursing. Most checkers give one verdict for everyone and no source.',
+      built:
+        'A React 19 and TypeScript app with five stages, from planning through each trimester to nursing. The camera scans barcodes with ZXing, food lookups go to Open Food Facts, and pasted ingredient lists run against a small sourced rule set. Each result is safe, caution, avoid, or unknown, with the reason and a link to the guidance behind it.',
+      outcome:
+        'A working prototype built in a day. History and favorites stay in the browser, and the repo writes up the production architecture, API, data model, and safety constraints.',
+    },
+  },
+  {
+    slug: 'barberbot',
+    title: 'BarberBot',
+    kind: 'ai',
+    category: 'personal',
+    featured: false,
+    hasCaseStudy: false,
+    status: 'Pilot',
+    tag: 'VAPI · Square',
+    line: 'Voice AI that books the chair.',
+    description:
+      'A VAPI voice assistant piloted at a working barbershop. It answers inbound calls, books appointments, and syncs with GoHighLevel CRM and Square without a person stepping in.',
+    skills: ['VAPI', 'Voice AI', 'GoHighLevel', 'Square'],
+    img: imgBarberbot,
+    imgFit: 'contain',
   },
   {
     slug: 'myfi',
@@ -411,11 +468,11 @@ export const projects = [
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
-    tag: 'Django · React',
+    tag: 'Next.js · Supabase',
     line: 'Budgets from multi-bank statements.',
     description:
-      'Budgeting dashboard with a Django REST API and React frontend. Multi-bank statement processing and a rule-based categorization engine.',
-    skills: ['Django', 'React', 'REST API', 'PostgreSQL'],
+      'Budgeting dashboard for statements from several banks. Upload them, sort transactions with a rule-based categorizer, chart where the money went, and ask Claude for a monthly summary or questions about your spending. Rebuilt in Next.js and Supabase from an earlier Django and React version.',
+    skills: ['Next.js', 'React', 'Supabase', 'TypeScript'],
     img: imgMyfi,
   },
   {

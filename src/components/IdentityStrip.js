@@ -1,292 +1,103 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import HeroField from './HeroField';
-import { sections } from '../data/sections';
+import Arrow from './Arrow';
 import { TransitionLink } from '../lib/pageTransition';
+import { projects } from '../data/projects';
 
-// Each wire runs from the heading up to its nav link; the endpoints are
-// measured from the live nav, so routes must match the NavBar hrefs.
-const ROUTES = sections;
+const CITY = 'Toronto';
+const ZONE = 'America/Toronto';
 
-const CORNER = 10;
-const NOTE_PX = 0.62 * 16;
-const NOTE_TRACKING = 0.12 * NOTE_PX;
+const localTime = () =>
+  new Intl.DateTimeFormat('en-CA', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: ZONE })
+    .format(new Date())
+    .replace(/^24/, '00');
 
-let noteContext;
-function noteLength(text) {
-  noteContext = noteContext || document.createElement('canvas').getContext('2d');
-  noteContext.font = `400 ${NOTE_PX}px 'IBM Plex Mono', monospace`;
-  return noteContext.measureText(text.toUpperCase()).width + text.length * NOTE_TRACKING;
-}
-
-// Matches the NavBar breakpoint where links collapse into the menu toggle.
-const INLINE_NAV = '(min-width: 769px)';
-
-function navLink(to) {
-  return document.querySelector(`.navbar .nav-links a[href="${to}"]`);
-}
-
-// Branch: from the junction along the bus, rounding up into the link.
-// The stem meets the bus in a square T; only outer corners are rounded.
-function branchPath(x, bus, target) {
-  const dx = target.x - x;
-  if (Math.abs(dx) < CORNER) {
-    return `M ${x} ${bus} H ${target.x} V ${target.y}`;
-  }
-  const dir = Math.sign(dx);
-  return [
-    `M ${x} ${bus}`,
-    `H ${target.x - dir * CORNER}`,
-    `Q ${target.x} ${bus} ${target.x} ${bus - CORNER}`,
-    `V ${target.y}`,
-  ].join(' ');
-}
-
+// The hero: a field you can touch, with the name set in it. The copy sits low
+// and left like a caption on a photograph; the field is the picture.
 const IdentityStrip = () => {
   const reduce = useReducedMotion();
-  const heroRef = useRef(null);
-  const headingRef = useRef(null);
-  const [wires, setWires] = useState(null);
-  const [active, setActive] = useState(null);
+  const [time, setTime] = useState(localTime);
+  const [touched, setTouched] = useState(false);
+  const [lit, setLit] = useState(false);
+  const litTimer = useRef(null);
+  const building = projects.filter((project) => project.status === 'In progress' && project.lead);
 
-  const measure = useCallback(() => {
-    const hero = heroRef.current;
-    const heading = headingRef.current;
-    if (!hero || !heading) return;
-
-    const heroBox = hero.getBoundingClientRect();
-    const links = ROUTES.map((route) => navLink(route.to));
-
-    // Keep the SVG mounted when hiding so the draw-in never replays.
-    const hide = () => setWires((prev) => (prev ? { ...prev, visible: false } : null));
-
-    if (!window.matchMedia(INLINE_NAV).matches || links.some((link) => !link)) {
-      hide();
-      return;
-    }
-
-    // Layout offsets, not rects: the entrance animation transforms the intro.
-    const intro = heading.offsetParent;
-    const root = {
-      x: intro.offsetLeft + heading.offsetLeft + heading.offsetWidth / 2,
-      y: intro.offsetTop + heading.offsetTop - 2,
-    };
-    // The nav is fixed, so place its links where they sit at scroll 0.
-    const heroRestTop = heroBox.top + window.scrollY;
-    const targets = links.map((link) => {
-      const box = link.getBoundingClientRect();
-      return {
-        x: box.left + box.width / 2 - heroBox.left,
-        y: box.bottom - heroRestTop + 10,
-      };
-    });
-    const top = Math.max(...targets.map((target) => target.y));
-    const bus = top + (root.y - top) * 0.7;
-
-    if (root.y - top < 80) {
-      hide();
-      return;
-    }
-
-    // Labels hang from each endpoint; show all four or none.
-    const notes = ROUTES.every(
-      (route, i) => noteLength(route.note) <= bus - targets[i].y - 30
-    );
-    const stem = `M ${root.x} ${root.y} V ${bus}`;
-
-    setWires({
-      visible: true,
-      notes,
-      width: heroBox.width,
-      height: heroBox.height,
-      bus,
-      x: root.x,
-      stem,
-      routes: ROUTES.map((route, i) => {
-        const branch = branchPath(root.x, bus, targets[i]);
-        return {
-          ...route,
-          branch,
-          d: `${stem} ${branch.replace(/^M/, 'L')}`,
-          x: targets[i].x,
-          top: targets[i].y,
-        };
-      }),
-    });
-  }, []);
-
-  useLayoutEffect(() => {
-    measure();
-    const observer = new ResizeObserver(measure);
-    if (heroRef.current) observer.observe(heroRef.current);
-    const navLinks = document.querySelector('.navbar .nav-links');
-    if (navLinks) observer.observe(navLinks);
-    const inline = window.matchMedia(INLINE_NAV);
-    inline.addEventListener('change', measure);
-    window.addEventListener('resize', measure);
-    document.fonts?.ready.then(measure);
-    return () => {
-      observer.disconnect();
-      inline.removeEventListener('change', measure);
-      window.removeEventListener('resize', measure);
-    };
-  }, [measure]);
-
-  // Light a wire while its nav link is hovered or focused. Delegated from
-  // the navbar so it survives NavBar re-rendering its links.
   useEffect(() => {
-    const nav = document.querySelector('.navbar');
-    if (!nav) return undefined;
-    const routeOf = (node) => {
-      const link = node instanceof Element ? node.closest('.nav-links a[href]') : null;
-      const to = link?.getAttribute('href');
-      return ROUTES.some((route) => route.to === to) ? { link, to } : null;
-    };
-    const on = (event) => {
-      const hit = routeOf(event.target);
-      if (hit) setActive(hit.to);
-    };
-    const off = (event) => {
-      const hit = routeOf(event.target);
-      if (!hit || routeOf(event.relatedTarget)?.to === hit.to) return;
-      const focused = routeOf(document.activeElement);
-      const keep = event.type === 'pointerout' && focused ? focused.to : null;
-      setActive((current) => (current === hit.to ? keep : current));
-    };
-    nav.addEventListener('pointerover', on);
-    nav.addEventListener('pointerout', off);
-    nav.addEventListener('focusin', on);
-    nav.addEventListener('focusout', off);
-    return () => {
-      nav.removeEventListener('pointerover', on);
-      nav.removeEventListener('pointerout', off);
-      nav.removeEventListener('focusin', on);
-      nav.removeEventListener('focusout', off);
-    };
+    const tick = window.setInterval(() => setTime(localTime()), 30000);
+    return () => window.clearInterval(tick);
   }, []);
 
-  // Wires belong to the resting page; let them go as soon as it scrolls.
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero) return undefined;
-    let frame = 0;
-    const onScroll = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const fade = Math.max(0, 1 - window.scrollY / 140);
-        hero.style.setProperty('--wire-fade', fade.toFixed(3));
-      });
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
+  useEffect(() => () => window.clearTimeout(litTimer.current), []);
+
+  // A ripple in the field also lights the name for a moment.
+  const onRipple = () => {
+    setTouched(true);
+    setLit(true);
+    window.clearTimeout(litTimer.current);
+    litTimer.current = window.setTimeout(() => setLit(false), 900);
+  };
+
+  const rise = (delay) => ({
+    initial: reduce ? false : { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
+  });
 
   return (
     <section
-      ref={heroRef}
-      className={`hero-visual ${reduce ? 'is-still' : ''} ${active ? 'has-active' : ''}`}
+      className={`hero ${reduce ? 'is-still' : ''} ${lit ? 'is-lit' : ''}`}
+      onPointerMove={() => !touched && setTouched(true)}
     >
-      <HeroField reduce={Boolean(reduce)} />
-      <div className="hero-visual-scrim" aria-hidden="true" />
+      <HeroField reduce={Boolean(reduce)} touchable onRipple={onRipple} className="hero-field" />
+      <div className="hero-scrim" aria-hidden="true" />
 
-      {wires && (
-        <svg
-          className={`hero-wires ${wires.visible ? '' : 'is-hidden'}`}
-          width={wires.width}
-          height={wires.height}
-          viewBox={`0 0 ${wires.width} ${wires.height}`}
-          aria-hidden="true"
-        >
-          <path className="hero-wire-line hero-wire-stem" d={wires.stem} pathLength="1" />
-          <circle className="hero-wire-node" cx={wires.x} cy={wires.bus} r="3" />
-          {wires.routes.map((route, i) => (
-            <g
-              key={route.to}
-              className={`hero-wire ${active === route.to ? 'is-active' : ''}`}
-              style={{ '--i': i }}
-            >
-              <path className="hero-wire-line" d={route.branch} pathLength="1" />
-              <circle className="hero-wire-end" cx={route.x} cy={route.top} r="2.5" />
-              {wires.notes && (
-                <text
-                  className="hero-wire-note"
-                  textAnchor="end"
-                  transform={`translate(${route.x + 9} ${route.top + 16}) rotate(-90)`}
-                >
-                  {route.note}
-                </text>
-              )}
-              {wires.visible && !reduce && (
-                <circle className="hero-wire-pulse" r="2.5" opacity="0">
-                  <animateMotion
-                    path={route.d}
-                    dur="6s"
-                    begin={`${2.4 + i * 1.5}s`}
-                    repeatCount="indefinite"
-                    calcMode="linear"
-                    keyPoints="0;1;1"
-                    keyTimes="0;0.22;1"
-                  />
-                  <animate
-                    attributeName="opacity"
-                    values="0;1;1;0;0"
-                    keyTimes="0;0.03;0.2;0.25;1"
-                    dur="6s"
-                    begin={`${2.4 + i * 1.5}s`}
-                    repeatCount="indefinite"
-                  />
-                </circle>
-              )}
-            </g>
-          ))}
-        </svg>
-      )}
-
-      <motion.div
-        className="hero-visual-intro"
-        initial={reduce ? false : { opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <h1 ref={headingRef} className="hero-visual-heading">Hey, it's Baz.</h1>
-        <p className="hero-visual-sub">
-          Software + visuals.
-        </p>
-
-        <nav className="hero-index" aria-label="Sections">
-          {ROUTES.map((route) => (
-            <TransitionLink
-              key={route.to}
-              to={route.to}
-              className="hero-index-link"
-              morph={(link) => link.querySelector('.hero-index-label')}
-            >
-              <span className="hero-index-label">{route.label}</span>
-              <span className="hero-index-note">{route.note}</span>
+      <div className="hero-body">
+        <motion.div className="hero-copy" {...rise(0.1)}>
+          <h1 className="hero-heading">
+            Hey, it&rsquo;s <em>Baz</em>.
+          </h1>
+          <p className="hero-sub">Software + visuals.</p>
+          <div className="hero-actions">
+            <TransitionLink to="/now" className="hero-cta">
+              <span>What I&rsquo;m building now</span>
+              <Arrow />
             </TransitionLink>
-          ))}
-        </nav>
-      </motion.div>
+            <TransitionLink to="/projects" className="hero-link">
+              All development
+            </TransitionLink>
+          </div>
+        </motion.div>
 
-      <motion.div
-        className="hero-visual-credit"
-        initial={reduce ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <TransitionLink
-          to="/projects/ghosts-playground"
-          className="hero-visual-caption"
-          morph={(link) => link.querySelector('.hero-visual-title')}
-        >
-          <span className="hero-visual-kicker">visuals</span>
-          <span className="hero-visual-title">ghosts-playground</span>
-        </TransitionLink>
-      </motion.div>
+        <motion.div className="hero-foot" {...rise(0.5)}>
+          <p className="hero-status">
+            <span className="hero-status-time">
+              {CITY} {time}
+            </span>
+            {building.length > 0 && (
+              <span className="hero-status-now">
+                Building {building.map((project, i) => (
+                  <span key={project.slug}>
+                    {i > 0 && (i === building.length - 1 ? ' and ' : ', ')}
+                    {project.title}
+                  </span>
+                ))}
+              </span>
+            )}
+          </p>
+          <div className="hero-foot-right">
+            {!reduce && (
+              <span className={`hero-hint ${touched ? 'is-done' : ''}`} aria-hidden="true">
+                drag the field · tap for a ripple
+              </span>
+            )}
+            <TransitionLink to="/projects/ghosts-playground" className="hero-credit">
+              <span className="hero-credit-label">Field</span>
+              <span className="hero-credit-title">ghosts-playground, live</span>
+            </TransitionLink>
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 };

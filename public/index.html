@@ -5,10 +5,10 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="32x32" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#080808" />
+    <meta name="theme-color" content="#07080E" />
     <meta
       name="description"
-      content="Bazil K., senior software developer. Cloud infrastructure, backend systems, and the products on top, plus photography."
+      content="Bazil Khan, software engineer in Toronto. The systems underneath (Azure, queues, data pipelines) and the visuals on top (WebGL, live visuals, photography)."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <!--
@@ -27,8 +27,10 @@
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <title>Hey, it's Baz.</title>
+    <!-- Fonts load without blocking the first paint; text shows in the fallback and swaps. -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" /></noscript>
+    <title>Bazil Khan · Hey, it's Baz.</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

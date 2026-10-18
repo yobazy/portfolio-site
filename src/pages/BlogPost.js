@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, useScroll } from 'framer-motion';
 import { posts } from '../data/posts';
+import Arrow from '../components/Arrow';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
 
 const postContent = {
@@ -22,7 +23,8 @@ const postContent = {
         <p>
           What I wanted was one window with every session across every project, and the ones waiting
           on me at the top. Nothing did that, so I built it. That's{' '}
-          <TransitionLink to="/projects/nebula-desktop">Nebula Desktop</TransitionLink>.
+          <TransitionLink to="/projects?q=Observatory">Observatory</TransitionLink>, which was called
+          Nebula Desktop when I started it.
         </p>
 
         <h2>The first version</h2>
@@ -75,7 +77,7 @@ const postContent = {
         </p>
         <p>
           The code is on{' '}
-          <a href="https://github.com/yobazy/nebula-desktop" target="_blank" rel="noopener noreferrer">
+          <a href="https://github.com/yobazy/observatory" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>{' '}
           if you want to see how it's put together.
@@ -249,7 +251,10 @@ function BlogPost() {
     >
       <div className="container">
         <div className="post-container">
-          <TransitionLink to="/blog" className="post-back">← Blog</TransitionLink>
+          <TransitionLink to="/blog" className="post-back">
+            <Arrow dir="left" />
+            Blog
+          </TransitionLink>
 
           <header className="post-header">
             <div className="post-meta">

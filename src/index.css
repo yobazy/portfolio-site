@@ -6,10 +6,10 @@ html {
 
 body {
   margin: 0;
-  background: #06060a;
-  font-family: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
+  background: #07080E;
+  font-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 }

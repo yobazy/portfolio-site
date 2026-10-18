@@ -1,21 +1,32 @@
-import { useCallback, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useRef, useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { TransitionLink } from '../lib/pageTransition';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
+
 import IdentityStrip from '../components/IdentityStrip';
+import HeroField from '../components/HeroField';
 import SectionHead, { sectionHeadingId } from '../components/SectionHead';
 import ShowcaseTile from '../components/ShowcaseTile';
 import ProjectSheet from '../components/ProjectSheet';
+import Arrow from '../components/Arrow';
 import { getProjectBySlug, projectPage } from '../data/projects';
 import { featuredMedia } from '../data/mediaItems';
 import { posts } from '../data/posts';
 
-const LEAD = ['nebula-desktop', 'ghosts-playground', 'mixvault'];
-const AT_WORK = ['360-ops', 'cn-integration', 'urbaneyes'];
+// The lightbox only loads once a photo is opened.
+const Lightbox = lazy(() =>
+  Promise.all([
+    import('yet-another-react-lightbox'),
+    import('yet-another-react-lightbox/styles.css'),
+  ]).then(([m]) => m)
+);
+
+const LEAD = ['observatory', 'ghosts-playground', 'mixvault'];
+const AT_WORK = ['cn-integration', '360-ops', 'azure-pipelines', 'urbaneyes'];
 
 const pick = (slugs) => slugs.map(getProjectBySlug).filter(Boolean);
 
 function Home() {
+  const reduce = useReducedMotion();
   const lead = pick(LEAD);
   const atWork = pick(AT_WORK);
   const photos = featuredMedia.slice(0, 3);
@@ -34,6 +45,18 @@ function Home() {
     requestAnimationFrame(() => opener.current?.focus?.());
   }, []);
 
+  // ghosts-playground's tile runs a small live field instead of a screenshot.
+  const liveTile = (project) =>
+    project.slug === 'ghosts-playground' ? (
+      <HeroField
+        reduce={Boolean(reduce)}
+        intensity={1.1}
+        rosette={0}
+        dprCap={1}
+        className="tile-field"
+      />
+    ) : undefined;
+
   return (
     <div className="home-page">
       <IdentityStrip />
@@ -46,9 +69,10 @@ function Home() {
             <ShowcaseTile
               key={project.slug}
               title={project.title}
-              subtitle={project.tag}
+              subtitle={[project.status, project.tag].filter(Boolean).join(' · ')}
               line={project.line}
               img={project.img}
+              field={liveTile(project)}
               fit={project.imgFit}
               size={i === 0 ? 'large' : 'default'}
               href={projectPage(project)}
@@ -58,17 +82,16 @@ function Home() {
         </div>
 
         <div className="home-work">
-          <span className="home-work-label">At work</span>
+          <h3 className="home-work-label">Professional</h3>
           <ul className="home-work-list">
             {atWork.map((project) => (
               <li key={project.slug}>
-                <button
-                  type="button"
-                  className="home-work-row"
-                  onClick={() => open(project)}
-                >
+                <button type="button" className="home-work-row" onClick={() => open(project)}>
                   <span className="home-work-title">{project.title}</span>
                   <span className="home-work-line">{project.line}</span>
+                  <span className="home-work-facts">
+                    {(project.facts || project.skills.slice(0, 3)).join(' · ')}
+                  </span>
                   <span className="home-work-org">{project.org}</span>
                 </button>
               </li>
@@ -90,47 +113,53 @@ function Home() {
             />
           ))}
         </div>
-        <Lightbox
-          open={photo >= 0}
-          index={photo}
-          close={() => setPhoto(-1)}
-          slides={photos.map((item) => ({ src: item.src, alt: item.title }))}
-        />
+        {photo >= 0 && (
+          <Suspense fallback={null}>
+            <Lightbox
+              open
+              index={photo}
+              close={() => setPhoto(-1)}
+              slides={photos.map((item) => ({
+                src: item.src,
+                alt: item.title,
+              }))}
+            />
+          </Suspense>
+        )}
       </section>
 
       <section className="home-section" aria-labelledby={sectionHeadingId('/blog')}>
         <SectionHead to="/blog" linkLabel="All notes" />
-        <div className="home-work">
-          <span className="home-work-label">Latest</span>
-          <ul className="home-work-list">
-            {latest.map((post) => (
-              <li key={post.slug}>
-                <TransitionLink to={`/blog/${post.slug}`} className="home-work-row home-post">
-                  <span className="home-work-title">{post.title}</span>
-                  <span className="home-work-line">{post.excerpt}</span>
-                  <span className="home-post-meta">
-                    {post.date} · {post.readTime}
-                  </span>
-                </TransitionLink>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="home-posts">
+          {latest.map((post) => (
+            <li key={post.slug}>
+              <TransitionLink to={`/blog/${post.slug}`} className="home-post">
+                <span className="home-post-meta">
+                  {post.date} · {post.readTime}
+                </span>
+                <span className="home-post-title">{post.title}</span>
+                <span className="home-post-excerpt">{post.excerpt}</span>
+                <span className="home-post-go" aria-hidden="true">
+                  <Arrow />
+                </span>
+              </TransitionLink>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="home-section home-about" aria-labelledby={sectionHeadingId('/about')}>
         <SectionHead to="/about" linkLabel="Read more" />
         <div className="home-about-body">
-          <p className="home-about-statement">
-            The system doesn't care which layer the problem is on.
-          </p>
-          <p className="home-about-text">
-            I did a Bachelor's and Master's in civil engineering at the University of
-            Alberta, then moved into software. Most recently I was a senior developer at
-            Metrolinx, working on Azure infrastructure and CN integrations. Before that, two years
-            of middleware for ONxpress on a $1.6B rail project, and a port to Next.js
-            for a startup in Berkeley. I also shoot photos and video.
-          </p>
+          <div className="home-about-text">
+            <p>
+              I did a Bachelor's and Master's in civil engineering at the University of Alberta,
+              then moved into software. Most recently I was a senior developer at Metrolinx,
+              working on Azure infrastructure and CN integrations. Before that, two years of
+              middleware for ONxpress on a $1.6B rail project, and a port to Next.js for a startup
+              in Berkeley. I also shoot photos and video.
+            </p>
+          </div>
         </div>
       </section>
 

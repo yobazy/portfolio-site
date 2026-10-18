@@ -16,6 +16,50 @@ site memorable.
 - [ ] **Resume and availability.** A resume download and a status line
       ("Open to senior roles · …") in the footer. On hold.
 
+## Pending on project work
+
+- [x] **MixVault screenshot and copy.** Retaken 2026-10-17 from a fresh build
+      with `scripts/screenshots/mixvault.js`; copy covers Soulseek, the
+      Rekordbox bridge file and the Library.
+- [x] **Observatory screenshot.** Now the 0.6.1 release cover
+      (`nebula-desktop/docs/release/cover.jpg`). Retake when the app changes.
+- [ ] **House Rules and Afterglow.** Both repos are active (House Rules: 13
+      games, 80 commits; Afterglow: a JUCE audio visualizer at 0.2). Left off
+      the site on the October 15 decision; revisit.
+- [ ] **Link screenshots.** `link-app/docs/screenshots` has the Sage look
+      (Oct 15). The site still shows the earlier card. Retake when build 31
+      is out.
+
+## Redesign, October 17 2026 (branch `next-level`)
+
+- [x] **Midnight leopard palette and type.** Cold near-black, indigo wash,
+      one periwinkle glint. Castoro + Instrument Sans + IBM Plex Mono. See
+      `docs/BRAND.md`.
+- [x] **Touchable hero field.** Pointer pushes the silk, tap drops a ripple
+      and lights the name; rosettes printed tone on tone; renders only on
+      screen.
+- [x] **Phone dock** replaces the hamburger; **bottom sheet** with a pull
+      handle replaces the side sheet on phones.
+- [x] **/now pitch deck** for networking events: one slide a project, QR
+      code, email, share.
+- [x] **About layer stack** (Ground to Light) with real work per layer.
+- [x] **Project audit.** Copy and screenshots for Observatory, ghosts,
+      MixVault, Link, Life Systems, Interview Prep, Short Turn; three facts
+      per project for the sheet and the deck.
+- [ ] **In-site demos per project.** Baz's idea (Oct 17): each project gets
+      a small working demo on the site, even if it isn't the real software.
+      The CN diagram with moving packets is the first one. Planned:
+      Observatory (a session flips to "Waiting on you" with a prompt you can
+      answer), ghosts (the field plus filter chips, maybe a camera mask),
+      MixVault (paste a sample link, watch it land in the crate),
+      Link (a plan card you can join), Short Turn (one route with moving
+      vehicles and its grade), Life Systems (toggle items, status recomputes).
+      Build them into the `/now` slides and the sheets.
+- [ ] **A statement to replace the retired brand line**, if any. Baz decides.
+- [ ] **Per-page OG image** in the new palette, and an OG image for `/now`.
+- [ ] **Ripple from the field up into the nav** (the packet idea) if the
+      wires ever come back; the field alone carries the hero now.
+
 ## Next level
 
 - [ ] **Living architecture diagrams.** Draw each professional system as an SVG
