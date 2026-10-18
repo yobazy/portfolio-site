@@ -245,7 +245,7 @@ export const projects = [
   },
   {
     slug: 'link',
-    // Called Link until October 2026; old links still resolve.
+    // Older links still resolve.
     aliases: ['any-chills', 'chills'],
     title: 'any chills?',
     kind: 'apps',
