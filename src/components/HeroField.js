@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { fieldLook } from '../lib/fieldLook';
 
 const VERT = `
 attribute vec2 aPos;
@@ -20,6 +21,14 @@ uniform float uPointerOn;
 uniform vec4 uRipples[4];
 uniform float uIntensity;
 uniform float uRosette;
+uniform float uPhase;
+uniform float uPush;
+uniform float uPointerGlow;
+uniform float uBloom;
+uniform vec3 uDeep;
+uniform vec3 uInk;
+uniform vec3 uInkDeep;
+uniform vec3 uGlint;
 
 vec2 hash2(vec2 p) {
   return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453);
@@ -51,7 +60,7 @@ void main() {
   vec2 uv = gl_FragCoord.xy / uRes;
   float aspect = uRes.x / max(uRes.y, 1.0);
   vec2 p = vec2(uv.x * aspect, uv.y);
-  float t = uTime * 0.16;
+  float t = uPhase;
 
   vec2 q = p;
   q.x += 0.08 * sin(p.y * 3.2 + t * 1.3);
@@ -62,7 +71,7 @@ void main() {
   vec2 dp = p - pp;
   float dl = length(dp);
   float push = exp(-dl * dl * 16.0) * uPointerOn;
-  q += (dp / max(dl, 0.001)) * push * 0.14;
+  q += (dp / max(dl, 0.001)) * push * uPush;
 
   // Ripples: rings that travel out from a tap and fade.
   float glint = 0.0;
@@ -92,22 +101,22 @@ void main() {
   float cells = mix(8.0, 5.5, smoothstep(0.6, 1.4, aspect));
   float ros = uRosette > 0.0 ? rosettes(q * cells + vec2(0.0, t * 0.3)) * uRosette * mix(0.55, 1.0, smoothstep(0.6, 1.4, aspect)) : 0.0;
 
-  vec3 deep = vec3(0.027, 0.031, 0.055);
-  vec3 ink = vec3(0.094, 0.102, 0.243);
-  vec3 inkDeep = vec3(0.055, 0.062, 0.175);
-  vec3 glintC = vec3(0.769, 0.804, 1.0);
+  vec3 deep = uDeep;
+  vec3 ink = uInk;
+  vec3 inkDeep = uInkDeep;
+  vec3 glintC = uGlint;
 
   vec3 col = mix(deep, ink, 0.4 + 0.7 * crest);
   col = mix(col, deep * 0.85, trough * 0.45);
   col = mix(col, inkDeep, ros * 0.75 * (0.3 + 0.7 * crest));
   col += glintC * ridge * 0.22 * uIntensity;
   col += glintC * crest * 0.09 * uIntensity;
-  col += glintC * push * 0.32;
+  col += glintC * push * uPointerGlow;
   col += glintC * glint * 0.22;
 
   float vig = smoothstep(1.25, 0.3, length((uv - 0.5) * vec2(1.08, 1.0)));
   // A soft indigo bloom high and left, where the field is otherwise quiet.
-  col += ink * 0.5 * exp(-length((uv - vec2(0.25, 0.8)) * vec2(1.4, 2.0)) * 2.2);
+  col += ink * uBloom * exp(-length((uv - vec2(0.25, 0.8)) * vec2(1.4, 2.0)) * 2.2);
   col = mix(deep, col, vig);
 
   gl_FragColor = vec4(col, 1.0);
@@ -199,7 +208,15 @@ const HeroField = ({
       const uPointer = u('uPointer');
       const uPointerOn = u('uPointerOn');
       const uRipples = u('uRipples');
-      gl.uniform1f(u('uIntensity'), intensity);
+      const uIntensity = u('uIntensity');
+      const uPhase = u('uPhase');
+      const uPush = u('uPush');
+      const uPointerGlow = u('uPointerGlow');
+      const uBloom = u('uBloom');
+      const uDeep = u('uDeep');
+      const uInk = u('uInk');
+      const uInkDeep = u('uInkDeep');
+      const uGlint = u('uGlint');
       gl.uniform1f(u('uRosette'), rosette);
 
       // Pointer state, eased toward its target every frame so it trails.
@@ -213,11 +230,26 @@ const HeroField = ({
       let visible = true;
       const origin = performance.now();
       const seconds = () => (performance.now() - origin) / 1000;
+      // The waves advance by speed × elapsed, so a live speed change doesn't
+      // jump the field to a different spot.
+      let phase = 5 * fieldLook.speed;
+      let last = null;
 
       const draw = (time) => {
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
         gl.uniform2f(uRes, gl.drawingBufferWidth, gl.drawingBufferHeight);
         gl.uniform1f(uTime, time);
+        if (last !== null) phase += (time - last) * fieldLook.speed;
+        last = time;
+        gl.uniform1f(uPhase, phase);
+        gl.uniform1f(uIntensity, intensity * fieldLook.intensity);
+        gl.uniform1f(uPush, fieldLook.push);
+        gl.uniform1f(uPointerGlow, fieldLook.pointerGlow);
+        gl.uniform1f(uBloom, fieldLook.bloom);
+        gl.uniform3fv(uDeep, fieldLook.deep);
+        gl.uniform3fv(uInk, fieldLook.ink);
+        gl.uniform3fv(uInkDeep, fieldLook.inkDeep);
+        gl.uniform3fv(uGlint, fieldLook.glint);
         gl.uniform2f(uPointer, pointer.x, pointer.y);
         gl.uniform1f(uPointerOn, pointer.on);
         gl.uniform4fv(uRipples, ripples);

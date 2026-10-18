@@ -17,6 +17,11 @@ const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Now = lazy(() => import('./pages/Now'));
 const About = lazy(() => import('./components/About').then((m) => ({ default: m.About })));
+// The tweak panel: always in development, and anywhere with ?tweak in the URL
+// (handy on a Vercel preview, on a phone).
+const tweaking =
+  process.env.NODE_ENV === 'development' || new URLSearchParams(window.location.search).has('tweak');
+const Tweaks = tweaking ? lazy(() => import('./dev/Tweaks')) : null;
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -50,6 +55,11 @@ function App() {
         </Routes>
       </Suspense>
       {!deck && <Footer />}
+      {Tweaks && (
+        <Suspense fallback={null}>
+          <Tweaks />
+        </Suspense>
+      )}
     </div>
   );
 }
