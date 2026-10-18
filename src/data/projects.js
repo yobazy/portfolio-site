@@ -4,6 +4,8 @@ import imgTinyapp from '../assets/img/proj-tinyapp.png';
 import imgReasonable from '../assets/img/proj-reasonable.png';
 import imgLink from '../assets/img/link-dark.jpg';
 import imgLinkInvite from '../assets/img/link-invite.jpg';
+import imgChillsShare from '../assets/img/any-chills-share.jpg';
+import imgChillsSite from '../assets/img/any-chills-site.jpg';
 import imgCnDiagram from '../assets/img/cn-integration-diagram.svg';
 import { CN_DIAGRAM } from '../components/SystemDiagram';
 import imgMyfi from '../assets/img/myfi-dashboard.jpg';
@@ -243,20 +245,31 @@ export const projects = [
   },
   {
     slug: 'link',
-    title: 'Link',
+    // Called Link until October 2026; old links still resolve.
+    aliases: ['any-chills', 'chills'],
+    title: 'Any Chills?',
     kind: 'apps',
     category: 'personal',
     featured: false,
     hasCaseStudy: false,
     status: 'Alpha',
     tag: 'React Native · Supabase',
-    line: 'Make a plan. Friends tap to join.',
+    line: 'Make a plan. Friends tap in.',
     description:
-      'A mobile app for short-notice plans. Send a plan to a few friends, they join with one tap, and no reply counts as a no. Built with React Native and Supabase, and in alpha on TestFlight.',
+      'A mobile app for short-notice plans. Send a plan to a few friends, they join with one tap, and no reply counts as a no. Built with React Native and Supabase, in alpha on TestFlight, with the site at anychills.app. Called Link until October 2026.',
     skills: ['React Native', 'Expo', 'TypeScript', 'Supabase'],
-    facts: ['Expo and Supabase', 'TestFlight build 30', 'Links unfurl in iMessage'],
+    facts: ['Expo and Supabase', 'TestFlight build 32', 'anychills.app'],
     img: imgLink,
+    demo: { href: 'https://anychills.app', label: 'Visit anychills.app' },
     gallery: [
+      {
+        src: imgChillsShare,
+        alt: 'The share image: two cups clinking, "Make a plan. Friends tap in."',
+      },
+      {
+        src: imgChillsSite,
+        alt: 'anychills.app: the headline, the waitlist form with city pills, and a phone showing plan cards',
+      },
       {
         src: imgLinkInvite,
         alt: 'Three steps of accepting a friend invite: Theo wants to make plans with you, then you and Theo are on Link together',
@@ -268,7 +281,7 @@ export const projects = [
       built:
         'An Expo app on Supabase. A host picks a time with quick chips (now, in 30 minutes, tonight) and invites friends one by one or a whole group in a tap, with a live preview of the card they\'ll see. Join, Maybe, and leave update instantly and roll back if the server says no. Postgres does the gatekeeping: the place only shows once you\'ve joined, writes go through security-definer functions, and a realtime signal table refreshes everyone\'s screens. Plan and group links unfurl in iMessage and WhatsApp as the plan\'s card with a Join button, and push notifications go out through an Edge Function worker with retries.',
       outcome:
-        'Version 1.1 (build 30) is in alpha on TestFlight. Plan cards take emoji stickers, feeds have reactions, time suggestions can be voted on, and small fixes ship over the air without a new build.',
+        'Version 1.1 (build 32) is in alpha on TestFlight, the first build under the new name, and the site and waitlist are live at anychills.app. Plan cards take emoji stickers, feeds have reactions, time suggestions can be voted on, and small fixes ship over the air without a new build.',
     },
   },
   {

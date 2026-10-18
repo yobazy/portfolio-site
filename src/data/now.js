@@ -24,7 +24,7 @@ export const nowItems = [
   {
     slug: 'link',
     why: 'Small plans die in the group chat. Link sends a plan, friends tap to join, and silence counts as a no.',
-    facts: ['Expo, React Native and Supabase', 'TestFlight build 30', 'Plan links unfurl in iMessage and WhatsApp'],
+    facts: ['Expo, React Native and Supabase', 'TestFlight build 32', 'Live at anychills.app'],
   },
   {
     slug: 'short-turn',
