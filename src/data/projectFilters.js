@@ -1,6 +1,7 @@
-// Filtering for the Development page: kind, tech and free-text search. The
-// tech facet is derived from the project data, so a new skill shows up without
-// edits here. Types group the page into sections; they aren't a filter.
+// Filtering for the Development page: type (personal, professional, earlier),
+// tech and free-text search. The tech facet is derived from the project data,
+// so a new skill shows up without edits here. Kinds group the page into
+// sections; `kind` is still read from old links.
 
 export const TYPES = [
   { key: 'personal', label: 'Personal', categories: ['personal', 'visuals'] },
@@ -16,8 +17,8 @@ export const KINDS = [
   { key: 'data', label: 'Data & infrastructure' },
 ];
 
-// `type` and `org` were filters once; old links drop them on the next change.
-const PARAMS = ['type', 'org', 'kind', 'tech', 'q'];
+// `org` was a filter once; old links drop it on the next change.
+const PARAMS = ['org', 'type', 'kind', 'tech', 'q'];
 
 const skillsOf = (project) => project.skills || [];
 
@@ -26,6 +27,10 @@ const kindsOf = (project) =>
 
 export const typeOf = (project) =>
   TYPES.find((type) => type.categories.includes(project.category))?.key ?? null;
+
+export const typeLabel = (project) => TYPES.find((type) => type.key === typeOf(project))?.label ?? '';
+
+const typesOf = (project) => TYPES.filter((type) => type.key === typeOf(project)).map((type) => type.label);
 
 // Symbols carry meaning in tech names (C, C++, C#, .NET), so spell them out
 // before stripping punctuation.
@@ -44,6 +49,7 @@ const indexOf = (project) => {
   let entry = cache.get(project);
   if (!entry) {
     entry = {
+      type: typesOf(project).map(slugify),
       kind: kindsOf(project).map(slugify),
       tech: skillsOf(project).map(slugify),
       text: [
@@ -64,7 +70,7 @@ const indexOf = (project) => {
   return entry;
 };
 
-export const emptyFilters = { kind: [], tech: [], q: '' };
+export const emptyFilters = { type: [], kind: [], tech: [], q: '' };
 
 const knownValues = (projects, key) =>
   new Set(projects.flatMap((project) => indexOf(project)[key]));
@@ -76,27 +82,32 @@ const cleanList = (values, known) => [
 ];
 
 export const readFilters = (params, projects) => ({
+  type: cleanList(params.getAll('type'), knownValues(projects, 'type')),
   kind: cleanList(params.getAll('kind'), knownValues(projects, 'kind')),
   tech: cleanList(params.getAll('tech'), knownValues(projects, 'tech')),
   q: params.get('q') || '',
 });
 
 // Keeps any params that aren't ours (utm_* and friends).
-export const writeFilters = (current, { kind, tech, q }) => {
+export const writeFilters = (current, { type, kind, tech, q }) => {
   const params = new URLSearchParams(current);
   PARAMS.forEach((key) => params.delete(key));
+  type.forEach((value) => params.append('type', value));
   kind.forEach((value) => params.append('kind', value));
   tech.forEach((skill) => params.append('tech', skill));
   if (q.trim()) params.set('q', q);
   return params;
 };
 
-export const hasFilters = ({ kind, tech, q }) =>
-  Boolean(kind.length || tech.length || q.trim());
+export const hasFilters = ({ type, kind, tech, q }) =>
+  Boolean(type.length || kind.length || tech.length || q.trim());
 
 // Each test can be skipped so a facet counts against every filter but its own.
 const matches = (project, filters, skip) => {
   const index = indexOf(project);
+  if (skip !== 'type' && filters.type.length) {
+    if (!filters.type.some((value) => index.type.includes(value))) return false;
+  }
   if (skip !== 'kind' && filters.kind.length) {
     if (!filters.kind.some((value) => index.kind.includes(value))) return false;
   }
@@ -161,6 +172,7 @@ const facet = (projects, filters, key, valuesOf, order) => {
 
 export const buildFacets = (projects, filters) => ({
   all: projects.length,
+  type: facet(projects, filters, 'type', typesOf, TYPES.map((type) => type.label)),
   kind: facet(projects, filters, 'kind', kindsOf, KINDS.map((kind) => kind.label)),
   tech: facet(projects, filters, 'tech', skillsOf),
 });

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { TransitionLink } from '../lib/pageTransition';
 import HeroField from './HeroField';
@@ -6,6 +6,7 @@ import Arrow from './Arrow';
 import { EMAIL, LINKS, useCopy } from './Footer';
 import { getProjectBySlug, projectPage } from '../data/projects';
 import { NOW_UPDATED, NOW_URL, nowItems } from '../data/now';
+import { demos } from '../demos';
 
 const slides = [
   ...nowItems
@@ -28,6 +29,14 @@ const Clip = ({ src, poster, alt, active }) => {
 
 const Media = ({ slide, active, reduce }) => {
   const { project } = slide;
+  const Demo = project.interactive && demos[project.interactive];
+  if (Demo) {
+    return (
+      <Suspense fallback={null}>
+        <Demo />
+      </Suspense>
+    );
+  }
   const clip = project.media?.find((item) => item.type === 'video');
   if (clip && !reduce) return <Clip {...clip} active={active} />;
   if (project.img) return <img src={project.img} alt="" />;
@@ -197,7 +206,11 @@ const Deck = ({ onClose }) => {
           return (
             <section key={project.slug} className="now-slide now-project" aria-label={project.title} aria-hidden={!active}>
               <div className="now-project-inner">
-                <div className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}`}>
+                <div
+                  className={`now-media frame${project.imgFit === 'contain' ? ' is-contain' : ''}${
+                    project.interactive ? ' is-demo' : ''
+                  }`}
+                >
                   <Media slide={slide} active={active} reduce={Boolean(reduce)} />
                 </div>
                 <div className="now-copy">

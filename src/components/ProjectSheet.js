@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import Arrow from './Arrow';
 import SystemDiagram from './SystemDiagram';
+import { demos } from '../demos';
 
 const linkLabel = (url) => {
   if (!url) return null;
@@ -116,7 +117,16 @@ const ProjectSheet = ({ project, onClose }) => {
           </button>
         </div>
 
-        {project.diagram ? (
+        {project.interactive && demos[project.interactive] ? (
+          <div className="project-sheet-media frame is-demo">
+            <Suspense fallback={null}>
+              {(() => {
+                const Demo = demos[project.interactive];
+                return <Demo />;
+              })()}
+            </Suspense>
+          </div>
+        ) : project.diagram ? (
           <div className="project-sheet-media">
             <SystemDiagram {...project.diagram} />
           </div>

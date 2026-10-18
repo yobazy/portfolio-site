@@ -278,6 +278,11 @@ const WorkFilters = ({
   const q = filters.q.trim();
 
   const chips = [
+    ...filters.type.map((value) => ({
+      key: `type-${value}`,
+      text: labelFor(facets.type, value),
+      remove: () => toggle('type', value),
+    })),
     ...filters.kind.map((value) => ({
       key: `kind-${value}`,
       text: labelFor(facets.kind, value),
@@ -314,7 +319,7 @@ const WorkFilters = ({
   return (
     <div className="work-filters" ref={root}>
       <div className="work-filters-row">
-        {/* The page is already grouped into these; they jump, they don't hide. */}
+        {/* The page is grouped by kind; these jump, they don't hide. */}
         <nav className="work-jump" aria-label="Sections">
           {sections.map((section) => (
             <a key={section.key} href={`#work-${section.key}`}>
@@ -325,12 +330,12 @@ const WorkFilters = ({
 
         <div className="work-filters-tools">
           <FacetMenu
-            label="Kind"
-            plural="kinds"
-            options={facets.kind}
-            selected={filters.kind}
-            onToggle={(value) => toggle('kind', value)}
-            onClear={() => onChange({ kind: [] })}
+            label="Type"
+            plural="types"
+            options={facets.type}
+            selected={filters.type}
+            onToggle={(value) => toggle('type', value)}
+            onClear={() => onChange({ type: [] })}
             searchable={false}
           />
           <FacetMenu

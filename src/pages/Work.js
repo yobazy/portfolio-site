@@ -8,11 +8,14 @@ import WorkFilters from '../components/WorkFilters';
 import { projectPage, projects } from '../data/projects';
 import { ARRIVE, DURATION, EASE_PREMIUM } from '../lib/motion';
 import {
+  KINDS,
+  TYPES,
   applyFilters,
   buildFacets,
   emptyFilters,
   hasFilters,
   readFilters,
+  typeLabel,
   typeOf,
   warnSlugCollisions,
   writeFilters,
@@ -40,27 +43,32 @@ const Work = () => {
   const shown = useMemo(() => applyFilters(projects, filters), [filters]);
   const filtered = hasFilters(filters);
 
-  const independent = shown.filter((project) => typeOf(project) === 'personal');
-  // A lone lead tile would sit half-width beside an empty column, so it joins the grid.
-  const leads = independent.filter((project) => project.lead);
-  const lead = leads.length > 1 ? leads : [];
-  const personal = independent.filter((project) => !lead.includes(project));
-  const systems = shown.filter((project) => typeOf(project) === 'professional');
-  const earlier = shown.filter((project) => typeOf(project) === 'earlier');
+  // Grouped by what a project is (web app, desktop or mobile, AI, data), with
+  // personal work first in each group, then the day job, then the early demos.
+  const rank = (project) => TYPES.findIndex((type) => type.key === typeOf(project));
+  const groups = KINDS.map((kind) => {
+    const list = shown
+      .filter((project) => project.kind === kind.key)
+      .sort((a, b) => rank(a) - rank(b) || Number(Boolean(b.lead)) - Number(Boolean(a.lead)));
+    return {
+      ...kind,
+      pictures: list.filter((project) => project.img),
+      notes: list.filter((project) => !project.img),
+      count: list.length,
+    };
+  }).filter((group) => group.count);
   const [active, setActive] = useState(null);
 
   const reduce = useReducedMotion();
 
-  // Keys carry the grid a tile sits in, so moving between grids (a lead
-  // dropping into the small grid) reads as arriving rather than stretching.
+  // Keys carry the grid a tile sits in, so moving between grids reads as
+  // arriving rather than stretching.
   const onScreen = [
-    ...lead.map((project) => `lead:${project.slug}`),
-    ...personal.map((project) => `personal:${project.slug}`),
-    ...systems.map((project) => `professional:${project.slug}`),
-    ...earlier.map((project) => `earlier:${project.slug}`),
-    ...(independent.length ? ['section:personal'] : []),
-    ...(systems.length ? ['section:professional'] : []),
-    ...(earlier.length ? ['section:earlier'] : []),
+    ...groups.flatMap((group) => [
+      ...group.pictures.map((project) => `${group.key}:${project.slug}`),
+      ...group.notes.map((project) => `${group.key}-note:${project.slug}`),
+      `section:${group.key}`,
+    ]),
     ...(shown.length ? [] : ['empty']),
   ];
   const onScreenKey = onScreen.join('|');
@@ -120,15 +128,9 @@ const Work = () => {
   );
 
   // The first visible section sits tight under the filter bar.
-  const firstSection = [
-    ['personal', independent],
-    ['professional', systems],
-    ['earlier', earlier],
-  ].find(([, list]) => list.length)?.[0];
-  const blockClass = (key, extra) =>
-    ['gallery-list-block', key === firstSection ? 'is-first' : '', extra]
-      .filter(Boolean)
-      .join(' ');
+  const firstSection = groups[0]?.key;
+  const blockClass = (key) =>
+    ['gallery-list-block', key === firstSection ? 'is-first' : ''].filter(Boolean).join(' ');
 
   // Router state lags the address bar while a navigation transition is pending,
   // and search writes land after a debounce, so build on the live URL.
@@ -174,17 +176,11 @@ const Work = () => {
         <div className="gallery-page work-page">
           <header className="gallery-header">
             <h1 className="page-title">Development</h1>
-            <p>What I'm building on my own, the systems I've shipped at work, and where it started.</p>
+            <p>Grouped by what each thing is. Personal work first, then the day job, then where it started.</p>
             <WorkFilters
               filters={filters}
               facets={facets}
-              sections={[
-                ['personal', 'Personal', independent],
-                ['professional', 'Professional', systems],
-                ['earlier', 'Earlier (Demos)', earlier],
-              ]
-                .filter(([, , list]) => list.length)
-                .map(([key, label, list]) => ({ key, label, count: list.length }))}
+              sections={groups.map((group) => ({ key: group.key, label: group.label, count: group.count }))}
               shown={shown.length}
               active={filtered}
               onChange={update}
@@ -213,84 +209,43 @@ const Work = () => {
             </motion.div>
           )}
 
-          {independent.length > 0 && (
-            <section className={blockClass('personal')} aria-labelledby="work-personal">
-              {heading('personal', 'Personal')}
-              {lead.length > 0 && (
-                <ShowcaseGrid variant="gallery-lead">
-                  {lead.map((project) => (
-                    <ShowcaseTile
-                      key={mountKey(`lead:${project.slug}`)}
-                      title={project.title}
-                      subtitle={project.tag}
-                      line={project.line}
-                      img={project.img}
-                      fit={project.imgFit}
-                      size="large"
-                      href={projectPage(project)}
-                      onClick={() => open(project)}
-                      animation={settle(`lead:${project.slug}`)}
-                    />
-                  ))}
-                </ShowcaseGrid>
-              )}
-              {personal.length > 0 && (
+          {groups.map((group) => (
+            <section key={group.key} className={blockClass(group.key)} aria-labelledby={`work-${group.key}`}>
+              {heading(group.key, group.label)}
+              {group.pictures.length > 0 && (
                 <ShowcaseGrid variant="gallery-personal">
-                  {personal.map((project) => (
+                  {group.pictures.map((project) => (
                     <ShowcaseTile
-                      key={mountKey(`personal:${project.slug}`)}
+                      key={mountKey(`${group.key}:${project.slug}`)}
                       title={project.title}
-                      subtitle={project.tag}
+                      subtitle={[typeLabel(project), project.tag || project.org].filter(Boolean).join(' · ')}
                       line={project.line}
                       img={project.img}
                       fit={project.imgFit}
                       href={projectPage(project)}
                       onClick={() => open(project)}
-                      animation={settle(`personal:${project.slug}`)}
+                      animation={settle(`${group.key}:${project.slug}`)}
+                    />
+                  ))}
+                </ShowcaseGrid>
+              )}
+              {group.notes.length > 0 && (
+                <ShowcaseGrid variant="gallery">
+                  {group.notes.map((project) => (
+                    <ShowcaseTile
+                      key={mountKey(`${group.key}-note:${project.slug}`)}
+                      title={project.title}
+                      subtitle={[typeLabel(project), project.org].filter(Boolean).join(' · ')}
+                      line={project.line}
+                      tags={project.skills?.slice(0, 3)}
+                      onClick={() => open(project)}
+                      animation={settle(`${group.key}-note:${project.slug}`)}
                     />
                   ))}
                 </ShowcaseGrid>
               )}
             </section>
-          )}
-
-          {systems.length > 0 && (
-            <section className={blockClass('professional')} aria-labelledby="work-professional">
-              {heading('professional', 'Professional')}
-              <ShowcaseGrid variant="gallery">
-                {systems.map((project) => (
-                  <ShowcaseTile
-                    key={mountKey(`professional:${project.slug}`)}
-                    title={project.title}
-                    subtitle={project.org}
-                    line={project.line}
-                    tags={project.skills?.slice(0, 3)}
-                    onClick={() => open(project)}
-                    animation={settle(`professional:${project.slug}`)}
-                  />
-                ))}
-              </ShowcaseGrid>
-            </section>
-          )}
-
-          {earlier.length > 0 && (
-            <section className={blockClass('earlier', 'is-quiet')} aria-labelledby="work-earlier">
-              {heading('earlier', 'Earlier (Demos)')}
-              <ShowcaseGrid variant="gallery-earlier">
-                {earlier.map((project) => (
-                  <ShowcaseTile
-                    key={mountKey(`earlier:${project.slug}`)}
-                    title={project.title}
-                    line={project.line}
-                    tags={project.skills?.slice(0, 3)}
-                    img={project.img}
-                    onClick={() => open(project)}
-                    animation={settle(`earlier:${project.slug}`)}
-                  />
-                ))}
-              </ShowcaseGrid>
-            </section>
-          )}
+          ))}
 
           {active && <ProjectSheet project={active} onClose={close} />}
         </div>

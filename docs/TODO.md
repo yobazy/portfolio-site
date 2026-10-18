@@ -48,11 +48,12 @@ site memorable.
       per project for the sheet and the deck.
 - [ ] **In-site demos per project.** Baz's idea (Oct 17): each project gets
       a small working demo on the site, even if it isn't the real software.
-      The CN diagram with moving packets is the first one. Planned:
+      The CN diagram with moving packets was the first; the Any Chills? phone
+      you can tap through (`src/demos/ChillsDemo.js`) is the second. Planned:
       Observatory (a session flips to "Waiting on you" with a prompt you can
       answer), ghosts (the field plus filter chips, maybe a camera mask),
       MixVault (paste a sample link, watch it land in the crate),
-      Link (a plan card you can join), Short Turn (one route with moving
+      Short Turn (one route with moving
       vehicles and its grade), Life Systems (toggle items, status recomputes).
       Build them into the `/now` slides and the sheets.
 - [ ] **A statement to replace the retired brand line**, if any. Baz decides.
@@ -77,9 +78,9 @@ site memorable.
 
 ## Also discussed
 
-- [ ] **Group Development by kind of work** (AI & agents, Data &
-      infrastructure, Products, Visuals) instead of personal/professional, with
-      a "Personal" marker on side-project tiles. Earlier (Demos) stays separate.
+- [x] **Group Development by kind of work.** Sections are Web apps, Desktop &
+      mobile, AI & automation, Data & infrastructure; Personal / Professional /
+      Earlier is a filter and a marker on every tile (Oct 18 2026).
 - [ ] **Animate browser Back/Forward** with the same swipe transitions.
 
 ## Skipped on purpose

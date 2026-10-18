@@ -261,6 +261,8 @@ export const projects = [
     facts: ['Expo and Supabase', 'TestFlight build 32', 'anychills.app'],
     img: imgLink,
     demo: { href: 'https://anychills.app', label: 'Visit anychills.app' },
+    // A click-through sketch of the app, see src/demos/ChillsDemo.js.
+    interactive: 'chills',
     gallery: [
       {
         src: imgChillsShare,

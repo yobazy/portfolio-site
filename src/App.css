@@ -2282,6 +2282,10 @@ nav.navbar::after {
   padding-right: 0;
 }
 
+.gallery-list-block .showcase-grid + .showcase-grid {
+  margin-top: 1rem;
+}
+
 .gallery-list-block h2 {
   font-family: var(--font-display);
   font-size: 1.35rem;
@@ -4100,4 +4104,553 @@ a.now-title:hover .arrow {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   fill: var(--text-muted);
+}
+
+/* ============================================================
+   DEMO: ANY CHILLS?
+   A phone you can tap, in the app's own colours (sage, peach, cream).
+   ============================================================ */
+.now-media.is-demo,
+.project-sheet-media.is-demo {
+  aspect-ratio: auto;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.now-media.is-demo::before,
+.project-sheet-media.is-demo::before {
+  display: none;
+}
+
+.ch {
+  --ch-sage: #3f5a34;
+  --ch-sage-deep: #2e4426;
+  --ch-peach: #f6c7a4;
+  --ch-cream: #f4f5f0;
+  --ch-ink: #1d2419;
+  --ch-mute: #6b7366;
+  --ch-line: rgba(29, 36, 25, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  font-family: var(--font-body);
+  color: var(--ch-ink);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ch-phone {
+  position: relative;
+  width: min(100%, 360px);
+  height: min(66vh, 640px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 34px;
+  background: var(--ch-cream);
+  box-shadow:
+    0 0 0 8px #15181f,
+    0 0 0 9px rgba(255, 255, 255, 0.12),
+    0 40px 80px -30px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  text-align: left;
+}
+
+.ch-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1rem 0.5rem;
+}
+
+.ch-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--ch-sage);
+}
+
+/* The clink: two cups leaning in. */
+.ch-clink {
+  position: relative;
+  width: 18px;
+  height: 16px;
+}
+
+.ch-clink::before,
+.ch-clink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 7px;
+  height: 12px;
+  border-radius: 2px 2px 3px 3px;
+}
+
+.ch-clink::before {
+  left: 1px;
+  background: #cfd8c4;
+  transform: rotate(-14deg);
+}
+
+.ch-clink::after {
+  right: 1px;
+  background: var(--ch-peach);
+  transform: rotate(14deg);
+}
+
+.ch-new,
+.ch-send,
+.ch-join {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 999px;
+  transition: transform 0.15s var(--ease-premium), background 0.2s var(--ease-premium);
+}
+
+.ch-new {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background: var(--ch-sage);
+}
+
+.ch-new:active,
+.ch-send:active,
+.ch-join:active {
+  transform: scale(0.96);
+}
+
+.ch-toast {
+  margin: 0.25rem 0.75rem 0;
+  padding: 0.55rem 0.8rem;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 6px 20px -10px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--ch-line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  animation: ch-pop 0.4s var(--ease-premium);
+}
+
+@keyframes ch-pop {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+}
+
+.ch-toast-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.ch-toast-sub {
+  font-size: 0.72rem;
+  color: var(--ch-mute);
+}
+
+.ch-tabs {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.6rem 1rem 0.25rem;
+}
+
+.ch-tabs button {
+  border: 1px solid var(--ch-line);
+  background: #fff;
+  color: var(--ch-ink);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.ch-tabs button.is-on {
+  background: #dfe6d6;
+  border-color: transparent;
+}
+
+.ch-count {
+  margin: 0;
+  padding: 0.25rem 1rem;
+  font-size: 0.72rem;
+  color: var(--ch-mute);
+}
+
+.ch-feed {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.35rem 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  scrollbar-width: none;
+}
+
+.ch-feed::-webkit-scrollbar {
+  display: none;
+}
+
+.ch-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 0.5rem;
+  padding: 0.8rem 0.85rem 0.85rem;
+  border-radius: 16px;
+  color: #fff;
+  animation: ch-pop 0.45s var(--ease-premium);
+}
+
+.ch-card.is-clay { background: linear-gradient(160deg, #b94a2c, #a0391f); }
+.ch-card.is-moss { background: linear-gradient(160deg, #3b4a36, #242e21); }
+.ch-card.is-plum { background: linear-gradient(160deg, #5250b3, #3c3a8f); }
+.ch-card.is-sage { background: linear-gradient(160deg, #4b6a3e, #3f5a34); }
+
+.ch-card-host {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.74rem;
+  opacity: 0.9;
+}
+
+.ch-card-when {
+  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.ch-card-when small {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.ch-card-title {
+  grid-column: 1 / -1;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0.1rem 0 0.25rem;
+}
+
+.ch-card-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ch-card-meta {
+  font-size: 0.72rem;
+  opacity: 0.9;
+  flex: 1;
+}
+
+.ch-card-meta b {
+  font-weight: 700;
+}
+
+.ch-faces {
+  display: inline-flex;
+}
+
+.ch-face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ch-peach);
+  color: var(--ch-ink);
+  font-size: 0.58rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+
+.ch-faces .ch-face + .ch-face {
+  margin-left: -6px;
+}
+
+.ch-face.is-you {
+  background: #fff;
+}
+
+.ch-join {
+  padding: 0.45rem 0.8rem;
+  font-size: 0.78rem;
+  background: #fff;
+  color: var(--ch-ink);
+}
+
+.ch-join.is-in {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+}
+
+.ch-join.is-maybe {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.ch-quiet {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+}
+
+.ch-quiet button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.ch-vote {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.ch-vote button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ch-vote button small {
+  font-size: 0.62rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.ch-vote button.is-on {
+  background: #fff;
+  color: var(--ch-ink);
+  border-color: #fff;
+}
+
+.ch-stuck {
+  position: absolute;
+  right: 0.85rem;
+  top: 2.9rem;
+  display: flex;
+  pointer-events: none;
+}
+
+.ch-stuck span {
+  font-size: 1.3rem;
+  transform: rotate(calc(-12deg + var(--n) * 9deg)) translateY(calc(var(--n) * -3px));
+  margin-left: -0.35rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  animation: ch-stick 0.35s var(--ease-premium);
+}
+
+@keyframes ch-stick {
+  from { transform: scale(1.6) rotate(0); opacity: 0; }
+}
+
+.ch-strip {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  animation: ch-pop 0.3s var(--ease-premium);
+}
+
+.ch-strip button {
+  flex: 1;
+  border: 0;
+  background: none;
+  font-size: 1.25rem;
+  padding: 0.25rem 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ch-strip button:hover {
+  background: #e9ede3;
+}
+
+.ch-tabbar {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.6rem 0.5rem 0.9rem;
+  border-top: 1px solid var(--ch-line);
+  background: #fff;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--ch-mute);
+}
+
+.ch-tabbar .is-on {
+  color: var(--ch-sage);
+}
+
+/* Composer */
+.ch-composer {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  scrollbar-width: none;
+}
+
+.ch-label {
+  margin: 0.4rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ch-mute);
+}
+
+.ch-input {
+  width: 100%;
+  padding: 0.65rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--ch-line);
+  background: #fff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ch-ink);
+}
+
+.ch-input:focus-visible {
+  outline: 2px solid var(--ch-sage);
+}
+
+.ch-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ch-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--ch-line);
+  background: #fff;
+  color: var(--ch-ink);
+  font-family: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ch-chip.is-on {
+  background: var(--ch-sage);
+  border-color: var(--ch-sage);
+  color: #fff;
+}
+
+.ch-chip .ch-face {
+  width: 18px;
+  height: 18px;
+  font-size: 0.5rem;
+  box-shadow: none;
+}
+
+.ch-preview {
+  margin-top: 0.5rem;
+}
+
+.ch-composer-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.ch-ghost {
+  border: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ch-mute);
+  cursor: pointer;
+}
+
+.ch-send {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  color: #fff;
+  background: var(--ch-sage);
+}
+
+.ch-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ch-note {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.ch button:focus-visible,
+.ch input:focus-visible {
+  outline: 2px solid var(--ch-peach);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .ch-phone {
+    height: min(58vh, 560px);
+    width: min(100%, 340px);
+  }
 }
