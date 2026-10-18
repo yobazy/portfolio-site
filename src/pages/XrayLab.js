@@ -22,7 +22,7 @@ const RATIO = 10 / 16;
 
 const rect = (card, stage) => {
   // On a phone the stage is narrow, so the pictures take more of it.
-  const scale = stage.w < 700 ? 1.9 : stage.w < 1000 ? 1.3 : 1;
+  const scale = stage.w < 700 ? 1.45 : stage.w < 1000 ? 1.25 : 1;
   const w = card.w * stage.w * scale;
   const h = w * RATIO;
   const x = card.x * stage.w - w / 2 + card.dx;
