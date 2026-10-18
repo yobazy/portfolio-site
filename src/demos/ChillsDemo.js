@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 const PHONE_W = 393;
 const PHONE_H = 852;
 
-// A small, working version of Any Chills? for the deck: the feed from the
+// A small, working version of any chills? for the deck: the feed from the
 // site's phone, with everything tappable. Join a plan, vote on a time, stick
 // an emoji on a card, make a plan and send it. Nothing is saved anywhere.
 // Copy follows the app's own ("I'm in", "You're in", "Not now", the clink).
@@ -176,7 +176,7 @@ const ChillsDemo = () => {
       <div
         className="ch-phone"
         role="group"
-        aria-label="Any Chills? demo. Tap around; nothing is saved."
+        aria-label="any chills? demo. Tap around; nothing is saved."
         style={{ width: PHONE_W, height: PHONE_H, transform: `scale(${scale})` }}
       >
         <div className="ch-status" aria-hidden="true">

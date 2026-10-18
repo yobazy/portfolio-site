@@ -34,7 +34,7 @@ const layers = [
   { name: 'Infrastructure', what: 'Azure, containers, queues, CI/CD', work: [['CN-Metrolinx Integration', 'cn-integration'], ['Azure Data Pipelines', 'azure-pipelines']] },
   { name: 'Data', what: 'Pipelines, models, retrieval', work: [['Short Turn', 'short-turn'], ['Obsidian RAG', 'obsidian-rag'], ['Data Ingestion Pipeline', 'fabric-pipeline']] },
   { name: 'Services', what: 'APIs, daemons, agents and the tools around them', work: [['Observatory', 'observatory'], ['Ableton Helper', 'ableton-helper'], ['BarberBot', 'barberbot']] },
-  { name: 'Interface', what: 'Web, desktop and phone apps people live in', work: [['Any Chills?', 'link'], ['MixVault', 'mixvault'], ['FrontLeft', 'frontleft'], ['360 Internal Operations', '360-ops']] },
+  { name: 'Interface', what: 'Web, desktop and phone apps people live in', work: [['any chills?', 'link'], ['MixVault', 'mixvault'], ['FrontLeft', 'frontleft'], ['360 Internal Operations', '360-ops']] },
   { name: 'Light', what: 'Shaders, live visuals, photographs', work: [['ghosts-playground', 'ghosts-playground']] },
 ];
 

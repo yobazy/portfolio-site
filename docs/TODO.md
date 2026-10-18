@@ -48,7 +48,7 @@ site memorable.
       per project for the sheet and the deck.
 - [ ] **In-site demos per project.** Baz's idea (Oct 17): each project gets
       a small working demo on the site, even if it isn't the real software.
-      The CN diagram with moving packets was the first; the Any Chills? phone
+      The CN diagram with moving packets was the first; the any chills? phone
       you can tap through (`src/demos/ChillsDemo.js`) is the second. Planned:
       Observatory (a session flips to "Waiting on you" with a prompt you can
       answer), ghosts (the field plus filter chips, maybe a camera mask),
