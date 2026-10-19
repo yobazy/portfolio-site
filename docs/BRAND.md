@@ -50,8 +50,19 @@ indigo, inside the hero field, never as a loud pattern or on text.
 - **IBM Plex Mono** for labels, numbers and the status line. Same mono as
   Observatory's terminal.
 
-Wordmark: `BAZIL ✻ KHAN`, the rosette between the names. Short form in the nav:
-`Baz ✻`.
+## Logo
+
+The wordmark is `baz.`: lowercase, Instrument Sans at 650, tracked in, the full
+stop in the periwinkle glint (`--accent`), the same full stop as the hero's
+"Hey, it's Baz." It stands alone; the full name lives in page titles, the
+footer line and About. It is outlined to paths in `src/components/Wordmark.js`,
+so it needs no font to render. On hover the glint swells.
+
+Small sizes use `b.`: the b and the glint, white on a midnight indigo tile
+(`#23265A` to `#0F1130`). That covers `favicon.svg`, `favicon.ico` (16, 32,
+48), `apple-touch-icon.png`, `logo192.png`, `logo512.png` and the maskable
+icon. Chosen October 19 2026 over a rosette, a membrane mark, a BK monogram and
+others; the old `BAZIL ✻ KHAN` wordmark and the amber favicon are retired.
 
 ## Motion
 

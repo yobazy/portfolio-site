@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TransitionLink } from '../lib/pageTransition';
-import Rosette from './Rosette';
+import Wordmark from './Wordmark';
 import { sections } from '../data/sections';
 
 const LINKEDIN = 'https://www.linkedin.com/in/bazilkhan';
@@ -41,9 +41,7 @@ export const NavBar = () => {
       <nav aria-label="Primary" className={`navbar ${scrolled || !isHome ? 'scrolled' : ''}`}>
         <div className="navbar-container">
           <TransitionLink to="/" className="navbar-logo" aria-label="Bazil Khan, home">
-            <span>Bazil</span>
-            <Rosette size={12} />
-            <span>Khan</span>
+            <Wordmark height={20} />
           </TransitionLink>
 
           <div className="nav-links">

@@ -303,8 +303,16 @@ nav.navbar::after {
   white-space: nowrap;
 }
 
-.navbar-logo .rosette {
-  color: var(--accent);
+/* The wordmark (src/components/Wordmark.js): ink in the text colour, the full
+   stop in the glint. On hover the glint swells, the way the field answers a tap. */
+.wordmark {
+  display: block;
+}
+
+.wordmark-glint {
+  fill: var(--accent);
+  transform-box: fill-box;
+  transform-origin: center;
   transition: transform 0.6s var(--ease-premium);
 }
 
@@ -312,8 +320,8 @@ nav.navbar::after {
   color: var(--text-primary);
 }
 
-.navbar-logo:hover .rosette {
-  transform: rotate(120deg);
+.navbar-logo:hover .wordmark-glint {
+  transform: scale(1.4);
 }
 
 .nav-links {
@@ -702,10 +710,6 @@ nav.navbar::after {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-primary);
-}
-
-.footer-mark .rosette {
-  color: var(--accent);
 }
 
 .footer-copyright {

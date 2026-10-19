@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TransitionLink } from '../lib/pageTransition';
-import Rosette from './Rosette';
+import Wordmark from './Wordmark';
 import Arrow from './Arrow';
 import { sections } from '../data/sections';
 
@@ -77,9 +77,9 @@ export const Footer = () => {
 
         <div className="footer-base">
           <span className="footer-mark">
-            Bazil <Rosette size={11} /> Khan
+            <Wordmark height={18} />
           </span>
-          <span className="footer-copyright">Toronto · {year}</span>
+          <span className="footer-copyright">Bazil Khan · Toronto · {year}</span>
         </div>
       </div>
     </footer>
