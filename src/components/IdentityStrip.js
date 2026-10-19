@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import MembraneField, { PRESETS } from './MembraneField';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import MembraneField, { PRESETS, lookFor } from './MembraneField';
+import FieldEditor from './FieldEditor';
 import Arrow from './Arrow';
 import HeroHeading from './HeroHeading';
 import { TransitionLink } from '../lib/pageTransition';
@@ -20,8 +21,27 @@ const IdentityStrip = () => {
   const reduce = useReducedMotion();
   const [time, setTime] = useState(localTime);
   const [touched, setTouched] = useState(false);
-  const [look, setLook] = useState(0);
-  const step = (by) => setLook((i) => (i + by + PRESETS.length) % PRESETS.length);
+  // The preset in play, the look on screen (a preset until it's edited), and
+  // whether the edit panel is open.
+  const [preset, setPreset] = useState(0);
+  const [look, setLook] = useState(() => lookFor(PRESETS[0]));
+  const [edited, setEdited] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const pick = (index) => {
+    setPreset(index);
+    setEdited(false);
+    // A preset brings its own layers and filters; shape and colour carry over.
+    setLook((now) => ({ ...lookFor(PRESETS[index]), shape: now.shape, colour: now.colour, hue: now.hue }));
+  };
+  const step = (by) => pick((preset + by + PRESETS.length) % PRESETS.length);
+  const edit = (next) => {
+    setLook(next);
+    setEdited(true);
+  };
+  const reset = () => {
+    setLook(lookFor(PRESETS[preset]));
+    setEdited(false);
+  };
   const building = projects.filter((project) => project.status === 'In progress' && project.lead);
 
   useEffect(() => {
@@ -40,7 +60,7 @@ const IdentityStrip = () => {
       className={`hero ${reduce ? 'is-still' : ''}`}
       onPointerMove={() => !touched && setTouched(true)}
     >
-      <MembraneField reduce={Boolean(reduce)} preset={PRESETS[look]} className="hero-field" />
+      <MembraneField reduce={Boolean(reduce)} look={look} scene={PRESETS[preset].id} className="hero-field" />
       <div className="hero-scrim" aria-hidden="true" />
 
       <motion.div className="hero-body" {...rise(0)}>
@@ -79,17 +99,25 @@ const IdentityStrip = () => {
             )}
             <div className="hero-presets" role="group" aria-label="Field preset">
               <span className="hero-credit-label">
-                Preset {String(look + 1).padStart(2, '0')}/{String(PRESETS.length).padStart(2, '0')}
+                {edited ? 'Edited' : `Preset ${String(preset + 1).padStart(2, '0')}/${String(PRESETS.length).padStart(2, '0')}`}
               </span>
               <div className="hero-presets-row">
                 <button type="button" className="hero-presets-step" onClick={() => step(-1)} aria-label="Previous preset">
                   <Arrow dir="left" size={12} />
                 </button>
                 <button type="button" className="hero-presets-name" onClick={() => step(1)} aria-live="polite">
-                  {PRESETS[look].label}
+                  {edited ? 'Custom' : PRESETS[preset].label}
                 </button>
                 <button type="button" className="hero-presets-step" onClick={() => step(1)} aria-label="Next preset">
                   <Arrow size={12} />
+                </button>
+                <button
+                  type="button"
+                  className={`hero-presets-edit ${editing ? 'is-on' : ''}`}
+                  onClick={() => setEditing((open) => !open)}
+                  aria-expanded={editing}
+                >
+                  Edit
                 </button>
               </div>
             </div>
@@ -100,6 +128,10 @@ const IdentityStrip = () => {
           </div>
         </motion.div>
       </motion.div>
+
+      <AnimatePresence>
+        {editing && <FieldEditor look={look} onChange={edit} onReset={reset} onClose={() => setEditing(false)} />}
+      </AnimatePresence>
     </section>
   );
 };

@@ -1095,6 +1095,11 @@ nav.navbar::after {
   filter: grayscale(1) brightness(1.6) contrast(1.2) url(#membrane-tint);
 }
 
+/* Full colour, from the edit panel: ghosts' own colour, a little lifted. */
+.membrane.is-full-colour .membrane-host canvas {
+  filter: brightness(1.25) saturate(1.25);
+}
+
 .membrane-still {
   position: absolute;
   inset: 0;
@@ -1321,6 +1326,172 @@ nav.navbar::after {
 .hero-credit:hover .hero-credit-title,
 .hero-credit:focus-visible .hero-credit-title {
   color: var(--accent);
+}
+
+/* Edit: opens the field's panel. */
+.hero-presets-edit {
+  appearance: none;
+  margin-left: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border-strong);
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-premium), border-color var(--duration-fast) var(--ease-premium);
+}
+
+.hero-presets-edit:hover,
+.hero-presets-edit.is-on {
+  color: var(--accent);
+  border-color: var(--accent-border);
+}
+
+/* The edit panel (src/components/FieldEditor.js): glass over the field, up
+   and to the right of the copy; a sheet above the dock on phones. */
+.field-editor {
+  position: absolute;
+  z-index: 3;
+  right: 2.5rem;
+  bottom: 7.5rem;
+  width: min(360px, calc(100vw - 2rem));
+  max-height: calc(100% - 11rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: rgba(12, 14, 23, 0.72);
+  border: 1px solid var(--glass-border-strong);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: var(--glass-shadow);
+  touch-action: auto;
+  user-select: none;
+  outline: none;
+}
+
+.field-editor-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.field-editor-title {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field-editor-text {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.field-editor-text:last-child {
+  color: var(--accent);
+}
+
+.field-editor-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.4rem 1.1rem 1.1rem;
+}
+
+.field-editor-body section {
+  padding: 0.8rem 0 0.2rem;
+}
+
+.field-editor-body h3 {
+  margin: 0 0 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.field-editor-chips,
+.field-editor-segments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.field-editor-chip {
+  appearance: none;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-premium), background var(--duration-fast) var(--ease-premium),
+    border-color var(--duration-fast) var(--ease-premium);
+}
+
+.field-editor-chip:hover {
+  color: var(--text-primary);
+  border-color: var(--glass-border-strong);
+}
+
+.field-editor-chip.is-on {
+  color: var(--bg-base);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.field-editor-slider {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.7rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.field-editor-slider input {
+  width: 100%;
+  accent-color: var(--accent-deep);
+}
+
+.field-editor-slider.is-off {
+  opacity: 0.4;
+}
+
+.field-editor-chip:focus-visible,
+.field-editor-text:focus-visible,
+.field-editor-slider input:focus-visible,
+.hero-presets-edit:focus-visible {
+  outline: 2px solid var(--accent-deep);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .field-editor {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    width: auto;
+    max-height: 58svh;
+  }
 }
 
 /* Step through the field's presets: the name moves on, the arrows go either way. */

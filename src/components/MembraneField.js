@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // The hero field: thin periwinkle rings that fuse where they cross, like cell
 // membranes, drawn live by ghosts (ghosts.fyi's embed runtime). The rings are an
@@ -116,41 +116,116 @@ export const PRESETS = [
   { id: 'kaleido', label: 'Kaleido', filters: ['kaleido'] },
 ];
 
+// What the edit panel offers: a curated slice of ghosts, the pieces that read
+// on thin rings. Names are ghosts' own layer and filter names.
+export const LAYER_CHOICES = [
+  ['aura', 'Aura'],
+  ['bloom', 'Bloom'],
+  ['fog', 'Fog'],
+  ['dust', 'Dust'],
+  ['rim', 'Rim'],
+  ['energy', 'Energy'],
+  ['sparks', 'Sparks'],
+  ['stars', 'Stars'],
+  ['lightning', 'Lightning'],
+  ['caustics', 'Caustics'],
+];
+
+export const FILTER_CHOICES = [
+  ['dither', 'Dither'],
+  ['swirl', 'Swirl'],
+  ['tunnel', 'Tunnel'],
+  ['lcd', 'LCD'],
+  ['ascii', 'ASCII'],
+  ['kaleido', 'Kaleido'],
+  ['glass', 'Glass'],
+  ['ripple', 'Ripple'],
+  ['pixel', 'Pixel'],
+  ['crt', 'CRT'],
+  ['stipple', 'Stipple'],
+  ['wire', 'Wire'],
+  ['mirror', 'Mirror'],
+  ['fisheye', 'Fisheye'],
+];
+
+// The shape ghosts cuts the picture around: the rings, the name, or a comet
+// that follows the pointer.
+export const SHAPES = [
+  ['rings', 'Rings'],
+  ['name', 'Name'],
+  ['comet', 'Comet'],
+];
+
+// Everything the panel can change, in one plain object. `energy` scales the
+// weather, `strength` every filter; `colour` 'tint' keeps the site palette and
+// 'full' lets ghosts' own colour through, turned to `hue`.
+export const lookFor = (preset) => ({
+  layers: preset.layers || [],
+  filters: preset.filters || [],
+  energy: 1,
+  strength: 1,
+  shape: 'rings',
+  colour: 'tint',
+  hue: 0.8,
+});
+
 // tide (look 031) with only mask, fill and waves on (no rainbow rim, no ghosts),
-// plus the preset's layers and filters. weather 0.85 and 1.2 are the two ends
-// the pointer blends between.
-const looksFrom = (tide, preset = PRESETS[0]) => {
-  const layers = ['mask', 'fill', 'waves', ...(preset.layers || [])];
-  const filters = preset.filters || [];
+// plus the look's layers and filters. The pointer blends between a calmer and
+// a livelier weather.
+const looksFrom = (tide, look = lookFor(PRESETS[0])) => {
+  const layers = ['mask', 'fill', 'waves', ...look.layers];
+  const clamp = (v) => Math.max(0.2, Math.min(1.6, v));
+  const strengths = Object.fromEntries(look.filters.map((name) => [name, look.strength]));
   const make = (weather) => ({
     ...tide,
     version: 1,
     layers: Object.fromEntries(Object.keys(tide.layers).map((k) => [k, layers.includes(k)])),
-    filters: Object.fromEntries(Object.keys(tide.filters).map((k) => [k, filters.includes(k)])),
-    params: { ...tide.params, hue: 0.16, hold: 1, weather },
+    filters: Object.fromEntries(Object.keys(tide.filters).map((k) => [k, look.filters.includes(k)])),
+    params: {
+      ...tide.params,
+      ...strengths,
+      hue: look.colour === 'full' ? look.hue : 0.16,
+      hold: 1,
+      weather: clamp(weather * look.energy),
+    },
   });
   return [make(0.85), make(1.2)];
 };
 
-const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) => {
+const sourceFor = (shape, width, height) => {
+  if (shape === 'name') return { type: 'text', text: 'Baz', size: 0.42, font: '"Instrument Sans", sans-serif' };
+  if (shape === 'comet') return { type: 'cursor' };
+  return { type: 'logo', src: ringsSvg(width, height), size: 3 };
+};
+
+// `look` is what to draw; `scene` changes only when a preset is picked, and
+// that alone dips the field. Edits from the panel land straight away.
+const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '', className = '' }) => {
   const wrapRef = useRef(null);
   const mountRef = useRef(null);
   const stillRef = useRef(null);
   const ghostRef = useRef(null);
   const tideRef = useRef(null);
-  const presetRef = useRef(preset);
-  presetRef.current = preset;
+  const lookRef = useRef(look);
+  lookRef.current = look;
+  const sceneRef = useRef(scene);
+  const shapeRef = useRef(look.shape);
+  const [ready, setReady] = useState(false);
 
-  // A new preset: dip the field, swap the looks, bring it back up.
   useEffect(() => {
     const ghost = ghostRef.current;
     const tide = tideRef.current;
     const wrap = wrapRef.current;
-    if (!ghost || !tide || !wrap) return undefined;
+    if (!ready || !ghost || !tide || !wrap) return undefined;
+    if (sceneRef.current === scene) {
+      ghost.setLooks(looksFrom(tide, look));
+      return undefined;
+    }
+    sceneRef.current = scene;
     let live = true;
     wrap.classList.add('is-swapping');
     const swap = window.setTimeout(async () => {
-      await ghost.setLooks(looksFrom(tide, preset));
+      await ghost.setLooks(looksFrom(tide, look));
       if (live) wrap.classList.remove('is-swapping');
     }, 180);
     return () => {
@@ -158,7 +233,15 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
       window.clearTimeout(swap);
       wrap.classList.remove('is-swapping');
     };
-  }, [preset]);
+  }, [look, scene, ready]);
+
+  useEffect(() => {
+    const ghost = ghostRef.current;
+    const wrap = wrapRef.current;
+    if (!ready || !ghost || !wrap || shapeRef.current === look.shape) return;
+    shapeRef.current = look.shape;
+    ghost.setSource(sourceFor(look.shape, wrap.clientWidth, wrap.clientHeight));
+  }, [look.shape, ready]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -209,6 +292,10 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
       target.x = -nx * 14;
       target.y = -ny * 14;
       target.d = Math.min(1, Math.hypot(nx, ny) / Math.SQRT2);
+      // The comet listens on ghosts' own element, which sits under the copy.
+      if (lookRef.current.shape === 'comet') {
+        host.dispatchEvent(new PointerEvent('pointermove', { clientX: event.clientX, clientY: event.clientY }));
+      }
     };
     const onLeave = () => {
       target.x = 0;
@@ -233,7 +320,7 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
       lastKey = key;
       sizeHost(next);
       drawStill(next);
-      ghost?.setSource({ type: 'logo', src: ringsSvg(next.width, next.height), size: 3 });
+      if (lookRef.current.shape === 'rings') ghost?.setSource(sourceFor('rings', next.width, next.height));
     };
     const observer = new ResizeObserver(resize);
 
@@ -246,8 +333,8 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
         if (disposed) return;
         const { width, height } = frameSize();
         ghost = await mount(host, {
-          looks: looksFrom(tide, presetRef.current),
-          source: { type: 'logo', src: ringsSvg(width, height), size: 3 },
+          looks: looksFrom(tide, lookRef.current),
+          source: sourceFor((shapeRef.current = lookRef.current.shape), width, height),
           speed: 0.5,
           dim: 0,
           badge: false,
@@ -259,6 +346,7 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
         }
         ghostRef.current = ghost;
         tideRef.current = tide;
+        setReady(true);
         // Two frames in, ghosts has drawn; hand over from the still.
         requestAnimationFrame(() => requestAnimationFrame(() => still.classList.add('is-gone')));
         observer.observe(wrap);
@@ -284,11 +372,12 @@ const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) 
       surface?.removeEventListener('pointerleave', onLeave);
       ghost?.destroy();
       ghostRef.current = null;
+      setReady(false);
     };
   }, [reduce]);
 
   return (
-    <div className={`membrane ${className}`} aria-hidden="true">
+    <div className={`membrane ${look.colour === 'full' ? 'is-full-colour' : ''} ${className}`} aria-hidden="true">
       <div className="membrane-field" ref={wrapRef}>
         <div className="membrane-host" ref={mountRef} />
       </div>
