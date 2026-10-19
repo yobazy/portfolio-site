@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import HeroField from './HeroField';
+import MembraneField from './MembraneField';
 import Deck from './Deck';
 import Arrow from './Arrow';
 import { TransitionLink } from '../lib/pageTransition';
@@ -15,7 +15,7 @@ const localTime = () =>
     .format(new Date())
     .replace(/^24/, '00');
 
-// The hero: a field you can touch, with the name set in it. The copy sits low
+// The hero: a living field (ghosts membranes) with the name set in it. The copy sits low
 // and left like a caption on a photograph; the field is the picture. With
 // `deck` on, the pitch deck comes in over the same field and the copy steps
 // aside; the page never changes.
@@ -24,24 +24,12 @@ const IdentityStrip = ({ deck = false }) => {
   const navigate = useNavigate();
   const [time, setTime] = useState(localTime);
   const [touched, setTouched] = useState(false);
-  const [lit, setLit] = useState(false);
-  const litTimer = useRef(null);
   const building = projects.filter((project) => project.status === 'In progress' && project.lead);
 
   useEffect(() => {
     const tick = window.setInterval(() => setTime(localTime()), 30000);
     return () => window.clearInterval(tick);
   }, []);
-
-  useEffect(() => () => window.clearTimeout(litTimer.current), []);
-
-  // A ripple in the field also lights the name for a moment.
-  const onRipple = () => {
-    setTouched(true);
-    setLit(true);
-    window.clearTimeout(litTimer.current);
-    litTimer.current = window.setTimeout(() => setLit(false), 900);
-  };
 
   const rise = (delay) => ({
     initial: reduce ? false : { opacity: 0, y: 14 },
@@ -52,10 +40,10 @@ const IdentityStrip = ({ deck = false }) => {
 
   return (
     <section
-      className={`hero ${reduce ? 'is-still' : ''} ${lit ? 'is-lit' : ''} ${deck ? 'is-deck' : ''}`}
+      className={`hero ${reduce ? 'is-still' : ''} ${deck ? 'is-deck' : ''}`}
       onPointerMove={() => !touched && setTouched(true)}
     >
-      <HeroField reduce={Boolean(reduce)} touchable onRipple={onRipple} className="hero-field" />
+      <MembraneField reduce={Boolean(reduce)} className="hero-field" />
       <div className="hero-scrim" aria-hidden="true" />
 
       <AnimatePresence mode="wait" initial={false}>
@@ -98,7 +86,7 @@ const IdentityStrip = ({ deck = false }) => {
           <div className="hero-foot-right">
             {!reduce && (
               <span className={`hero-hint ${touched ? 'is-done' : ''}`} aria-hidden="true">
-                drag the field · tap for a ripple
+                move to stir the field
               </span>
             )}
             <TransitionLink to="/projects/ghosts-playground" className="hero-credit">
