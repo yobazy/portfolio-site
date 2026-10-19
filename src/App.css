@@ -1119,6 +1119,11 @@ nav.navbar::after {
 
 .membrane-host {
   position: absolute;
+  transition: opacity 180ms ease;
+}
+
+.membrane-field.is-swapping .membrane-host {
+  opacity: 0;
 }
 
 .membrane-host canvas {
@@ -1338,6 +1343,60 @@ nav.navbar::after {
   color: var(--accent);
 }
 
+/* Step through the field's presets: the name moves on, the arrows go either way. */
+.hero-presets {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.hero-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.hero-presets-name,
+.hero-presets-step {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: color var(--duration-fast) var(--ease-premium);
+}
+
+.hero-presets-name {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  min-width: 4.2rem;
+  text-align: center;
+}
+
+.hero-presets-step {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border-strong);
+}
+
+.hero-presets-name:hover,
+.hero-presets-step:hover {
+  color: var(--accent);
+}
+
+.hero-presets-step:hover {
+  border-color: var(--accent-border);
+}
+
+.hero-presets-name:focus-visible,
+.hero-presets-step:focus-visible,
 .hero-cta:focus-visible,
 .hero-link:focus-visible,
 .hero-credit:focus-visible {
@@ -1368,9 +1427,18 @@ nav.navbar::after {
   .hero-foot-right {
     width: 100%;
     justify-content: space-between;
+    align-items: flex-end;
   }
 
   .hero-hint {
+    display: none;
+  }
+
+  .hero-presets {
+    align-items: flex-start;
+  }
+
+  .hero-credit .hero-credit-label {
     display: none;
   }
 
@@ -1379,6 +1447,7 @@ nav.navbar::after {
     align-items: baseline;
     gap: 0.6rem;
     text-align: left;
+    padding-bottom: 0.2rem;
   }
 
   .hero-status-now {

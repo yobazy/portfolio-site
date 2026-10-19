@@ -102,23 +102,63 @@ const ringsSvg = (width, height) => {
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 };
 
-// tide (look 031) with only mask, fill and waves on: no rainbow rim, no ghosts.
-// weather 0.85 and 1.2 are the two ends the pointer blends between.
-const looksFrom = (tide) => {
+// Presets a visitor can step through: tide's mask, fill and waves, plus a few
+// of ghosts' own layers and filters. Whatever ghosts draws, the tint below
+// brings it back to periwinkle, so every preset stays in the palette.
+export const PRESETS = [
+  { id: 'glow', label: 'Glow', layers: ['aura', 'bloom'] },
+  { id: 'dither', label: 'Dither', filters: ['dither'] },
+  { id: 'vortex', label: 'Vortex', layers: ['rim', 'energy'], filters: ['swirl'] },
+  { id: 'signal', label: 'Signal', layers: ['aura', 'bloom'], filters: ['lcd'] },
+  { id: 'halo', label: 'Halo', layers: ['rim', 'energy'] },
+  { id: 'tunnel', label: 'Tunnel', layers: ['aura', 'bloom'], filters: ['tunnel'] },
+  { id: 'terminal', label: 'Terminal', layers: ['aura', 'bloom'], filters: ['ascii'] },
+  { id: 'kaleido', label: 'Kaleido', filters: ['kaleido'] },
+];
+
+// tide (look 031) with only mask, fill and waves on (no rainbow rim, no ghosts),
+// plus the preset's layers and filters. weather 0.85 and 1.2 are the two ends
+// the pointer blends between.
+const looksFrom = (tide, preset = PRESETS[0]) => {
+  const layers = ['mask', 'fill', 'waves', ...(preset.layers || [])];
+  const filters = preset.filters || [];
   const make = (weather) => ({
     ...tide,
     version: 1,
-    layers: Object.fromEntries(Object.keys(tide.layers).map((k) => [k, ['mask', 'fill', 'waves'].includes(k)])),
-    filters: Object.fromEntries(Object.keys(tide.filters).map((k) => [k, false])),
+    layers: Object.fromEntries(Object.keys(tide.layers).map((k) => [k, layers.includes(k)])),
+    filters: Object.fromEntries(Object.keys(tide.filters).map((k) => [k, filters.includes(k)])),
     params: { ...tide.params, hue: 0.16, hold: 1, weather },
   });
   return [make(0.85), make(1.2)];
 };
 
-const MembraneField = ({ reduce = false, className = '' }) => {
+const MembraneField = ({ reduce = false, preset = PRESETS[0], className = '' }) => {
   const wrapRef = useRef(null);
   const mountRef = useRef(null);
   const stillRef = useRef(null);
+  const ghostRef = useRef(null);
+  const tideRef = useRef(null);
+  const presetRef = useRef(preset);
+  presetRef.current = preset;
+
+  // A new preset: dip the field, swap the looks, bring it back up.
+  useEffect(() => {
+    const ghost = ghostRef.current;
+    const tide = tideRef.current;
+    const wrap = wrapRef.current;
+    if (!ghost || !tide || !wrap) return undefined;
+    let live = true;
+    wrap.classList.add('is-swapping');
+    const swap = window.setTimeout(async () => {
+      await ghost.setLooks(looksFrom(tide, preset));
+      if (live) wrap.classList.remove('is-swapping');
+    }, 180);
+    return () => {
+      live = false;
+      window.clearTimeout(swap);
+      wrap.classList.remove('is-swapping');
+    };
+  }, [preset]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -206,7 +246,7 @@ const MembraneField = ({ reduce = false, className = '' }) => {
         if (disposed) return;
         const { width, height } = frameSize();
         ghost = await mount(host, {
-          looks: looksFrom(tide),
+          looks: looksFrom(tide, presetRef.current),
           source: { type: 'logo', src: ringsSvg(width, height), size: 3 },
           speed: 0.5,
           dim: 0,
@@ -217,6 +257,8 @@ const MembraneField = ({ reduce = false, className = '' }) => {
           ghost.destroy();
           return;
         }
+        ghostRef.current = ghost;
+        tideRef.current = tide;
         // Two frames in, ghosts has drawn; hand over from the still.
         requestAnimationFrame(() => requestAnimationFrame(() => still.classList.add('is-gone')));
         observer.observe(wrap);
@@ -241,6 +283,7 @@ const MembraneField = ({ reduce = false, className = '' }) => {
       surface?.removeEventListener('pointermove', onMove);
       surface?.removeEventListener('pointerleave', onLeave);
       ghost?.destroy();
+      ghostRef.current = null;
     };
   }, [reduce]);
 

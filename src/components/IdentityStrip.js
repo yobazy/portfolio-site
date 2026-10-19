@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import MembraneField from './MembraneField';
+import MembraneField, { PRESETS } from './MembraneField';
 import Deck from './Deck';
 import Arrow from './Arrow';
 import { TransitionLink } from '../lib/pageTransition';
@@ -24,6 +24,8 @@ const IdentityStrip = ({ deck = false }) => {
   const navigate = useNavigate();
   const [time, setTime] = useState(localTime);
   const [touched, setTouched] = useState(false);
+  const [look, setLook] = useState(0);
+  const step = (by) => setLook((i) => (i + by + PRESETS.length) % PRESETS.length);
   const building = projects.filter((project) => project.status === 'In progress' && project.lead);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const IdentityStrip = ({ deck = false }) => {
       className={`hero ${reduce ? 'is-still' : ''} ${deck ? 'is-deck' : ''}`}
       onPointerMove={() => !touched && setTouched(true)}
     >
-      <MembraneField reduce={Boolean(reduce)} className="hero-field" />
+      <MembraneField reduce={Boolean(reduce)} preset={PRESETS[look]} className="hero-field" />
       <div className="hero-scrim" aria-hidden="true" />
 
       <AnimatePresence mode="wait" initial={false}>
@@ -89,6 +91,22 @@ const IdentityStrip = ({ deck = false }) => {
                 move to stir the field
               </span>
             )}
+            <div className="hero-presets" role="group" aria-label="Field preset">
+              <span className="hero-credit-label">
+                Preset {String(look + 1).padStart(2, '0')}/{String(PRESETS.length).padStart(2, '0')}
+              </span>
+              <div className="hero-presets-row">
+                <button type="button" className="hero-presets-step" onClick={() => step(-1)} aria-label="Previous preset">
+                  <Arrow dir="left" size={12} />
+                </button>
+                <button type="button" className="hero-presets-name" onClick={() => step(1)} aria-live="polite">
+                  {PRESETS[look].label}
+                </button>
+                <button type="button" className="hero-presets-step" onClick={() => step(1)} aria-label="Next preset">
+                  <Arrow size={12} />
+                </button>
+              </div>
+            </div>
             <TransitionLink to="/projects/ghosts-playground" className="hero-credit">
               <span className="hero-credit-label">Field</span>
               <span className="hero-credit-title">ghosts-playground, live</span>
