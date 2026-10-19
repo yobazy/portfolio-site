@@ -1,6 +1,5 @@
 import { Suspense, lazy, useCallback, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 import { TransitionLink } from '../lib/pageTransition';
 
 import IdentityStrip from '../components/IdentityStrip';
@@ -28,7 +27,6 @@ const pick = (slugs) => slugs.map(getProjectBySlug).filter(Boolean);
 
 function Home() {
   const reduce = useReducedMotion();
-  const { pathname } = useLocation();
   const lead = pick(LEAD);
   const atWork = pick(AT_WORK);
   const photos = featuredMedia.slice(0, 3);
@@ -61,7 +59,7 @@ function Home() {
 
   return (
     <div className="home-page">
-      <IdentityStrip deck={pathname === '/now'} />
+      <IdentityStrip />
 
       <section className="home-section" aria-labelledby={sectionHeadingId('/projects')}>
         <SectionHead to="/projects" linkLabel="All development" />

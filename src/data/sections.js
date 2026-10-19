@@ -8,9 +8,6 @@ export const sections = [
   { to: '/about', label: 'About', short: 'About', note: 'the long version' },
 ];
 
-// The pitch deck: what Baz is building right now, for showing on a phone.
-export const nowSection = { to: '/now', label: 'Now', short: 'Now', note: 'building right now' };
-
 export const sectionFor = (to) => {
   const index = sections.findIndex((section) => section.to === to);
   return { ...sections[index], number: String(index + 1).padStart(2, '0') };

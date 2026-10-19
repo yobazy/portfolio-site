@@ -228,8 +228,8 @@ const HeroField = ({
       let frame = 0;
       let running = !reduce;
       let visible = true;
-      // Shared clock: a field mounted later continues the same motion, so the
-      // deck's cover picks up exactly where the hero left off.
+      // Shared clock: a field mounted later continues the same motion as the
+      // ones already running.
       const origin = 0;
       const seconds = () => (performance.now() - origin) / 1000;
       // The waves advance by speed × elapsed, so a live speed change doesn't

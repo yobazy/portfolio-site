@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 const PHONE_W = 393;
 const PHONE_H = 852;
 
-// A small, working version of any chills? for the deck: the feed from the
+// A small, working version of any chills? for its project page: the feed from the
 // site's phone, with everything tappable. Join a plan, vote on a time, stick
 // an emoji on a card, make a plan and send it. Nothing is saved anywhere.
 // Copy follows the app's own ("I'm in", "You're in", "Not now", the clink).

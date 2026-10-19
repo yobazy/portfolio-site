@@ -58,7 +58,8 @@ const Work = () => {
     ...personal.map((project) => `personal:${project.slug}`),
     ...systems.map((project) => `professional:${project.slug}`),
     ...earlier.map((project) => `earlier:${project.slug}`),
-    ...(independent.length ? ['section:personal'] : []),
+    ...(lead.length ? ['section:now'] : []),
+    ...(personal.length ? ['section:personal'] : []),
     ...(systems.length ? ['section:professional'] : []),
     ...(earlier.length ? ['section:earlier'] : []),
     ...(shown.length ? [] : ['empty']),
@@ -121,7 +122,8 @@ const Work = () => {
 
   // The first visible section sits tight under the filter bar.
   const firstSection = [
-    ['personal', independent],
+    ['now', lead],
+    ['personal', personal],
     ['professional', systems],
     ['earlier', earlier],
   ].find(([, list]) => list.length)?.[0];
@@ -208,44 +210,46 @@ const Work = () => {
             </motion.div>
           )}
 
-          {independent.length > 0 && (
+          {lead.length > 0 && (
+            <section className={blockClass('now')} aria-labelledby="work-now">
+              {heading('now', 'Building now')}
+              <ShowcaseGrid variant="gallery-lead">
+                {lead.map((project) => (
+                  <ShowcaseTile
+                    key={mountKey(`lead:${project.slug}`)}
+                    title={project.title}
+                    subtitle={project.tag}
+                    line={project.line}
+                    img={project.img}
+                    fit={project.imgFit}
+                    size="large"
+                    href={projectPage(project)}
+                    onClick={() => open(project)}
+                    animation={settle(`lead:${project.slug}`)}
+                  />
+                ))}
+              </ShowcaseGrid>
+            </section>
+          )}
+
+          {personal.length > 0 && (
             <section className={blockClass('personal')} aria-labelledby="work-personal">
               {heading('personal', 'Personal')}
-              {lead.length > 0 && (
-                <ShowcaseGrid variant="gallery-lead">
-                  {lead.map((project) => (
-                    <ShowcaseTile
-                      key={mountKey(`lead:${project.slug}`)}
-                      title={project.title}
-                      subtitle={project.tag}
-                      line={project.line}
-                      img={project.img}
-                      fit={project.imgFit}
-                      size="large"
-                      href={projectPage(project)}
-                      onClick={() => open(project)}
-                      animation={settle(`lead:${project.slug}`)}
-                    />
-                  ))}
-                </ShowcaseGrid>
-              )}
-              {personal.length > 0 && (
-                <ShowcaseGrid variant="gallery-personal">
-                  {personal.map((project) => (
-                    <ShowcaseTile
-                      key={mountKey(`personal:${project.slug}`)}
-                      title={project.title}
-                      subtitle={project.tag}
-                      line={project.line}
-                      img={project.img}
-                      fit={project.imgFit}
-                      href={projectPage(project)}
-                      onClick={() => open(project)}
-                      animation={settle(`personal:${project.slug}`)}
-                    />
-                  ))}
-                </ShowcaseGrid>
-              )}
+              <ShowcaseGrid variant="gallery-personal">
+                {personal.map((project) => (
+                  <ShowcaseTile
+                    key={mountKey(`personal:${project.slug}`)}
+                    title={project.title}
+                    subtitle={project.tag}
+                    line={project.line}
+                    img={project.img}
+                    fit={project.imgFit}
+                    href={projectPage(project)}
+                    onClick={() => open(project)}
+                    animation={settle(`personal:${project.slug}`)}
+                  />
+                ))}
+              </ShowcaseGrid>
             </section>
           )}
 

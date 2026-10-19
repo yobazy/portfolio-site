@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
 import MembraneField, { PRESETS } from './MembraneField';
-import Deck from './Deck';
 import Arrow from './Arrow';
+import HeroHeading from './HeroHeading';
 import { TransitionLink } from '../lib/pageTransition';
 import { projects } from '../data/projects';
 
@@ -16,12 +15,9 @@ const localTime = () =>
     .replace(/^24/, '00');
 
 // The hero: a living field (ghosts membranes) with the name set in it. The copy sits low
-// and left like a caption on a photograph; the field is the picture. With
-// `deck` on, the pitch deck comes in over the same field and the copy steps
-// aside; the page never changes.
-const IdentityStrip = ({ deck = false }) => {
+// and left like a caption on a photograph; the field is the picture.
+const IdentityStrip = () => {
   const reduce = useReducedMotion();
-  const navigate = useNavigate();
   const [time, setTime] = useState(localTime);
   const [touched, setTouched] = useState(false);
   const [look, setLook] = useState(0);
@@ -36,35 +32,25 @@ const IdentityStrip = ({ deck = false }) => {
   const rise = (delay) => ({
     initial: reduce ? false : { opacity: 0, y: 14 },
     animate: { opacity: 1, y: 0 },
-    exit: reduce ? undefined : { opacity: 0, y: 10, transition: { duration: 0.25 } },
     transition: { duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] },
   });
 
   return (
     <section
-      className={`hero ${reduce ? 'is-still' : ''} ${deck ? 'is-deck' : ''}`}
+      className={`hero ${reduce ? 'is-still' : ''}`}
       onPointerMove={() => !touched && setTouched(true)}
     >
       <MembraneField reduce={Boolean(reduce)} preset={PRESETS[look]} className="hero-field" />
       <div className="hero-scrim" aria-hidden="true" />
 
-      <AnimatePresence mode="wait" initial={false}>
-        {deck ? (
-          <Deck key="deck" onClose={() => navigate('/')} />
-        ) : (
-          <motion.div key="hero" className="hero-body" {...rise(0)}>
+      <motion.div className="hero-body" {...rise(0)}>
         <motion.div className="hero-copy" {...rise(0.1)}>
-          <h1 className="hero-heading">
-            Hey, it&rsquo;s <em>Baz</em>.
-          </h1>
+          <HeroHeading reduce={Boolean(reduce)} />
           <p className="hero-sub">Software + visuals.</p>
           <div className="hero-actions">
-            <TransitionLink to="/now" className="hero-cta">
+            <TransitionLink to="/projects" className="hero-cta">
               <span>What I&rsquo;m building now</span>
               <Arrow />
-            </TransitionLink>
-            <TransitionLink to="/projects" className="hero-link">
-              All development
             </TransitionLink>
           </div>
         </motion.div>
@@ -113,9 +99,7 @@ const IdentityStrip = ({ deck = false }) => {
             </TransitionLink>
           </div>
         </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </motion.div>
     </section>
   );
 };

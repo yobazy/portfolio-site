@@ -4,8 +4,8 @@ import Arrow from './Arrow';
 import { TransitionLink, useArrival } from '../lib/pageTransition';
 import { getProjectBySlug } from '../data/projects';
 
-// Career facts live here; the home page and the deck quote them, never the
-// other way round.
+// Career facts live here; the home page quotes them, never the other way
+// round.
 export const experience = [
   {
     role: 'Senior Software Developer',

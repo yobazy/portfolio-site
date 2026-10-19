@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { TransitionLink } from '../lib/pageTransition';
 import Rosette from './Rosette';
 import Arrow from './Arrow';
-import { nowSection, sections } from '../data/sections';
+import { sections } from '../data/sections';
 
 export const EMAIL = 'bazilkhn@gmail.com';
 export const LINKS = [
@@ -48,11 +48,16 @@ export const Footer = () => {
               {copied ? 'Email copied' : ''}
             </span>
           </div>
+          {/* For handing the site over in person: point a phone at it. */}
+          <figure className="footer-qr">
+            <img src="/qr-now.svg" alt="QR code for heyitsbaz.com/now" width="96" height="96" />
+            <figcaption>Scan to open on your phone</figcaption>
+          </figure>
         </div>
 
         <nav className="footer-nav" aria-label="Footer">
           <ul>
-            {[...sections, nowSection].map((section) => (
+            {sections.map((section) => (
               <li key={section.to}>
                 <TransitionLink to={section.to}>{section.label}</TransitionLink>
               </li>

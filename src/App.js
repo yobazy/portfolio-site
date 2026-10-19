@@ -3,7 +3,7 @@ import './App.css';
 import { Suspense, lazy, useLayoutEffect } from 'react';
 import { NavBar } from './components/NavBar';
 import { Footer } from './components/Footer';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import { settlePageTransition } from './lib/pageTransition';
 
@@ -15,7 +15,6 @@ const Media = lazy(() => import('./pages/Media'));
 const Project = lazy(() => import('./pages/Project'));
 const Blog = lazy(() => import('./pages/Blog'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
-const XrayLab = lazy(() => import('./pages/XrayLab'));
 const LabHero = lazy(() => import('./lab/LabHero'));
 const About = lazy(() => import('./components/About').then((m) => ({ default: m.About })));
 // The tweak panel: always in development, and anywhere with ?tweak in the URL
@@ -28,9 +27,7 @@ function ScrollToTop() {
 
   // Before paint, so a page transition's "after" snapshot starts at the top.
   useLayoutEffect(() => {
-    // The deck opens over the hero without a page change, so glide up to it.
-    const deck = pathname === '/now';
-    window.scrollTo({ top: 0, left: 0, behavior: deck && window.scrollY > 0 ? 'smooth' : 'instant' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     settlePageTransition();
   }, [pathname]);
 
@@ -51,8 +48,8 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/about" element={<About />} />
-          <Route path="/now" element={<Home />} />
-        <Route path="/lab/xray" element={<XrayLab />} />
+          {/* The QR handed out at events points here; what I'm building now heads Development. */}
+          <Route path="/now" element={<Navigate to="/projects" replace />} />
         <Route path="/lab/hero" element={<LabHero />} />
         </Routes>
       </Suspense>

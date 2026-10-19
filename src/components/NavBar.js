@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TransitionLink } from '../lib/pageTransition';
 import Rosette from './Rosette';
-import { nowSection, sections } from '../data/sections';
+import { sections } from '../data/sections';
 
 const LINKEDIN = 'https://www.linkedin.com/in/bazilkhan';
 const GITHUB = 'https://github.com/yobazy';
@@ -28,7 +28,6 @@ export const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { pathname } = useLocation();
   const isHome = pathname === '/';
-  const deckOpen = pathname === nowSection.to;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -61,14 +60,6 @@ export const NavBar = () => {
           </div>
 
           <div className="navbar-right">
-            {/* On the deck the same pill closes it; the page underneath never left. */}
-            <TransitionLink
-              to={deckOpen ? '/' : nowSection.to}
-              className={`navbar-now ${deckOpen ? 'is-close' : ''}`}
-            >
-              {!deckOpen && <span className="navbar-now-dot" aria-hidden="true" />}
-              {deckOpen ? 'Close' : nowSection.label}
-            </TransitionLink>
             <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" className="social-icon-link" aria-label="LinkedIn">
               <LinkedInIcon />
             </a>
@@ -80,16 +71,13 @@ export const NavBar = () => {
       </nav>
 
       <nav aria-label="Sections" className="dock">
-        {[...sections, nowSection].map((section) => (
+        {sections.map((section) => (
           <TransitionLink
             key={section.to}
-            to={section.to === nowSection.to && deckOpen ? '/' : section.to}
-            className={`dock-item ${isActive(pathname, section.to) ? 'active' : ''} ${
-              section.to === nowSection.to ? 'is-now' : ''
-            }`}
+            to={section.to}
+            className={`dock-item ${isActive(pathname, section.to) ? 'active' : ''}`}
             aria-current={isActive(pathname, section.to) ? 'page' : undefined}
           >
-            {section.to === nowSection.to && <span className="navbar-now-dot" aria-hidden="true" />}
             {section.short}
           </TransitionLink>
         ))}

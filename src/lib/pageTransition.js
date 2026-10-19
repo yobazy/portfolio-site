@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-// Page changes run as view transitions. Going deeper or across, the next page
-// swipes up over this one; going back up (to home, or a post back to the
-// blog) this page slides away down to reveal the one beneath. A `morph` names
+// Page changes run as view transitions: a push, the next page sliding in from
+// the side its tab sits on in the nav, this one drifting back beneath it.
+// Going back up (to home, or a post back to the blog) pushes the other way.
+// The direction rides on <html data-side>; App.css does the rest. A `morph` names
 // the element that should grow into the next page's title (its `.page-title`);
 // otherwise each title rides with its own page. Browsers without view
 // transitions, and anyone who prefers reduced motion, get the instant switch.
@@ -12,6 +13,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 // react-router only drives view transitions from a data router, so this does
 // it by hand: it navigates inside the transition and holds the "after"
 // snapshot until the new route has committed (see `settlePageTransition`).
+
+// Where a path sits along the nav, so a sideways move knows which way to go.
+const NAV_ORDER = ['/', '/projects', '/media', '/blog', '/about'];
+const navIndex = (path) => {
+  const top = `/${path.split('/')[1] || ''}`;
+  const at = NAV_ORDER.indexOf(top);
+  return at < 0 ? NAV_ORDER.length : at;
+};
 
 let settle = null;
 let arriving = false;
@@ -46,9 +55,6 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
   const go = (event) => {
     onClick?.(event);
     if (!plainClick(event) || !supported() || to === pathname) return;
-    // Home and the deck are one page: the deck comes in over the hero.
-    const home = (path) => path === '/' || path === '/now';
-    if (home(to) && home(pathname)) return;
     event.preventDefault();
 
     // This page's own title leaves with the page, unless it is the morph source.
@@ -63,7 +69,10 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
     // Only a transition with a morph source lifts the next title out of its page.
     if (title) root.dataset.morph = '';
     else delete root.dataset.morph;
-    root.dataset.swipe = to === '/' || pathname.startsWith(`${to}/`) ? 'back' : 'forward';
+    const back = to === '/' || pathname.startsWith(`${to}/`);
+    const from = navIndex(pathname);
+    const next = navIndex(to);
+    root.dataset.side = next === from ? (back ? 'left' : 'right') : next > from ? 'right' : 'left';
     arriving = true;
 
     const transition = document.startViewTransition(
@@ -81,7 +90,7 @@ export const TransitionLink = ({ to, morph, onClick, ...props }) => {
       if (current === transition) {
         current = null;
         arriving = false;
-        delete root.dataset.swipe;
+        delete root.dataset.side;
         delete root.dataset.morph;
       }
       // A reused page component (one project to another) keeps its title node.

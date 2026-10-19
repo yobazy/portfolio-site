@@ -1,5 +1,5 @@
 // The leopard rosette from the wordmark: a thick ring broken into three spots.
-// Drawn once here so the nav, dock and pitch deck share the same mark.
+// Drawn once here so everything that shows it shares the same mark.
 const Rosette = ({ size = 14, className = '', title }) => (
   <svg
     className={`rosette ${className}`}
