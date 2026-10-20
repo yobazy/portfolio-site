@@ -135,7 +135,10 @@ function Home() {
             <li key={post.slug}>
               <TransitionLink to={`/blog/${post.slug}`} className="home-post">
                 <span className="home-post-meta">
-                  {post.date} · {post.readTime}
+                  {post.cover && <img className="home-post-thumb" src={post.cover} alt="" loading="lazy" />}
+                  <span>
+                    {post.date} · {post.readTime}
+                  </span>
                 </span>
                 <span className="home-post-title">{post.title}</span>
                 <span className="home-post-excerpt">{post.excerpt}</span>

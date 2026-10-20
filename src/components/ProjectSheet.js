@@ -3,6 +3,7 @@ import { motion, useDragControls, useReducedMotion } from 'framer-motion';
 import Arrow from './Arrow';
 import SystemDiagram from './SystemDiagram';
 import { demos } from '../demos';
+import { typeOf } from '../data/projectFilters';
 
 const linkLabel = (url) => {
   if (!url) return null;
@@ -117,6 +118,34 @@ const ProjectSheet = ({ project, onClose }) => {
           </button>
         </div>
 
+        {/* What it is and where to see it come first; the demo or picture follows. */}
+        <div className="project-sheet-body is-head">
+          {kicker && <p className="project-sheet-kicker">{kicker}</p>}
+          <h2 id="project-sheet-title">{project.title}</h2>
+          {project.description && <p className="project-sheet-lede">{project.description}</p>}
+
+          {!project.demo && !project.url && typeOf(project) === 'personal' && (
+            <p className="project-sheet-private">Private for now, so there&rsquo;s no public link yet.</p>
+          )}
+
+          {(project.demo || project.url) && (
+            <div className="project-sheet-links">
+              {project.demo && (
+                <a className="btn-primary" href={project.demo.href} target="_blank" rel="noopener noreferrer">
+                  <span>{project.demo.label}</span>
+                  <Arrow dir="up-right" />
+                </a>
+              )}
+              {project.url && (
+                <a className="btn-secondary" href={project.url} target="_blank" rel="noopener noreferrer">
+                  <span>{label}</span>
+                  <Arrow dir="up-right" />
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
         {project.interactive && demos[project.interactive] ? (
           <div className="project-sheet-media frame is-demo">
             <Suspense fallback={null}>
@@ -139,27 +168,6 @@ const ProjectSheet = ({ project, onClose }) => {
         )}
 
         <div className="project-sheet-body">
-          {kicker && <p className="project-sheet-kicker">{kicker}</p>}
-          <h2 id="project-sheet-title">{project.title}</h2>
-          {project.description && <p className="project-sheet-lede">{project.description}</p>}
-
-          {(project.demo || project.url) && (
-            <div className="project-sheet-links">
-              {project.demo && (
-                <a className="btn-primary" href={project.demo.href} target="_blank" rel="noopener noreferrer">
-                  <span>{project.demo.label}</span>
-                  <Arrow dir="up-right" />
-                </a>
-              )}
-              {project.url && (
-                <a className="btn-secondary" href={project.url} target="_blank" rel="noopener noreferrer">
-                  <span>{label}</span>
-                  <Arrow dir="up-right" />
-                </a>
-              )}
-            </div>
-          )}
-
           {project.facts?.length > 0 && (
             <ul className="project-sheet-facts">
               {project.facts.map((fact) => (

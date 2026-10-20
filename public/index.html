@@ -11,6 +11,10 @@
       content="Bazil Khan, software engineer in Toronto. The systems underneath (Azure, queues, data pipelines) and the visuals on top (WebGL, live visuals, photography)."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
+    <!-- The hero field runs on ghosts: start fetching it before the app has even loaded. -->
+    <link rel="preconnect" href="https://ghosts.fyi" crossorigin="anonymous" />
+    <link rel="modulepreload" href="https://ghosts.fyi/embed/hero.js" crossorigin="anonymous" />
+    <link rel="preload" href="https://ghosts.fyi/sketches/031-tide/look.json" as="fetch" crossorigin="anonymous" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

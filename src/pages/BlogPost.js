@@ -268,6 +268,7 @@ function BlogPost() {
                 <span key={tag} className="post-tag">{tag}</span>
               ))}
             </div>
+            {meta.cover && <img className="post-cover" src={meta.cover} alt="" />}
           </header>
 
           <article className="post-body">

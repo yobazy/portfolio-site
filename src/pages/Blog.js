@@ -23,18 +23,21 @@ function Blog() {
         <div className="blog-list">
           {posts.map(post => (
             <TransitionLink key={post.slug} to={`/blog/${post.slug}`} className="blog-card-link">
-              <article className="blog-list-item">
-                <div className="blog-list-meta">
-                  <span className="post-date">{post.date}</span>
-                  <span className="post-sep">·</span>
-                  <span className="post-read-time">{post.readTime} read</span>
-                </div>
-                <h2 className="blog-list-title">{post.title}</h2>
-                <p className="blog-list-excerpt">{post.excerpt}</p>
-                <div className="post-tags">
-                  {post.tags.map(tag => (
-                    <span key={tag} className="post-tag">{tag}</span>
-                  ))}
+              <article className={`blog-list-item ${post.cover ? 'has-cover' : ''}`}>
+                {post.cover && <img className="blog-list-cover" src={post.cover} alt="" loading="lazy" />}
+                <div className="blog-list-text">
+                  <div className="blog-list-meta">
+                    <span className="post-date">{post.date}</span>
+                    <span className="post-sep">·</span>
+                    <span className="post-read-time">{post.readTime} read</span>
+                  </div>
+                  <h2 className="blog-list-title">{post.title}</h2>
+                  <p className="blog-list-excerpt">{post.excerpt}</p>
+                  <div className="post-tags">
+                    {post.tags.map(tag => (
+                      <span key={tag} className="post-tag">{tag}</span>
+                    ))}
+                  </div>
                 </div>
               </article>
             </TransitionLink>

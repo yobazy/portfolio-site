@@ -207,16 +207,16 @@ export const projects = [
       },
     ],
     description:
-      'A webcam piece for a dark room. Your silhouette cuts a window into moving fluid, wave, and particle fields, and colored echoes of you trail behind. It\'s live at ghosts.fyi: open it with a webcam and step into frame.',
+      'A camera piece for a dark room. Your silhouette becomes a window into moving fluid, waves and particles, with coloured echoes of you trailing behind. ghosts.fyi opens on sample clips, so anyone can swipe through looks, open the editor to mix filters and layers, let the mic drive it to the beat, and save a photo or a video. The same engine runs unattended on venue walls and draws the field on this site\'s home page.',
     skills: ['WebGL', 'GLSL', 'Webcam', 'TouchDesigner'],
-    facts: ['WebGL2, no build step', '50+ filters', 'Sound-reactive'],
+    facts: ['WebGL2, no build step', '50+ filters and 30 layers', 'Finds the beat through the mic'],
     caseStudy: {
       problem:
         'Most visuals toys are desktop widgets or face filters. I wanted something that works at party scale: you walk into the room, your silhouette is the mask, and the visuals are already running.',
       built:
-        'Plain JavaScript and WebGL2 shaders. Live mode is for the party, with filters like fisheye and VHS, layers, sound reactivity, shuffle, and mixes you can save and share. Studio mode is for making clips. The field behind this site\'s home page is a port of one of its modes.',
+        'Plain JavaScript and WebGL2 shaders. Walk-up is what ghosts.fyi serves: sample clips or your camera, looks you swipe through, an editor with 50+ filters and 30 layers, a mic that hears the tempo, photo and video capture, and links that share a whole look. Kiosk mode runs it on a wall all night and reloads itself if it stalls. Studio is for making clips. An embed puts it on other sites; the field on this site\'s home page is that embed.',
       outcome:
-        'In progress and public at ghosts.fyi. It needs a webcam, and it was made for a projector in a dark room.',
+        'In progress and public at ghosts.fyi. Sample clips work on any device; it is at its best with a camera and a projector in a dark room.',
     },
   },
   {

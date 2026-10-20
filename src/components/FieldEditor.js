@@ -93,6 +93,19 @@ const FieldEditor = ({ look, onChange, onReset, onClose }) => {
               </button>
             ))}
           </div>
+          {look.shape === 'word' && (
+            <label className="field-editor-word">
+              <span className="visually-hidden">Your word</span>
+              <input
+                type="text"
+                value={look.word}
+                maxLength={14}
+                placeholder="Type a word"
+                spellCheck="false"
+                onChange={(event) => set({ word: event.target.value })}
+              />
+            </label>
+          )}
         </section>
 
         <section>

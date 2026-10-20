@@ -303,8 +303,8 @@ nav.navbar::after {
   white-space: nowrap;
 }
 
-/* The wordmark (src/components/Wordmark.js): ink in the text colour, the full
-   stop in the glint. On hover the glint swells, the way the field answers a tap. */
+/* The wordmark (src/components/Wordmark.js): ink in the text colour, the
+   rosette full stop in the glint. On hover it swells, the way the field answers a tap. */
 .wordmark {
   display: block;
 }
@@ -790,6 +790,49 @@ nav.navbar::after {
   cursor: pointer;
 }
 
+/* With a cover: the picture on the right on a desk, above the words on a phone. */
+.blog-list-item.has-cover {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  column-gap: 2.5rem;
+  align-items: start;
+}
+
+.blog-list-text {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.blog-list-cover {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+
+.post-cover {
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+}
+
+@media (max-width: 640px) {
+  .blog-list-item.has-cover {
+    display: block;
+  }
+
+  .blog-list-cover {
+    margin-bottom: 1.25rem;
+  }
+}
+
 .blog-card-link:first-child .blog-list-item {
   border-top: 1px solid var(--glass-border);
 }
@@ -1078,12 +1121,35 @@ nav.navbar::after {
   overflow: hidden;
 }
 
-/* The rings screen onto the near-black, so they can only lift it toward the glint. */
+/* The rings screen onto the near-black, so they can only lift it toward the
+   glint. On arrival the field develops in once ghosts has drawn, out of a blur
+   and a slight zoom, so there's never a blank frame or a jump. */
 .membrane-field {
   position: absolute;
   inset: 0;
   mix-blend-mode: screen;
   will-change: transform;
+  opacity: 0;
+  filter: blur(16px);
+  scale: 1.06;
+  transition:
+    opacity 1.6s var(--ease-premium),
+    filter 2.2s var(--ease-premium),
+    scale 2.6s var(--ease-premium);
+}
+
+.membrane.is-lit .membrane-field {
+  opacity: 1;
+  filter: none;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .membrane-field {
+    filter: none;
+    scale: 1;
+    transition: opacity 0.4s ease;
+  }
 }
 
 .membrane-host {
@@ -1109,11 +1175,12 @@ nav.navbar::after {
   inset: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 400ms ease;
+  opacity: 0;
+  transition: opacity 600ms ease;
 }
 
-.membrane-still.is-gone {
-  opacity: 0;
+.membrane-still.is-shown {
+  opacity: 1;
 }
 
 .membrane-defs {
@@ -1320,11 +1387,19 @@ nav.navbar::after {
 }
 
 .hero-credit-title {
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 0.45rem;
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 1rem;
   color: var(--text-primary);
   transition: color var(--duration-fast) var(--ease-premium);
+}
+
+.hero-credit-mark {
+  flex-shrink: 0;
 }
 
 .hero-credit:hover .hero-credit-title,
@@ -1460,6 +1535,24 @@ nav.navbar::after {
   border-color: var(--accent);
 }
 
+.field-editor-word input {
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border-strong);
+  background: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  user-select: text;
+}
+
+.field-editor-word input:focus-visible {
+  outline: 2px solid var(--accent-deep);
+  outline-offset: 1px;
+}
+
 .field-editor-slider {
   display: grid;
   grid-template-columns: 4.5rem 1fr;
@@ -1560,12 +1653,15 @@ nav.navbar::after {
 }
 
 @media (max-width: 768px) {
+  /* As tall as the screen with the browser's bars tucked away, so nothing below
+     peeks in once they hide. While the bars show, the extra sits under them, so
+     the copy is lifted by the same amount and stays in view. */
   .hero {
-    min-height: 100svh;
+    min-height: 100lvh;
   }
 
   .hero-body {
-    padding: 0 1.25rem calc(5.25rem + env(safe-area-inset-bottom));
+    padding: 0 1.25rem calc(5.25rem + env(safe-area-inset-bottom) + (100lvh - 100svh));
     gap: 1.75rem;
   }
 
@@ -1581,8 +1677,10 @@ nav.navbar::after {
 
   .hero-foot-right {
     width: 100%;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
+    row-gap: 0.9rem;
   }
 
   .hero-hint {
@@ -1591,10 +1689,6 @@ nav.navbar::after {
 
   .hero-presets {
     align-items: flex-start;
-  }
-
-  .hero-credit .hero-credit-label {
-    display: none;
   }
 
   .hero-credit {
@@ -2224,7 +2318,21 @@ nav.navbar::after {
   background: rgba(255, 255, 255, 0.025);
 }
 
+/* A post with a cover shows it above its date. */
+.home-post-thumb {
+  display: block;
+  width: 100%;
+  max-width: 10rem;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+}
+
 .home-post-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.02em;
@@ -2430,6 +2538,11 @@ nav.navbar::after {
   .home-post-meta {
     grid-column: 1 / -1;
     order: -1;
+  }
+
+  .home-post-thumb {
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
   }
 
   .home-post-title {
@@ -3552,6 +3665,24 @@ nav.navbar::after {
   padding: 1.75rem 1.5rem 3rem;
 }
 
+/* The head of the sheet sits above the demo, so it ends where the demo starts. */
+.project-sheet-body.is-head {
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.project-sheet-body.is-head .project-sheet-links {
+  margin-bottom: 0;
+}
+
+.project-sheet-private {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
 .project-sheet-kicker {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -3671,6 +3802,15 @@ nav.navbar::after {
 
   .project-sheet-body {
     padding: 1.5rem 1.25rem calc(2.5rem + env(safe-area-inset-bottom));
+  }
+
+  .project-sheet-body.is-head {
+    padding-top: 0.5rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .project-sheet-media {
+    margin-top: 0;
   }
 }
 

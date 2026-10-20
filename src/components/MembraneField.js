@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { WORDMARK } from './Wordmark';
 
 // The hero field: thin periwinkle rings that fuse where they cross, like cell
 // membranes, drawn live by ghosts (ghosts.fyi's embed runtime). The rings are an
@@ -148,12 +149,17 @@ export const FILTER_CHOICES = [
   ['fisheye', 'Fisheye'],
 ];
 
-// The shape ghosts cuts the picture around: the rings, the name, or a comet
-// that follows the pointer.
+// The shape ghosts cuts the picture around. Most are pictures drawn here at the
+// frame's size; the comet follows the pointer, and `word` is typed in.
 export const SHAPES = [
   ['rings', 'Rings'],
-  ['name', 'Name'],
+  ['wordmark', 'baz.'],
+  ['ghost', 'Ghost'],
+  ['ripples', 'Ripples'],
+  ['waves', 'Waves'],
+  ['dots', 'Dots'],
   ['comet', 'Comet'],
+  ['word', 'Your word'],
 ];
 
 // Everything the panel can change, in one plain object. `energy` scales the
@@ -165,6 +171,7 @@ export const lookFor = (preset) => ({
   energy: 1,
   strength: 1,
   shape: 'rings',
+  word: 'hello',
   colour: 'tint',
   hue: 0.8,
 });
@@ -192,15 +199,89 @@ const looksFrom = (tide, look = lookFor(PRESETS[0])) => {
   return [make(0.85), make(1.2)];
 };
 
-const sourceFor = (shape, width, height) => {
-  if (shape === 'name') return { type: 'text', text: 'Baz', size: 0.42, font: '"Instrument Sans", sans-serif' };
-  if (shape === 'comet') return { type: 'cursor' };
-  return { type: 'logo', src: ringsSvg(width, height), size: 3 };
+// A white-on-clear picture the size of the frame plus its margin, laid out
+// the way ringsSvg is, for ghosts' logo source.
+const frameSvg = (width, height, body) => {
+  const w = width + 2 * MARGIN;
+  const h = height + 2 * MARGIN;
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-MARGIN} ${-MARGIN} ${w} ${h}" width="${w}" height="${h}">` +
+    `${body}</svg>`;
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+};
+
+// Where a single motif sits: up and right of the copy on a desk, high on a phone.
+const focusOf = (width, height) => (width <= 640 ? [width * 0.5, height * 0.34] : [width * 0.66, height * 0.42]);
+
+const GHOST = 'M8 58V30a24 24 0 0 1 48 0v28l-6-6-6 6-6-6-6 6-6-6-6 6-6-6-6 6z';
+
+const ART = {
+  rings: ringsSvg,
+  wordmark: (width, height) => {
+    const [fx, fy] = focusOf(width, height);
+    const { box, d, rosette } = WORDMARK;
+    const k = (width <= 640 ? width * 0.78 : width * 0.4) / box.w;
+    return frameSvg(
+      width,
+      height,
+      `<g fill="#fff" transform="translate(${fx} ${fy}) scale(${k.toFixed(3)}) translate(${-(box.x + box.w / 2)} ${-(box.y + box.h / 2)})">` +
+        `<path d="${d}"/><path transform="${rosette.transform}" d="${rosette.d}"/></g>`
+    );
+  },
+  ghost: (width, height) => {
+    const [fx, fy] = focusOf(width, height);
+    const k = (Math.min(width, height) * 0.62) / 64;
+    return frameSvg(
+      width,
+      height,
+      `<g transform="translate(${fx} ${fy}) scale(${k.toFixed(3)}) translate(-32 -33)">` +
+        `<path d="${GHOST}" fill="#fff"/><circle cx="19" cy="25" r="4.5" fill="#000"/><circle cx="45" cy="34" r="2.6" fill="#000"/></g>`
+    );
+  },
+  ripples: (width, height) => {
+    const [fx, fy] = focusOf(width, height);
+    const k = Math.min(width, height) / 900;
+    const step = Math.min(width, height) * 0.075;
+    const rings = Array.from({ length: 12 }, (_, i) => `<circle cx="${fx}" cy="${fy}" r="${(step * (i + 1)).toFixed(1)}"/>`);
+    return frameSvg(width, height, `<g fill="none" stroke="#fff" stroke-width="${(5 * k).toFixed(2)}">${rings.join('')}</g>`);
+  },
+  waves: (width, height) => {
+    const k = Math.min(width, height) / 900;
+    const lines = Array.from({ length: 11 }, (_, i) => {
+      const y = (height * (i + 0.5)) / 11;
+      const points = [];
+      for (let x = -MARGIN; x <= width + MARGIN; x += 16) {
+        points.push(`${x},${(y + 22 * k * Math.sin((x / (300 * k)) * Math.PI * 2 + i * 0.7)).toFixed(1)}`);
+      }
+      return `<polyline points="${points.join(' ')}"/>`;
+    });
+    return frameSvg(width, height, `<g fill="none" stroke="#fff" stroke-width="${(5 * k).toFixed(2)}">${lines.join('')}</g>`);
+  },
+  dots: (width, height) => {
+    const k = Math.min(width, height) / 900;
+    const gap = 52 * k;
+    const dots = [];
+    for (let y = gap / 2; y < height; y += gap) {
+      for (let x = gap / 2; x < width; x += gap) dots.push(`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(6 * k).toFixed(2)}"/>`);
+    }
+    return frameSvg(width, height, `<g fill="#fff">${dots.join('')}</g>`);
+  },
+};
+
+const sourceFor = (look, width, height) => {
+  if (look.shape === 'comet') return { type: 'cursor' };
+  if (look.shape === 'word') {
+    return { type: 'text', text: look.word.trim() || 'hello', size: 0.42, font: '"Instrument Sans", sans-serif' };
+  }
+  const art = ART[look.shape] || ringsSvg;
+  return { type: 'logo', src: art(width, height), size: 3 };
 };
 
 // `look` is what to draw; `scene` changes only when a preset is picked, and
 // that alone dips the field. Edits from the panel land straight away.
-const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '', className = '' }) => {
+// `onReady` fires once ghosts has drawn its first frame, when the field
+// develops in; the hero holds its copy back until then.
+const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '', onReady, className = '' }) => {
   const wrapRef = useRef(null);
   const mountRef = useRef(null);
   const stillRef = useRef(null);
@@ -209,8 +290,12 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
   const lookRef = useRef(look);
   lookRef.current = look;
   const sceneRef = useRef(scene);
-  const shapeRef = useRef(look.shape);
+  const shapeRef = useRef(null);
+  const shapeKey = `${look.shape}:${look.shape === 'word' ? look.word : ''}`;
   const [ready, setReady] = useState(false);
+  const [lit, setLit] = useState(false);
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
 
   useEffect(() => {
     const ghost = ghostRef.current;
@@ -238,10 +323,10 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
   useEffect(() => {
     const ghost = ghostRef.current;
     const wrap = wrapRef.current;
-    if (!ready || !ghost || !wrap || shapeRef.current === look.shape) return;
-    shapeRef.current = look.shape;
-    ghost.setSource(sourceFor(look.shape, wrap.clientWidth, wrap.clientHeight));
-  }, [look.shape, ready]);
+    if (!ready || !ghost || !wrap || shapeRef.current === shapeKey) return;
+    shapeRef.current = shapeKey;
+    ghost.setSource(sourceFor(lookRef.current, wrap.clientWidth, wrap.clientHeight));
+  }, [shapeKey, ready]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -267,7 +352,7 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
       });
     };
 
-    // The still rings show until ghosts has drawn, so the hero is never blank.
+    // The still rings stand in only if ghosts is slow or can't run at all.
     const drawStill = ({ width, height }) => {
       const R = ringsFor(width, height);
       still.setAttribute('viewBox', `0 0 ${width} ${height}`);
@@ -320,9 +405,12 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
       lastKey = key;
       sizeHost(next);
       drawStill(next);
-      if (lookRef.current.shape === 'rings') ghost?.setSource(sourceFor('rings', next.width, next.height));
+      // Pictures are drawn at the frame's size, so they're redrawn for the new one.
+      if (ART[lookRef.current.shape]) ghost?.setSource(sourceFor(lookRef.current, next.width, next.height));
     };
     const observer = new ResizeObserver(resize);
+
+    const slow = window.setTimeout(() => still.classList.add('is-shown'), 4000);
 
     (async () => {
       try {
@@ -334,7 +422,7 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
         const { width, height } = frameSize();
         ghost = await mount(host, {
           looks: looksFrom(tide, lookRef.current),
-          source: sourceFor((shapeRef.current = lookRef.current.shape), width, height),
+          source: sourceFor(lookRef.current, width, height),
           speed: 0.5,
           dim: 0,
           badge: false,
@@ -346,9 +434,19 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
         }
         ghostRef.current = ghost;
         tideRef.current = tide;
+        const now = lookRef.current;
+        shapeRef.current = `${now.shape}:${now.shape === 'word' ? now.word : ''}`;
         setReady(true);
-        // Two frames in, ghosts has drawn; hand over from the still.
-        requestAnimationFrame(() => requestAnimationFrame(() => still.classList.add('is-gone')));
+        // Two frames in, ghosts has drawn: the field develops in.
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            if (disposed) return;
+            window.clearTimeout(slow);
+            still.classList.remove('is-shown');
+            setLit(true);
+            readyRef.current?.();
+          })
+        );
         observer.observe(wrap);
         if (reduce) {
           // One finished still: the logo image decodes after the first frame.
@@ -360,12 +458,16 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
         }
       } catch (error) {
         // No WebGL or no network: the still rings stay.
+        window.clearTimeout(slow);
+        still.classList.add('is-shown');
+        readyRef.current?.();
         console.warn('membrane field:', error);
       }
     })();
 
     return () => {
       disposed = true;
+      window.clearTimeout(slow);
       cancelAnimationFrame(frame);
       observer.disconnect();
       surface?.removeEventListener('pointermove', onMove);
@@ -377,7 +479,10 @@ const MembraneField = ({ reduce = false, look = lookFor(PRESETS[0]), scene = '',
   }, [reduce]);
 
   return (
-    <div className={`membrane ${look.colour === 'full' ? 'is-full-colour' : ''} ${className}`} aria-hidden="true">
+    <div
+      className={`membrane ${lit ? 'is-lit' : ''} ${look.colour === 'full' ? 'is-full-colour' : ''} ${className}`}
+      aria-hidden="true"
+    >
       <div className="membrane-field" ref={wrapRef}>
         <div className="membrane-host" ref={mountRef} />
       </div>
